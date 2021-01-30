@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GitHub免费搭建个人网站 | 程序员哦</title><meta name="keywords" content="github,免费搭建网站"><meta name="author" content="谢峰"><meta name="copyright" content="谢峰"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近在学习前端框架的过程中，一直想把自己学习中做的demo 发布到github 上去。但是在查看了很多相关资料也没能找到一个比较满意的结果。 无奈之下，只能尝试做用了一种自认为最low 的方式来达到部署个人demo 的目的。   以下内容仅为抛砖引玉。如有理解不对的或者描述不准确的地方，请多见谅。当然也希望有对往github 部署个人项目了解的大神给指点个更好的方式。   \1. 首先，我们在gi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub免费搭建个人网站">
+<meta property="og:url" content="http://cxyo.cn/2021/01/31/github/index.html">
+<meta property="og:site_name" content="程序员哦">
+<meta property="og:description" content="最近在学习前端框架的过程中，一直想把自己学习中做的demo 发布到github 上去。但是在查看了很多相关资料也没能找到一个比较满意的结果。 无奈之下，只能尝试做用了一种自认为最low 的方式来达到部署个人demo 的目的。   以下内容仅为抛砖引玉。如有理解不对的或者描述不准确的地方，请多见谅。当然也希望有对往github 部署个人项目了解的大神给指点个更好的方式。   \1. 首先，我们在gi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg">
+<meta property="article:published_time" content="2021-01-30T16:48:12.000Z">
+<meta property="article:modified_time" content="2021-01-30T17:29:04.829Z">
+<meta property="article:author" content="谢峰">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="免费搭建网站">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cxyo.cn/2021/01/31/github/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-01-31 01:29:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-align-justify"></i><span> 文章目录</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/photo/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-link"></i><span> 友链</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page" href="/skm/"><i class="fa-fw fa fa-archive"></i><span> 万能收款码</span></a></li><li><a class="site-page" href="/toqz/"><i class="fa-fw fa fa-bullseye"></i><span> 圈子联盟</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-folder-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">程序员哦</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-align-justify"></i><span> 文章目录</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/photo/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-link"></i><span> 友链</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page" href="/skm/"><i class="fa-fw fa fa-archive"></i><span> 万能收款码</span></a></li><li><a class="site-page" href="/toqz/"><i class="fa-fw fa fa-bullseye"></i><span> 圈子联盟</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-folder-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">GitHub免费搭建个人网站</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-30T16:48:12.000Z" title="发表于 2021-01-31 00:48:12">2021-01-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-30T17:29:04.829Z" title="更新于 2021-01-31 01:29:04">2021-01-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/github/">github</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/github/%E5%85%8D%E8%B4%B9%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/">免费搭建网站</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近在学习前端框架的过程中，一直想把自己学习中做的demo 发布到github 上去。但是在查看了很多相关资料也没能找到一个比较满意的结果。</p>
+<p>无奈之下，只能尝试做用了一种自认为最low 的方式来达到部署个人demo 的目的。</p>
+<p>  以下内容仅为抛砖引玉。如有理解不对的或者描述不准确的地方，请多见谅。当然也希望有对往github 部署个人项目了解的大神给指点个更好的方式。</p>
+<p>  \1. 首先，我们在github上创建一个新的Repository “<strong>test.github.io</strong>”</p>
+<p><img src="https://images2015.cnblogs.com/blog/1034113/201612/1034113-20161203031748756-713588169.png" alt="img"></p>
+<p>然后点击settings ，将其发布；如图记下github page 的链接。他将是发布后的站点的网址。</p>
+<p><img src="https://images2015.cnblogs.com/blog/1034113/201612/1034113-20161203033349990-1057542525.png" alt="img"></p>
+<p>然后点击 continue to layout button, 然后点击Publish Page button，发布该页面。</p>
+<p>然后我们就可以通过github page 链接进行访问我们刚发布的站点。 但是，这个并不是我们要发布的真正内容。</p>
+<p>然后，我们需要将自己本地项目将其替换。已达到发布个人项目的目的。</p>
+<p>接下来我们再次回到Repository “test.gihub.io” 然点击 “Code” 然后再点击 右边的 ”Clone or download “button</p>
+<p>如图通过 Clone with HTTPS 的链接将该项目Clone 到本地，然后用我们本地的项目工程文件将其替换。</p>
+<p><img src="https://images2015.cnblogs.com/blog/1034113/201612/1034113-20161203033237693-1527985797.png" alt="img"></p>
+<p><strong>但要注意的是，替换时，我们的主页对应原来项目的index.html</strong></p>
+<p><strong>然后，我们再次访问该站点链接。会发现我们的项目已经部署到github上了</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">谢峰</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://cxyo.cn/2021/01/31/github/">http://cxyo.cn/2021/01/31/github/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://cxyo.cn" target="_blank">程序员哦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/github/">github</a><a class="post-meta__tags" href="/tags/%E5%85%8D%E8%B4%B9%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/">免费搭建网站</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/31/excel/"><img class="prev-cover" src="https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">EXCEL常用函数公式</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/31/picgo/"><img class="next-cover" src="https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">picgo图床</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/null" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">谢峰</div><div class="author-info__description">网站制作、运营推广、软件开发、小程序开发、大数据分析</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div></div><a class="button--animated" id="card-info-btn" href="https://cxyo.cn/"><i class="fab fa-github"></i><span>万能收款码</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/dywlkj" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:18529090901@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="tel:18529090901" target="_blank" title="tel"><i class="fa fa-phone"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎光临我的博客</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/31/excel/" title="EXCEL常用函数公式"><img src="https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="EXCEL常用函数公式"/></a><div class="content"><a class="title" href="/2021/01/31/excel/" title="EXCEL常用函数公式">EXCEL常用函数公式</a><time datetime="2021-01-30T16:49:40.000Z" title="发表于 2021-01-31 00:49:40">2021-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/31/github/" title="GitHub免费搭建个人网站"><img src="https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GitHub免费搭建个人网站"/></a><div class="content"><a class="title" href="/2021/01/31/github/" title="GitHub免费搭建个人网站">GitHub免费搭建个人网站</a><time datetime="2021-01-30T16:48:12.000Z" title="发表于 2021-01-31 00:48:12">2021-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/31/picgo/" title="picgo图床"><img src="https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="picgo图床"/></a><div class="content"><a class="title" href="/2021/01/31/picgo/" title="picgo图床">picgo图床</a><time datetime="2021-01-30T16:47:57.000Z" title="发表于 2021-01-31 00:47:57">2021-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/31/typora/" title="typora教程"><img src="https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="typora教程"/></a><div class="content"><a class="title" href="/2021/01/31/typora/" title="typora教程">typora教程</a><time datetime="2021-01-30T16:47:34.000Z" title="发表于 2021-01-31 00:47:34">2021-01-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/31/hexo/" title="hexo"><img src="https://i.loli.net/2019/12/25/d6QHbytlSYO4FBG.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo"/></a><div class="content"><a class="title" href="/2021/01/31/hexo/" title="hexo">hexo</a><time datetime="2021-01-30T16:45:25.000Z" title="发表于 2021-01-31 00:45:25">2021-01-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2008 - 2021 By 谢峰</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://cxyo.cn/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
