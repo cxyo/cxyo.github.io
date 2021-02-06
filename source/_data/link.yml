@@ -1,0 +1,13 @@
+- class_name: 友情链接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: 程序猿博客
+      link: https://blog.csdn.net/weixin_44075537
+      descr: 一个程序猿的笔记心得！
+
+- class_name: 购物
+  class_desc: 全网最低价，省钱来联盟！
+  link_list:
+    - name: 来联盟
+      link: http://lailm.cn/
+      descr: 淘宝、京东、拼多多……
