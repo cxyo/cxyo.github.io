@@ -1,9 +1,8 @@
 ---
-title: 壁纸
-date: 2021-01-30 23:29:20
+title: bizhi
+date: 2022-06-15 00:26:58
 ---
 
-```
 {% gallery %}
 ![](https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg)
 ![](https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg)
@@ -14,5 +13,3 @@ date: 2021-01-30 23:29:20
 ![](https://i.loli.net/2019/12/25/mh19anwBSWIkGlH.jpg)
 ![](https://i.loli.net/2019/12/25/2tu9JC8ewpBFagv.jpg)
 {% endgallery %}
-```
-

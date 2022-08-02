@@ -3,19 +3,19 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 程序员哦
-subtitle: 一言不合秀代码!
-description: 网站制作、运营推广、软件开发、小程序开发、大数据分析
-keywords:
-author: 谢峰
+title: 程序猿
+subtitle: '星光不问赶路人，时光不负有心人'
+description: '能力是有限的，而努力是无限的！'
+keywords: '量化分析，爬虫采集，赚钱理财'
+author: Micky
 language: zh-CN
 timezone: ''
 
 # URL
-## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
+## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://cxyo.cn
-root: /
-permalink: :year/:month/:day/:title/
+# permalink: :year/:month/:day/:title/
+permalink: :sticky/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -29,7 +29,11 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
+# 跳过hexo渲染
 skip_render:
+  - '*.html'
+  - 'skm/**'
+  - 'tools/**'
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -106,3 +110,7 @@ deploy:
   type: git
   repo: https://github.com/cxyo/cxyo.github.io.git
   branch: master
+# 全局音乐
+aplayer:
+  meting: true
+  asset_inject: false

@@ -1,13 +1,63 @@
-- class_name: 友情链接
-  class_desc: 那些人，那些事
+- class_name: python刷题网站
+  class_desc: 值得推荐的软件
   link_list:
-    - name: 程序猿博客
-      link: https://blog.csdn.net/weixin_44075537
-      descr: 一个程序猿的笔记心得！
-
-- class_name: 购物
-  class_desc: 全网最低价，省钱来联盟！
+    - name: 笨办法学Python
+      link: https://flyouting.gitbooks.io/learn-python-the-hard-way-cn/content/
+      descr: 这本书面向没有太多基础的人群去学习Python，在国外有很多的粉丝。
+    - name: Python挑战赛
+      link: http://www.pythonchallenge.com/
+      descr: Python Challenge 是一款游戏，其中每个级别都可以通过一些 ( Python ) 编程来解决。
+    - name: Python入门到实践四十招
+      link: https://www.nowcoder.com/link/pc_gzh_pysjkx_python
+      descr: 牛客网-找工作神器|笔试题库|面试经验|实习招聘内推，求职就业一站解决_牛客网
+    - name: Python教程
+      link: https://www.learnpython.org/
+      descr: 欢迎来到 LearnPython.org 交互式 Python 教程。
+    - name: 优达学院
+      link: https://www.udacity.com/
+      descr: 相信 IDC 领导者可以克服数字人才缺口。
+    - name: 谷歌的Python类
+      link: https://www.courseduck.com/googles-python-class-2
+      descr: Google它本身就被一大堆Python代码驱动着，只有他们提供社区支持并且愿意帮助其他人学习这门语言才更有意义。
+    - name: 一点Python
+      link: https://python.swaroopch.com/
+      descr: “A Byte of Python”是一本关于使用 Python 语言进行编程的免费书籍。
+    - name: 开放式图书馆
+      link: https://open.umn.edu/opentextbooks
+      descr: 开放教科书由作者和出版商授权，可以自由使用和改编。免费下载、编辑和分发它们。
+- class_name: 常用工具
+  class_desc: 指的推荐的工具
   link_list:
-    - name: 来联盟
-      link: http://lailm.cn/
-      descr: 淘宝、京东、拼多多……
+    - name: Selenium 浏览器自动化项目
+      link: https://www.selenium.dev/zh-cn/documentation/
+      descr: Selenium 是支持 web 浏览器自动化的一系列工具和库的综合项目。
+    - name: 合鲸社区
+      link: https://www.heywhale.com/home/
+      descr: 合鲸社区
+    - name: 天池阿里
+      link: https://tianchi.aliyun.com/
+      descr: 天池阿里
+    - name: 手机搜索
+      link: https://github.com/search
+      descr: github手机搜索
+    - name: 淘宝镜像
+      link: https://npmmirror.com/ 
+      descr: 淘宝镜像
+- class_name: 常用软件
+  class_desc: 值得推荐的软件
+  link_list:
+    - name: 奥森图标
+      link: https://www.thinkcmf.com/font_awesome.html
+      descr: 奥森图标,一款惊艳的字体图标！
+    - name: 免费图床
+      link: https://sm.ms/
+      descr: 免费5g空间
+    - name: json编码和解码器
+      link: https://docs.python.org/zh-cn/3/library/json.html
+      descr: json编码和解码器
+    - name: 图片转gif
+      link: https://imageio.readthedocs.io/en/stable/index.html
+      descr: 提供了一个简单的界面来读取和写入各种图像数据，包括动画图像、体积数据和科学格式
+      
+      
+    

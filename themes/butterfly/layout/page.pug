@@ -2,6 +2,9 @@ extends includes/layout.pug
 
 block content
   #page
+    if top_img === false
+      h1.page-title= page.title
+
     case page.type
       when 'tags'
         include includes/page/tags.pug
@@ -9,8 +12,6 @@ block content
         include includes/page/flink.pug
       when 'categories'
         include includes/page/categories.pug
-      when 'artitalk'
-        include includes/page/artitalk.pug
       default
         include includes/page/default-page.pug
 
