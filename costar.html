@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CO-STAR框架</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .framework-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title h1 {
+            color: white;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .title p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .framework-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .framework-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .framework-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .framework-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .framework-item:nth-child(1) { --accent-color: #ff6b6b; }
+        .framework-item:nth-child(2) { --accent-color: #4ecdc4; }
+        .framework-item:nth-child(3) { --accent-color: #45b7d1; }
+        .framework-item:nth-child(4) { --accent-color: #96ceb4; }
+        .framework-item:nth-child(5) { --accent-color: #feca57; }
+        .framework-item:nth-child(6) { --accent-color: #ff9ff3; }
+
+        .letter {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .word {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .chinese {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .arrow-1 { top: 50%; right: -15px; }
+        .arrow-2 { top: 50%; right: -15px; }
+        .arrow-3 { bottom: -15px; left: 50%; transform: rotate(90deg); }
+        .arrow-4 { top: 50%; left: -15px; transform: rotate(180deg); }
+        .arrow-5 { top: 50%; left: -15px; transform: rotate(180deg); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        .bottom-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .framework-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+            }
+            
+            .title h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="framework-container">
+        <div class="title">
+            <h1>CO-STAR</h1>
+            <p>结构化提示词工程框架</p>
+        </div>
+
+        <div class="framework-grid">
+            <div class="framework-item">
+                <div class="letter">C</div>
+                <div class="word">Context</div>
+                <div class="chinese">上下文</div>
+                <div class="description">提供相关背景信息，帮助AI理解任务环境和场景</div>
+                <div class="flow-arrow arrow-1">→</div>
+            </div>
+
+            <div class="framework-item">
+                <div class="letter">O</div>
+                <div class="word">Objective</div>
+                <div class="chinese">目标</div>
+                <div class="description">明确说明希望AI完成的任务或达到的目的</div>
+                <div class="flow-arrow arrow-2">→</div>
+            </div>
+
+            <div class="framework-item">
+                <div class="letter">S</div>
+                <div class="word">Style</div>
+                <div class="chinese">风格</div>
+                <div class="description">指定希望AI采用的写作风格和表达方式</div>
+                <div class="flow-arrow arrow-3">→</div>
+            </div>
+
+            <div class="framework-item">
+                <div class="letter">R</div>
+                <div class="word">Response</div>
+                <div class="chinese">响应格式</div>
+                <div class="description">指定希望得到的回答格式，如列表、段落、表格等</div>
+                <div class="flow-arrow arrow-5">→</div>
+            </div>
+
+            <div class="framework-item">
+                <div class="letter">A</div>
+                <div class="word">Audience</div>
+                <div class="chinese">受众</div>
+                <div class="description">说明内容的目标受众，调整表达方式适应不同群体</div>
+                <div class="flow-arrow arrow-4">→</div>
+            </div>
+
+            <div class="framework-item">
+                <div class="letter">T</div>
+                <div class="word">Tone</div>
+                <div class="chinese">语调</div>
+                <div class="description">设定情感色彩和态度，如正式、友好、专业等</div>
+            </div>
+        </div>
+
+        <div class="bottom-text">
+            使用CO-STAR框架可以让提示词更加清晰具体，获得更符合期望的AI回答<br>
+            特别适用于复杂任务或需要特定输出格式的场景
+        </div>
+    </div>
+</body>
+</html>
