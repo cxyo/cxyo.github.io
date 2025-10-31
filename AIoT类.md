@@ -14,5 +14,8 @@
 - 智能家居
 - 工业物联网
 - 智慧城市
+- [CO-STAR](costar.html)
+- [我的提示词](mytsc.html)
+
 
 [返回首页](index.html)
