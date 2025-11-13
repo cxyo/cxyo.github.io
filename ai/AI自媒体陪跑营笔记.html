@@ -1,0 +1,618 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    pre {
+        page-break-inside: avoid;
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.mac-os #write{
+    caret-color: AccentColor;
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+
+
+</style><title>AI自媒体陪跑营笔记</title>
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><h1 id='一普通人怎么做自媒体'><span>一、普通人怎么做自媒体</span></h1><h2 id='普通人做自媒体常见的三个误区'><span>普通人做自媒体常见的三个误区</span></h2><p><span>1.一上来就想做原创内容，但写不出来、拍不了、剪不动，三天热度就放弃。</span></p><p><span>2.以为露脸才叫自媒体，其实现在不露脸的账号才是最大多数人普通人真正的入口。</span></p><p><span>3.想得太多，做得太少，永远卡在“想清楚再开始”的阶段。</span></p><h2 id='做自媒体的目的是什么'><span>做自媒体的目的是什么</span></h2><p><span>1.普通人：想找一条”第二收入曲线“</span></p><p><span>2.专业人士：借助自媒体打造个人品牌</span></p><p><span>3.自由职业者：想通过自媒体赚钱</span></p><p><span>4.创业者：自媒体是最低成本的获客渠道</span></p><p><span>5.还有一类人：想通过表达获得价值</span></p><h2 id='核心动力'><span>核心动力</span></h2><p><span>搞钱</span></p><h4 id='核心目标'><span>核心目标</span></h4><p><span>涨粉</span></p><p><span>坚持一个月做20条视频</span></p><h2 id='普通人做自媒体的两条路'><span>普通人做自媒体的两条路</span></h2><h3 id='ai自媒体'><span>AI自媒体：</span></h3><h4 id='简单正反馈快不需要太多条件'><span>简单、正反馈快，不需要太多条件</span></h4><p><span>文案、剪辑简单、数据、收入有正反馈、做这件事不需要太多设备，有台电脑就能干</span></p><p><span>【前期起号，发布3-5视频，观察数据，正常24小时左右会破千，如果在千以内大概率是账号有问题，如果连续几天发布后没有过万，是内容出问题了】</span></p><h4 id='优势'><span>优势：</span></h4><p><span>文案、剪辑都很简单，可以做的赛道比较多，并且内容手中较多，容易起号，很可能三五个作品就涨粉几万</span></p><h4 id='劣势'><span>劣势：</span></h4><p><span>单号相对真人IP账号变现价值较低</span></p><h3 id='真人ip'><span>真人IP:</span></h3><h4 id='文案能力运营能力表达力'><span>文案能力、运营能力、表达力</span></h4><p><span>【需要自己写文案、自己运营+花钱买流量，并且需要真人出镜，需要本人有一定的表达力和专业知识】</span></p><h4 id='优势-2'><span>优势：</span></h4><p><span>粉丝粘性高、粉丝属于有一定思维能力人群，能为知识付费，高转化，可能几十几百粉丝就能变现卖自己产品。</span></p><h4 id='劣势-2'><span>劣势：</span></h4><p><span>做起来难度较大，需要有一定专业知识以及表达能力，并且很容易没流量。</span></p><h3 id='二者皆可做'><span>二者皆可做：</span></h3><p><span>先做AI自媒体积累粉丝流量，打好基础，赚到自己的第一桶金，利用这个赛道入门，了解自媒体行业。</span></p><p><span>后期稳定只收，再由AI自媒体知识分享转为更新专业知识，打造自己的IP。</span></p><h3 id='怎么做'><span>怎么做？</span></h3><p><span>首先确定好定位，想好你自己的方向，如果你有擅长的，有自己的专业知识，那就做这个赛道，如果你没什么擅长的，不知道做什么，那么我给你提供10个可参考的赛道。</span></p><p><span>★★★★★1.科技（网站、APP）</span></p><p><span>★★★★2.数码（手机测评、使用技巧、电脑知识）</span></p><p><span>★★★★3.AI（技巧、测评、资讯）</span>
+<span>★4.职场（赚钱、人际关系、干货分享）</span></p><p><span>★★★5.美妆</span></p><p><span>★★★6.历史故事【扣子工作流自动生成】</span></p><p><span>★7.书单</span></p><p><span>★★8.养生</span></p><p><span>9.小说</span></p><p><span>10.电影</span></p><h4 id='怎么找对标账号'><span>怎么找对标账号</span></h4><p><span>先点【关注】后，再点【私信】右边的向下箭头。</span></p><p><span>系统会给你推荐几十上百个账号，</span></p><p><span>再里面筛选需要的账号。</span></p><h3 id='任务'><span>任务：</span></h3><p><strong><span>一.确定的赛道：</span></strong></p><p><strong><span>二.找20个相关账号关注：</span></strong></p><p><strong><span>三.写一个自己的总结：</span></strong></p><p><span>1.你要做哪个赛道：</span></p><p><span>2.你关注的有哪些账号：</span></p><p><span>3.从中选出3-5个优质账号：</span></p><p><span>4.为什么做这个赛道：</span></p><p><span>5.这个赛道变现逻辑是什么？</span></p><p><span>6.你想做成什么内容？</span></p><p>&nbsp;</p><h1 id='二各平台的运营区别'><span>二、各平台的运营区别</span></h1><h2 id='为什么要区分不同平台'><span>为什么要区分不同平台？</span></h2><p><span>每个平台的用户受众不同，所发的视频内容、封面、选题到不同平台效果都会不一样，所以需要我们根据自己的变现来针对不同的平台做不同的内容。</span></p><h2 id='建议主做三个平台'><span>建议主做三个平台</span></h2><p><span>抖音、小红书、B站</span></p><h3 id='一抖音策略'><span>（一）、抖音策略</span></h3><h4 id='1平台调性'><span>1、平台调性</span></h4><p><span>强算法推荐，爆款靠第一秒抓人</span></p><p><span>情绪浓度高，用户注意力极短（3秒决定看不看）</span></p><p><span>前10个视频是关键，新粉丝会持续关注。后期要坚持日更新。</span></p><h4 id='2用户画像'><span>2、用户画像</span></h4><p><span>3-80岁都有，碎片化娱乐，最求感官冲击</span></p><p><span>小学生、大学生、打工人、小镇青年、高管老板都有</span></p><h4 id='3适合的内容类型具体拆解'><span>3、适合的内容类型（具体拆解）</span></h4><p><strong><span>AI相关账号</span></strong></p><p><span>AI合成语音+爆款文案，批量更新效率高——参考：暴走的阿川</span></p><p><strong><span>知识速推</span></strong></p><p><span>干活精炼，1分钟讲清一个知识点——参考：大鹅冷知识</span></p><p><strong><span>问题钩子类</span></strong></p><p><span>设问+反常识回答，提升停留和转发——参考：今日话题</span></p><p><strong><span>影视混剪</span></strong></p><p><span>剪电影高能片段配文案，易起号——参考：心中之城</span></p><p><strong><span>故事类账号</span></strong></p><p><span>故事、任务讲解、名人事迹搭配对应画面——参考：解忧故事会</span></p><p><strong><span>书单号</span></strong></p><p><span>AI生成书籍介绍、书评，易起号——参考：句集邮局</span></p><h4 id='4新手建议'><span>4、新手建议</span></h4><p><span>不露脸，用AI语音+剪辑起号</span></p><p><span>模仿+改编爆款账号前30条视频</span></p><p><span>发量大于质量，先练算法感知力</span></p><h3 id='二小红书策略'><span>（二）、小红书策略</span></h3><h4 id='1平台调性-2'><span>1、平台调性</span></h4><p><span>情绪共鸣+真实体验+生活细节打动人</span></p><p><span>女性用户多，种草心智强，容易转化</span></p><h4 id='2用户画像-2'><span>2、用户画像</span></h4><p><span>18-40岁女性，注重“变美变强”</span></p><p><span>追求生活品质、情绪认同感、成长经历</span></p><h4 id='3适合的内容类型具体拆解-2'><span>3、适合的内容类型（具体拆解）</span></h4><p><strong><span>干货类教程</span></strong></p><p><span>有步骤、有结构、有截图更好——小墨PPT</span></p><p><strong><span>成长复盘类</span></strong></p><p><span>用亲身经历讲一段自我成长轨迹——参考：Miya.知识跃迁</span></p><p><strong><span>平替种草</span></strong></p><p><span>高性价比产品分享，适合带货——桃桃爸</span></p><p><strong><span>私域引流类</span></strong></p><p><span>发布部分干货内容，引起用户的好奇心——忆书黎</span></p><p><strong><span>真实体验类</span></strong></p><p><span>用亲身经历讲一段自我成长轨迹——兔沫柔</span></p><p><strong><span>强教程类</span></strong></p><p><span>一步步带步骤的教程——AI科技类</span></p><h4 id='4新手建议-2'><span>4、新手建议</span></h4><p><span>图文为主，轻松起步，AI视频+图文文案</span></p><p><span>内容围绕“我做了什么——》发生了什么——》我的建议”</span></p><p><span>重点在“真实感”而不是“包装感”</span></p><h3 id='三b站策略'><span>（三）、B站策略</span></h3><h4 id='1平台调性-3'><span>1、平台调性</span></h4><p><span>长内容、重逻辑、强调知识深度</span></p><p><span>用户愿意为“干货+思考”停留，粘性强</span></p><h4 id='2用户画像-3'><span>2、用户画像</span></h4><p><span>学生、职场人、程序员、泛知识群体</span></p><p><span>注重视频质量、结构感、细节打磨</span></p><h4 id='3适合的内容类型具体拆解-3'><span>3、适合的内容类型（具体拆解）</span></h4><p><strong><span>AI类</span></strong></p><p><span>演示类+带货型视频结合——参考：暴走的阿川</span></p><p><strong><span>历史/故事类</span></strong></p><p><span>大故事+小道理，适合AI脚本剪辑——参考：布衣陶陶</span></p><p><strong><span>干货学习类</span></strong></p><p><span>各种学习方法干货，适合AI生成——铁木君</span></p><h4 id='4新手建议-3'><span>4、新手建议</span></h4><p><span>不建议“裸剪辑”，要走结构逻辑路线</span></p><p><span>没有经验可从“搬运+翻译+AI润色”起步（如讲国外故事）</span></p><p><span>开局可尝试5-10分钟中视频，训练逻辑表达</span></p><figure class='table-figure'><table><thead><tr><th><span>平台</span></th><th><span>爆款时长</span></th><th><span>内容节奏</span></th><th><span>用户停留思维</span></th><th><span>适合内容起点</span></th></tr></thead><tbody><tr><td><span>抖音</span></td><td><span>15-60秒</span></td><td><span>快节奏，强情绪</span></td><td><span>刷、跳、点赞</span></td><td><span>AI语音类、短剧混剪</span></td></tr><tr><td><span>小红书</span></td><td><span>图文/60秒内</span></td><td><span>情绪流、碎片化</span></td><td><span>收藏、保存、种草</span></td><td><span>成长笔记、干货清单</span></td></tr><tr><td><span>B站</span></td><td><span>3-15分钟</span></td><td><span>中慢节奏，强结构</span></td><td><span>订阅、转发、评论</span></td><td><span>拆解讲解、技能教学</span></td></tr></tbody></table></figure><h3 id='总结建议'><span>总结建议</span></h3><h5 id='1不要盲目模仿大号'><span>1、不要盲目模仿大号：</span></h5><p><span>先看自己擅长什么，选平台合适赛道</span></p><h5 id='近期半年10-50万粉丝的账号是最好的'><span>近期半年10-50万粉丝的账号是最好的</span></h5><h5 id='2新手尽量走轻成本+高反馈的路径'><span>2、新手尽量走“轻成本+高反馈”的路径：</span></h5><p><span>抖音利用AI生成文案+意见生成音频+剪辑</span></p><p><span>小红书走文字+图文笔记</span></p><p><span>B站走复盘+技能讲解</span></p><h5 id='3一个月测试30条内容看平台反馈决定主阵地'><span>3、一个月测试30条内容，看平台反馈决定主阵地</span></h5><h5 id='4别纠结份个股设备包装先让用户看到你再说风格优化'><span>4、别纠结份个股、设备、包装，先让用户“看到你”再说风格优化</span></h5><h3 id='运营策略'><span>运营策略</span></h3><p><span>确定好自己要做的平台</span></p><p><span>之后所有的内容都按照固定平台风格来制作</span></p><p><span>其他平台一键同步</span></p><h1 id='三如何搭建一个优秀的账号'><span>三、如何搭建一个优秀的账号</span></h1><h2><span>（一）、账号基础信息搭建</span></h2><h3 id='1门脸三件套'><span>1、门脸三件套</span></h3><p><span>账号的头像、名称和简介，其实就是你的“门脸三件套”——它们直接决定了：</span></p><p><span>1.用户会不会主动点开你的主页去看</span></p><p><span>2.读者是否会快速理解你是做什么的、值不值得关注</span></p><p><span>3.增强你的个人IP粘性</span></p><h3 id='2三个角度'><span>2、三个角度</span></h3><h4 id='1名称'><span>1.名称</span></h4><h5 id='名称设置'><span>名称设置：</span></h5><p><span>你的定位锚点</span></p><h5 id='核心原则'><span>核心原则：</span></h5><p><span>让人一眼知道你是谁、你能带来什么价值</span></p><h5 id='推荐结构'><span>推荐结构：</span></h5><p><strong><span>结构一：关键词+人设/身份</span></strong></p><p><strong><span>例子：</span></strong></p><p><span>AI写作老王</span></p><p><span>30岁转行策划师</span></p><p><span>零基础学剪辑小白兔</span></p><p><strong><span>结构二：垂直类目+能力/功能</span></strong></p><p><strong><span>例子：</span></strong></p><p><span>视频剪辑干货铺</span></p><p><span>副业变现工具箱</span></p><p><span>自媒体变现教练</span></p><p><strong><span>结构三：情绪共鸣型+强属性</span></strong></p><p><span>不想上班的运营人</span></p><p><span>穷人逆袭笔记</span></p><p><span>离职第500天</span></p><h4 id='2头像'><span>2.头像</span></h4><h5 id='核心原则-2'><span>核心原则：</span></h5><p><span>要素清晰、风格统一、表达专业性或人格魅力</span></p><p><strong><span>真人头像＞虚拟头像</span></strong></p><p><span>真人更容易传递信任感，特别是想做IP、带货、咨询等类型。</span></p><p><span>表情建议自然、自信、微笑或沉稳，眼睛朝前看比侧脸更有力量。</span></p><p><strong><span>注意以下常见错误：</span></strong></p><p><span>光纤太暗/模糊/画质差</span></p><p><span>自拍角度太怪/背景杂乱</span></p><p><span>低像素放大/有滤镜过重的“网红风”</span></p><h5 id='风格推荐'><span>风格推荐：</span></h5><p><span>IP型：白底清晰半身照（如李响讲职场）</span></p><p><span>品牌型：统一LOGO，字体清晰</span></p><p><span>知识型：简单清爽，别搞得花里胡哨</span></p><p><span>如果你暂时不想露脸，建议用在阿川AI或豆包里，上传一张自己的自拍照，让AI帮自己生成一张符合自己形象的动漫图</span></p><h4 id='3个人简介'><span>3.个人简介</span></h4><h5 id='个人简介你的价值宣言'><span>个人简介：你的价值宣言</span></h5><p><strong><span>核心原则：</span></strong></p><p><span>清晰告诉用户你能帮他解决什么问题+设置期待感</span></p><p><strong><span>三段公式推荐：</span></strong></p><p><span>我是谁+我能带来什么+我正在做什么/可以关注什么内容</span></p><p><strong><span>案例一：</span></strong></p><p><span>30岁转行运营</span></p><p><span>拆解副业项目</span></p><p><span>分享普通人也能赚钱的实操方法</span></p><p><strong><span>案例三：</span></strong></p><p><span>从0到1打造IP</span></p><p><span>拆解流量变现系统</span></p><p><span>帮你打造个人品牌赚钱闭环</span></p><h5 id='实操建议如何设置更高效'><span>实操建议：如何设置更高效？</span></h5><p><strong><span>操作小清单：</span></strong></p><p><span>用工具（如词频分析/搜索框下拉联想）提炼行业关键词</span></p><p><span>参考你领域头部账号设置，提炼他们的结构和关键词</span></p><p><span>确定好定位后，三件套风格要统一（头像色调、简介内容、名称关键词）</span></p><h5 id='进阶技巧让账号更容易被搜到'><span>进阶技巧：让账号“更容易被搜到”</span></h5><p><span>名称和简介中包含用户常搜关键词（项目名称/技能/需求）</span></p><p><span>例：副业、自媒体、涨粉、接单、剪辑教程、0基础等</span></p><p><span>简介中可以设置一个狗子，比如：“第7天拆解1个赚钱项目”</span></p><p><span>设置目标感，会吸引关注</span></p><p><span>头像+名称+封面图风格统一（适用于小红书/B站）</span></p><p><span>有利于品牌感建立</span></p><h1 id='四用ai快速找到自带流量的好选课'><span>四、用AI快速找到自带流量的好选课</span></h1><h1 id='五如何用ai写出一份高质量文案'><span>五、如何用AI写出一份高质量文案</span></h1><h1 id='六如何把ai写的文案优化成爆款'><span>六、如何把AI写的文案优化成爆款</span></h1><h1 id='七掌握几种好用又高效的配音方法'><span>七、掌握几种好用又高效的配音方法</span></h1><h1 id='八剪辑基础技巧和素材优化'><span>八、剪辑基础技巧和素材优化</span></h1><h1 id='九爆款视频模板设计'><span>九、爆款视频模板设计</span></h1><h1 id='十如何剪辑一条爆款视频'><span>十、如何剪辑一条爆款视频</span></h1><h1 id='十一爆款剪辑思路'><span>十一、爆款剪辑思路</span></h1><h1 id='十二平台的流量机制与算法'><span>十二、平台的流量机制与算法</span></h1><h1 id='十三'><span>十三、</span></h1><h1 id='十四陪跑营结营直播答疑'><span>十四、陪跑营结营直播答疑</span></h1><p>&nbsp;</p><p>&nbsp;</p></div></div>
+</body>
+</html>
