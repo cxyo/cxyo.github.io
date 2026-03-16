@@ -2,6 +2,14 @@
 
 本文档详细介绍如何将基金温度表应用部署到树莓派的Docker容器中。
 
+## 最新功能（2026-03-17更新）
+
+- ✅ ETF实时涨幅数据展示（从集思录爬取）
+- ✅ 智能交易策略提示（买入/卖出/持有）
+- ✅ 场外基金代码A/C类拆分显示
+- ✅ Python定时爬虫自动更新数据
+- ✅ fund-code.js统一数据源管理
+
 ## 环境信息
 
 - **服务器**：树莓派
@@ -337,6 +345,72 @@ df -h
 
 ---
 
+## ETF数据定时爬取服务部署
+
+如果需要显示ETF实时涨幅数据和智能交易策略，需要在树莓派上部署Python定时爬虫服务。
+
+### 方法1：直接在宿主机运行（推荐）
+
+```bash
+# SSH登录到树莓派
+ssh admin@192.168.2.154
+
+# 进入项目目录
+cd /home/admin/funds
+
+# 安装Python依赖
+pip3 install schedule requests
+
+# 后台运行爬虫服务
+nohup python3 crawl_jsl_etf.py > crawl.log 2>&1 &
+
+# 查看运行状态
+tail -f crawl.log
+```
+
+### 方法2：使用Docker运行
+
+创建Dockerfile.crawler：
+
+```dockerfile
+FROM python:3.9-alpine
+
+# 安装依赖
+RUN pip install schedule requests
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制爬虫脚本
+COPY crawl_jsl_etf.py /app/
+
+# 运行爬虫
+CMD ["python", "crawl_jsl_etf.py"]
+```
+
+构建和运行：
+
+```bash
+# 构建镜像
+docker build -f Dockerfile.crawler -t fund-crawler .
+
+# 运行容器
+docker run -d \
+  --name fund-crawler \
+  -v /home/admin/funds:/app \
+  --restart unless-stopped \
+  fund-crawler
+```
+
+### 服务说明
+
+- **爬取数据源**：集思录网站（国内ETF、欧美ETF、亚洲ETF、黄金ETF）
+- **定时规则**：A股交易时间（9:30-11:30和13:00-15:00）内每15分钟自动执行
+- **输出文件**：jsl.json（保存在项目根目录）
+- **前端自动加载**：Nginx会自动提供jsl.json文件
+
+---
+
 ## 推荐方案
 
 **推荐使用方案三（Docker Compose + Nginx）**，因为：
@@ -344,6 +418,11 @@ df -h
 - Nginx性能好，适合静态文件
 - 支持一键启动、停止、重启
 - 支持数据卷挂载，更新方便
+
+**完整部署建议**：
+1. 使用Docker Compose部署Nginx服务（方案三）
+2. 在宿主机直接运行Python爬虫服务（方法1）
+3. 爬虫生成的jsl.json会被Nginx自动提供
 
 部署完成后，您就可以通过 `http://192.168.2.154` 访问基金温度表应用了！
 

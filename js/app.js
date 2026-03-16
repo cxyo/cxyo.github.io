@@ -11,142 +11,35 @@ const CATEGORIES = {
     'H': { name: '债券', weight: 20, max_funds: 2, backgroundColor: '#f5f5f5' },
 };
 
-// 指数类别映射（完整配置）
-const CATEGORY_MAP = {
-    // B大盘
-    '399006': 'B', '399550': 'B', '000010': 'B', '399330': 'B',
-    '399001': 'B', '000300': 'B', '000016': 'B', '000903': 'B',
-    
-    // C小盘
-    '399673': 'C', '399008': 'C', '000852': 'C', '000905': 'C', '000688': 'C', '399303': 'C',
-    
-    // D策略
-    '399348': 'D', '399701': 'D', '000029': 'D', '399702': 'D',
-    '399324': 'D', '000919': 'D', '000922': 'D', '930782': 'D',
-    'H30089': 'D', '000925': 'D', '000821': 'D', 'H30269': 'D',
-    '000015': 'D', '950090': 'D', '930740': 'D',
-    
-    // E行业
-    '399807': 'E', '399396': 'E', '399995': 'E', '000932': 'E',
-    '399987': 'E', '399393': 'E', '930697': 'E', '399812': 'E',
-    'H30533': 'E', 'H11136': 'E', '000992': 'E', '399975': 'E',
-    '399986': 'E', '000989': 'E', '931747': 'E', '399806': 'E',
-    '399973': 'E', '931008': 'E', '000941': 'E', '399967': 'E',
-    '399998': 'E', '000928': 'E', '980027': 'E', '399395': 'E',
-    '000993': 'E', '000979': 'E', '931594': 'E',
-    
-    // F主题
-    '930653': 'F', '399997': 'F', '399814': 'F', '399976': 'F',
-    '399971': 'F', '931152': 'F', '000827': 'F', '931151': 'F',
-    '931087': 'F', '990001': 'F', '980017': 'F', 'H30590': 'F',
-    '931752': 'F', '931079': 'F', '931071': 'F', '930598': 'F',
-    '931247': 'F', '000685': 'F', 'CN5075': 'F', 'H30199': 'F', '980018': 'F',
-    
-    // G海外
-    'HSCGSI': 'G', 'HSTECH': 'G', 'HSI': 'G', 'HSCEI': 'G',
-    'HSCAIT': 'G', 'HSMSI': 'G', '.INX': 'G',
-};
+// 指数类别映射 - 从 fund-code.js 动态生成
+let CATEGORY_MAP = {};
 
-// 指数代码与场内/场外基金映射表
-const FUND_CODES_MAP = {
-    '399550': {场内代码: '159965', 场外代码: '217027'},
-    '399006': {场内代码: '159952', 场外代码: '01593'},
-    '000010': {场内代码: '510180', 场外代码: '519180'},
-    '399330': {场内代码: '159901', 场外代码: '110019'},
-    '399001': {场内代码: '159903', 场外代码: '006262'},
-    '000300': {场内代码: '510310', 场外代码: '007339'},
-    '000016': {场内代码: '510850', 场外代码: '007380'},
-    '000903': {场内代码: '512910', 场外代码: '240014'},
-    '399673': {场内代码: '159949', 场外代码: '160422'},
-    '399008': {场内代码: '159907', 场外代码: '270026'},
-    '000852': {场内代码: '512100', 场外代码: '017038'},
-    '000905': {场内代码: '159922', 场外代码: '070039'},
-    '000688': {场内代码: '588000', 场外代码: '011609'},
-    '399303': {场内代码: '159628', 场外代码: '017548'},
-    '399701': {场内代码: '159916', 场外代码: '530015'},
-    '399348': {场内代码: '159913', 场外代码: '519706'},
-    '000029': {场内代码: '510030', 场外代码: '240016'},
-    '399324': {场内代码: '159905', 场外代码: '481012'},
-    '399702': {场内代码: '159910', 场外代码: '070023'},
-    'H30089': {场内代码: '515570', 场外代码: '007671'},
-    '930782': {场内代码: '512260', 场外代码: '003318'},
-    '000922': {场内代码: '515180', 场外代码: '100032'},
-    '000919': {场内代码: '562320', 场外代码: '519671'},
-    '000925': {场内代码: '512750', 场外代码: '160716'},
-    'H30269': {场内代码: '512890', 场外代码: '005561'},
-    '000821': {场内代码: '512530', 场外代码: '012713'},
-    '000015': {场内代码: '510880', 场外代码: '016441'},
-    '950090': {场内代码: '501050', 场外代码: '501050'},
-    '930740': {场内代码: '159963', 场外代码: '007605'},
-    '399807': {场内代码: '160135', 场外代码: '160135'},
-    '399396': {场内代码: '159843', 场外代码: '160222'},
-    '399995': {场内代码: '165525', 场外代码: '165525'},
-    '000932': {场内代码: '159928', 场外代码: '000248'},
-    '399987': {场内代码: '512690', 场外代码: '160632'},
-    '399393': {场内代码: '160218', 场外代码: '160218'},
-    '399812': {场内代码: '-', 场外代码: '000968'},
-    '930697': {场内代码: '159996', 场外代码: '005063'},
-    'H30533': {场内代码: '513050', 场外代码: '006327'},
-    'H11136': {场内代码: '164906', 场外代码: '164906'},
-    '000992': {场内代码: '159940', 场外代码: '001469'},
-    '399975': {场内代码: '512000', 场外代码: '004070'},
-    '399986': {场内代码: '512800', 场外代码: '01594'},
-    '931747': {场内代码: '-', 场外代码: '-'},
-    '000989': {场内代码: '159936', 场外代码: '001133'},
-    '399806': {场内代码: '164908', 场外代码: '164908'},
-    '399973': {场内代码: '512670', 场外代码: '012041'},
-    '000941': {场内代码: '516160', 场外代码: '012831'},
-    '931008': {场内代码: '159512', 场外代码: '004854'},
-    '399998': {场内代码: '013275', 场外代码: '161032'},
-    '399967': {场内代码: '512660', 场外代码: '002199'},
-    '980027': {场内代码: '159566', 场外代码: '-'},
-    '000928': {场内代码: '159930', 场外代码: '-'},
-    '399395': {场内代码: '160221', 场外代码: '160221'},
-    '000993': {场内代码: '159939', 场外代码: '000942'},
-    '000979': {场内代码: '161715', 场外代码: '161715'},
-    '931594': {场内代码: '512630', 场外代码: '024749'},
-    '930653': {场内代码: '159736', 场外代码: '001632'},
-    '399997': {场内代码: '161725', 场外代码: '161725'},
-    '399814': {场内代码: '516550', 场外代码: '019280'},
-    '399976': {场内代码: '515030', 场外代码: '161028'},
-    '399971': {场内代码: '512980', 场外代码: '004752'},
-    '931152': {场内代码: '159992', 场外代码: '012738'},
-    '000827': {场内代码: '512580', 场外代码: '001064'},
-    '931151': {场内代码: '515790', 场外代码: '011102'},
-    '931087': {场内代码: '515000', 场外代码: '007873'},
-    '990001': {场内代码: '512760', 场外代码: '008281'},
-    '980017': {场内代码: '159995', 场外代码: '008888'},
-    '931752': {场内代码: '560280', 场外代码: '020904'},
-    'H30590': {场内代码: '562500', 场外代码: '014881'},
-    '931079': {场内代码: '515050', 场外代码: '008087'},
-    '931071': {场内代码: '515980', 场外代码: '014881'},
-    '930598': {场内代码: '516150', 场外代码: '014332'},
-    '931247': {场内代码: '560850', 场外代码: '-'},
-    '000685': {场内代码: '588200', 场外代码: '017470'},
-    'CN5075': {场内代码: '562570', 场外代码: '-'},
-    'H30199': {场内代码: '159611', 场外代码: '016186'},
-    '980018': {场内代码: '159206', 场外代码: '-'},
-    'HSCGSI': {场内代码: '159699', 场外代码: '023242'},
-    'HSTECH': {场内代码: '513500', 场外代码: '050025'},
-    'HSI': {场内代码: '159920', 场外代码: '164705'},
-    'HSCEI': {场内代码: '510900', 场外代码: '110031'},
-    'HSMSI': {场内代码: '160922', 场外代码: '160922'},
-    'HSCAIT': {场内代码: '-', 场外代码: '540012'},
-    '.INX': {场内代码: '513500', 场外代码: '050025'}
-};
+// 初始化 CATEGORY_MAP（在 fund-code.js 加载后调用）
+function initCategoryMap() {
+    CATEGORY_MAP = generateCategoryMap();
+    console.log('[基金温度] CATEGORY_MAP 已初始化:', CATEGORY_MAP);
+}
+
+// 指数代码与场内/场外基金映射表 - 从 fund-code.js 动态生成
+let FUND_CODES_MAP = {};
+
+// 初始化 FUND_CODES_MAP（在 fund-code.js 加载后调用）
+function initFundCodesMap() {
+    FUND_CODES_MAP = generateFundCodesMap();
+    console.log('[基金温度] FUND_CODES_MAP 已初始化:', FUND_CODES_MAP);
+}
 
 // 全局变量
 let fundsData = null;
 let oldData = null;
 let codeConfig = null;
-let searchResults = [];
-let selectedIndex = null;
-let selectedCategory = null;
+let etfData = {}; // ETF涨幅数据
 
 // 缓存相关设置
 const CACHE_EXPIRE_TIME = 24 * 60 * 60 * 1000; // 缓存过期时间：24小时
 let fundNavCache = {}; // 基金净值数据缓存
 let fundTempCache = {}; // 基金温度数据缓存
+let etfCache = {}; // ETF数据缓存
 
 
 
@@ -164,9 +57,16 @@ function initCache() {
         if (tempCacheStr) {
             fundTempCache = JSON.parse(tempCacheStr);
         }
+        
+        // 加载ETF数据缓存
+        const etfCacheStr = localStorage.getItem('etfCache');
+        if (etfCacheStr) {
+            etfCache = JSON.parse(etfCacheStr);
+        }
     } catch (error) {
         fundNavCache = {};
         fundTempCache = {};
+        etfCache = {};
     }
 }
 
@@ -175,6 +75,7 @@ function saveCache() {
     try {
         localStorage.setItem('fundNavCache', JSON.stringify(fundNavCache));
         localStorage.setItem('fundTempCache', JSON.stringify(fundTempCache));
+        localStorage.setItem('etfCache', JSON.stringify(etfCache));
     } catch (error) {
         console.error('[基金温度] 保存缓存失败:', error.message);
     }
@@ -451,11 +352,14 @@ function calculateAndShowStarRating() {
     
     // 参考螺丝钉星级计算方式：
     // 中证全指数5000一星，5280二星，5560三星，5840四星，6120五星，6400六星
-    // 先计算平均温度作为中证全指数的近似值
+    // 只计算大盘(B)和小盘(C)的温度，与股市晴雨表保持一致
     let totalTemperature = 0;
     let count = 0;
     
-    for (const category of Object.keys(codeConfig)) {
+    // 只遍历大盘(B)和小盘(C)类别
+    const targetCategories = ['B', 'C'];
+    
+    for (const category of targetCategories) {
         const codes = codeConfig[category];
         if (!codes || codes.length === 0) continue;
         
@@ -463,15 +367,8 @@ function calculateAndShowStarRating() {
             const data = fundsData[code];
             if (!data) continue;
             
-            // 计算温度
-            let temperature;
-            if (category === 'E') {
-                // 行业类：温度 = PB分位点 × 100
-                temperature = data.pb_percentile * 100;
-            } else {
-                // 其他类：温度 = (PE分位点 + PB分位点) / 2 × 100
-                temperature = (data.pe_percentile + data.pb_percentile) / 2 * 100;
-            }
+            // 计算温度：(PE分位点 + PB分位点) / 2 × 100
+            const temperature = (data.pe_percentile + data.pb_percentile) / 2 * 100;
             
             totalTemperature += temperature;
             count++;
@@ -523,9 +420,10 @@ function calculateAndShowStockWeather() {
         return;
     }
     
-    // 计算大盘数据
-    let minBigCapPE = Infinity;
-    let minBigCapPB = Infinity;
+    // 计算大盘数据（取平均值）
+    let totalBigCapPE = 0;
+    let totalBigCapPB = 0;
+    let bigCapCount = 0;
     
     console.log('[基金温度] 开始计算大盘温度');
     if (codeConfig['B']) {
@@ -533,21 +431,17 @@ function calculateAndShowStockWeather() {
             const data = fundsData[code];
             if (data) {
                 console.log('[基金温度] 大盘指数', code, data.name, 'PE:', data.pe, 'PB:', data.pb, 'PE分位点:', data.pe_percentile, 'PB分位点:', data.pb_percentile);
-                if (data.pe_percentile < minBigCapPE) {
-                    minBigCapPE = data.pe_percentile;
-                    console.log('[基金温度] 新的大盘PE最小值:', minBigCapPE);
-                }
-                if (data.pb_percentile < minBigCapPB) {
-                    minBigCapPB = data.pb_percentile;
-                    console.log('[基金温度] 新的大盘PB最小值:', minBigCapPB);
-                }
+                totalBigCapPE += data.pe_percentile;
+                totalBigCapPB += data.pb_percentile;
+                bigCapCount++;
             }
         }
     }
     
-    // 计算小盘数据
-    let minSmallCapPE = Infinity;
-    let minSmallCapPB = Infinity;
+    // 计算小盘数据（取平均值）
+    let totalSmallCapPE = 0;
+    let totalSmallCapPB = 0;
+    let smallCapCount = 0;
     
     console.log('[基金温度] 开始计算小盘温度');
     if (codeConfig['C']) {
@@ -555,31 +449,32 @@ function calculateAndShowStockWeather() {
             const data = fundsData[code];
             if (data) {
                 console.log('[基金温度] 小盘指数', code, data.name, 'PE:', data.pe, 'PB:', data.pb, 'PE分位点:', data.pe_percentile, 'PB分位点:', data.pb_percentile);
-                if (data.pe_percentile < minSmallCapPE) {
-                    minSmallCapPE = data.pe_percentile;
-                    console.log('[基金温度] 新的小盘PE最小值:', minSmallCapPE);
-                }
-                if (data.pb_percentile < minSmallCapPB) {
-                    minSmallCapPB = data.pb_percentile;
-                    console.log('[基金温度] 新的小盘PB最小值:', minSmallCapPB);
-                }
+                totalSmallCapPE += data.pe_percentile;
+                totalSmallCapPB += data.pb_percentile;
+                smallCapCount++;
             }
         }
     }
     
+    // 计算平均值
+    const avgBigCapPE = bigCapCount > 0 ? totalBigCapPE / bigCapCount : 0;
+    const avgBigCapPB = bigCapCount > 0 ? totalBigCapPB / bigCapCount : 0;
+    const avgSmallCapPE = smallCapCount > 0 ? totalSmallCapPE / smallCapCount : 0;
+    const avgSmallCapPB = smallCapCount > 0 ? totalSmallCapPB / smallCapCount : 0;
+    
     // 转换为百分比
-    const bigCapPEPercent = (minBigCapPE * 100).toFixed(2) + '%';
-    const bigCapPBPercent = (minBigCapPB * 100).toFixed(2) + '%';
-    const smallCapPEPercent = (minSmallCapPE * 100).toFixed(2) + '%';
-    const smallCapPBPercent = (minSmallCapPB * 100).toFixed(2) + '%';
+    const bigCapPEPercent = (avgBigCapPE * 100).toFixed(2) + '%';
+    const bigCapPBPercent = (avgBigCapPB * 100).toFixed(2) + '%';
+    const smallCapPEPercent = (avgSmallCapPE * 100).toFixed(2) + '%';
+    const smallCapPBPercent = (avgSmallCapPB * 100).toFixed(2) + '%';
     
     console.log('[基金温度] 计算结果 - 大盘PE:', bigCapPEPercent, '大盘PB:', bigCapPBPercent, '小盘PE:', smallCapPEPercent, '小盘PB:', smallCapPBPercent);
     
     // 计算入市条件
-    const bigCapPEValue = parseFloat(minBigCapPE * 100);
-    const bigCapPBValue = parseFloat(minBigCapPB * 100);
-    const smallCapPEValue = parseFloat(minSmallCapPE * 100);
-    const smallCapPBValue = parseFloat(minSmallCapPB * 100);
+    const bigCapPEValue = parseFloat(avgBigCapPE * 100);
+    const bigCapPBValue = parseFloat(avgBigCapPB * 100);
+    const smallCapPEValue = parseFloat(avgSmallCapPE * 100);
+    const smallCapPBValue = parseFloat(avgSmallCapPB * 100);
     
     // 判断是否满足入市条件
     const canEnterMarket = (bigCapPEValue < 50 && bigCapPBValue < 20) || (smallCapPEValue < 50 && smallCapPBValue < 20);
@@ -1074,6 +969,10 @@ function calculateBuffettIndexAndTurnover() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // 初始化从 fund-code.js 生成的映射表
+    initFundCodesMap();
+    initCategoryMap();
+    
     updateDate();
     calculateAndShowStarRating();
     loadAllData();
@@ -1150,14 +1049,10 @@ async function loadAllData() {
 
 // 同步加载数据（当没有缓存时使用）
 async function loadDataSync() {
-    // 加载 code.json
-    console.log('[基金温度] 尝试加载 code.json');
-    const codeRes = await fetch('code.json');
-    if (!codeRes.ok) {
-        throw new Error('code.json 加载失败');
-    }
-    codeConfig = await codeRes.json();
-    console.log('[基金温度] code.json 加载成功');
+    // 使用 fund-code.js 中的配置作为唯一数据源
+    console.log('[基金温度] 使用 fund-code.js 中的配置');
+    codeConfig = generateCodeConfig();
+    console.log('[基金温度] fund-code.js 配置加载成功:', codeConfig);
     
     // 并行加载CSV文件，提高速度
     const existingCsvFiles = await findExistingCsvFiles();
@@ -1191,6 +1086,11 @@ async function loadDataSync() {
     // 合并自定义配置
     mergeCustomConfig();
     
+    // 加载ETF数据
+    await loadEtfData().catch(error => {
+        console.error('[基金温度] 加载ETF数据失败:', error.message);
+    });
+    
     // 显示数据
     renderFundTable();
     updateDate(actualDataDate);
@@ -1211,11 +1111,9 @@ async function updateLatestData() {
     try {
         console.log('[基金温度] 开始异步更新最新数据');
         
-        // 加载 code.json
-        const codeRes = await fetch('code.json');
-        if (codeRes.ok) {
-            codeConfig = await codeRes.json();
-        }
+        // 使用 fund-code.js 中的配置作为唯一数据源
+        codeConfig = generateCodeConfig();
+        console.log('[基金温度] fund-code.js 配置已更新:', codeConfig);
         
         // 查找最新的CSV文件
         const existingCsvFiles = await findExistingCsvFiles();
@@ -1244,10 +1142,16 @@ async function updateLatestData() {
         // 合并自定义配置
         mergeCustomConfig();
         
-        // 更新数据并重新渲染
+        // 更新数据
         fundsData = newFundsData;
         oldData = newOldData;
         
+        // 加载ETF数据
+        await loadEtfData().catch(error => {
+            console.error('[基金温度] 加载ETF数据失败:', error.message);
+        });
+        
+        // 重新渲染
         console.log('[基金温度] 最新数据已加载，更新显示');
         renderFundTable();
         updateDate(actualDataDate);
@@ -1389,6 +1293,32 @@ async function loadFinancialData() {
     }
 }
 
+// 加载ETF数据
+async function loadEtfData() {
+    try {
+        console.log('[基金温度] 开始加载ETF数据');
+        
+        // 从文件加载
+        const response = await fetch('etf_data.json', { cache: 'no-cache' });
+        if (response.ok) {
+            etfData = await response.json();
+            console.log('[基金温度] ETF数据加载成功:', etfData);
+            
+            // 保存到缓存
+            const cacheKey = 'etfData';
+            const now = Date.now();
+            etfCache[cacheKey] = {
+                data: etfData,
+                timestamp: now
+            };
+            saveCache();
+        }
+    } catch (error) {
+        console.error('[基金温度] 加载ETF数据失败:', error.message);
+        etfData = {};
+    }
+}
+
 // 加载所有历史CSV文件数据
 async function loadHistoricalData() {
     try {
@@ -1514,75 +1444,77 @@ function renderFundTable() {
     
     // 检查数据是否加载
     if (!codeConfig || !fundsData) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">数据加载中...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center;">数据加载中...</td></tr>';
         return;
     }
     
     tbody.innerHTML = '';
     
-    // 每个类别需要选出的数量
-    const categorySelectionCount = {
-        'B': 1, // 大盘选1个
-        'C': 1, // 小盘选1个
-        'D': 2, // 策略选2个
-        'E': 2, // 行业选2个
-        'F': 2, // 主题选2个
-        'G': 1, // 海外选1个
-        'H': 2  // 债券选2个
-    };
+    // 从 fund-code.js 获取所有配置的指数代码
+    const configuredCodes = getAllIndexCodes();
+    console.log('[基金温度] 配置的指数代码:', configuredCodes);
     
-    // 收集每个类别的数据并计算温度
-    const categoryDataMap = {};
+    // 收集数据并计算温度 - 只显示 fund-code.js 中配置的指数
+    const finalData = [];
     const missingCodes = []; // 记录缺失的代码
     const matchedCodes = []; // 记录匹配的代码
     
-    for (const category of Object.keys(codeConfig)) {
-        const codes = codeConfig[category];
-        if (!codes || codes.length === 0) continue;
+    // 按类别分组数据
+    const categoryDataMap = {};
+    
+    for (const code of configuredCodes) {
+        const data = fundsData[code];
+        const category = CATEGORY_MAP[code];
         
-        categoryDataMap[category] = [];
-        
-        for (const code of codes) {
-            const data = fundsData[code];
-            if (!data) {
-                // 记录缺失的代码
-                if (!missingCodes.includes(code)) {
-                    missingCodes.push(code);
-                }
-                continue;
+        if (!data) {
+            // 记录缺失的代码
+            if (!missingCodes.includes(code)) {
+                missingCodes.push(code);
             }
-            
-            // 记录匹配的代码
-            if (!matchedCodes.includes(code)) {
-                matchedCodes.push(code);
-            }
-            
-            // 计算温度
-            let temperature;
-            if (category === 'E') {
-                // 行业类：温度 = PB分位点 × 100
-                temperature = data.pb_percentile * 100;
-            } else {
-                // 其他类：温度 = (PE分位点 + PB分位点) / 2 × 100
-                temperature = (data.pe_percentile + data.pb_percentile) / 2 * 100;
-            }
-            
-            // 解析关注度数值用于排序
-            let attentionValue = 0;
-            if (data.attention) {
-                attentionValue = parseFloat(data.attention.replace(/[^0-9.]/g, '')) || 0;
-            }
-            
-            categoryDataMap[category].push({
-                category,
-                code,
-                data,
-                temperature,
-                attentionValue
-            });
+            continue;
         }
         
-        // 每个类别内按温度升序排序（温度最低的排前面）
+        if (!category) {
+            console.warn('[基金温度] 指数代码未找到对应类别:', code);
+            continue;
+        }
+        
+        // 记录匹配的代码
+        if (!matchedCodes.includes(code)) {
+            matchedCodes.push(code);
+        }
+        
+        // 计算温度
+        let temperature;
+        if (category === 'E') {
+            // 行业类：温度 = PB分位点 × 100
+            temperature = data.pb_percentile * 100;
+        } else {
+            // 其他类：温度 = (PE分位点 + PB分位点) / 2 × 100
+            temperature = (data.pe_percentile + data.pb_percentile) / 2 * 100;
+        }
+        
+        // 解析关注度数值用于排序
+        let attentionValue = 0;
+        if (data.attention) {
+            attentionValue = parseFloat(data.attention.replace(/[^0-9.]/g, '')) || 0;
+        }
+        
+        if (!categoryDataMap[category]) {
+            categoryDataMap[category] = [];
+        }
+        
+        categoryDataMap[category].push({
+            category,
+            code,
+            data,
+            temperature,
+            attentionValue
+        });
+    }
+    
+    // 每个类别内按温度升序排序（温度最低的排前面）
+    for (const category of Object.keys(categoryDataMap)) {
         categoryDataMap[category].sort((a, b) => {
             if (Math.abs(a.temperature - b.temperature) > 0.01) {
                 return a.temperature - b.temperature;
@@ -1592,38 +1524,14 @@ function renderFundTable() {
         });
     }
     
-    // 收集最终要显示的数据
-    const finalData = [];
-    const processedCategories = new Set();
-    
-    // 首先添加每个类别选出的top数据（总数11个）
+    // 按类别顺序收集最终要显示的数据（B->C->D->E->F->G->H）
     for (const category of ['B', 'C', 'D', 'E', 'F', 'G', 'H']) {
-        const selectionCount = categorySelectionCount[category] || 1;
         const categoryData = categoryDataMap[category];
-        
         if (categoryData && categoryData.length > 0) {
-            // 选出指定数量的数据
-            const selectedCount = Math.min(selectionCount, categoryData.length);
-            for (let i = 0; i < selectedCount; i++) {
+            for (const item of categoryData) {
                 finalData.push({
-                    ...categoryData[i],
-                    isTopSelection: true  // 标记为精选
-                });
-            }
-            processedCategories.add(category);
-        }
-    }
-    
-    // 然后添加其余数据
-    for (const category of Object.keys(categoryDataMap)) {
-        const categoryData = categoryDataMap[category];
-        const selectionCount = categorySelectionCount[category] || 1;
-        
-        if (categoryData && categoryData.length > selectionCount) {
-            for (let i = selectionCount; i < categoryData.length; i++) {
-                finalData.push({
-                    ...categoryData[i],
-                    isTopSelection: false
+                    ...item,
+                    isTopSelection: false  // 不再标记精选，所有数据平等显示
                 });
             }
         }
@@ -1668,46 +1576,53 @@ function renderFundTable() {
         row.onclick = () => showTemperatureChart(code, data.name);
         
         // 获取场内代码和场外代码
-        const fundCodes = FUND_CODES_MAP[code] || {场内代码: '-', 场外代码: '-'};
+        const fundCodes = FUND_CODES_MAP[code] || {场内代码: '-', 场外代码A: '-', 场外代码C: '-'};  
         const 场内代码 = fundCodes.场内代码;
-        const 场外代码 = fundCodes.场外代码;
+        const 场外代码A = fundCodes.场外代码A;
+        const 场外代码C = fundCodes.场外代码C;
         
-        // 为精选数据添加特殊标记 - 使用边框和背景色区分
-        if (isTopSelection) {
-            row.style.cssText = `
-                border: 3px solid #FFD700;
-                background-color: #cce5ff;
-            `;
-            row.innerHTML = `
-                <td>${categoryInfo.name} ⭐</td>
-                <td>${code}</td>
-                <td>${data.name}</td>
-                <td class="temperature-cell" style="cursor: pointer;">
-                    <span class="temp-value ${tempClass}">${temperature.toFixed(2)}°C</span>
-                </td>
-                <td>${yearChangeHtml}</td>
-                <td>${changeHtml}</td>
-                <td>${twoDayChangeHtml}</td>
-                <td style="${场内代码 !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场内代码}</td>
-                <td style="${场外代码 !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场外代码}</td>
-                <td>${attentionHtml}</td>
-            `;
-        } else {
-            row.innerHTML = `
-                <td>${categoryInfo.name}</td>
-                <td>${code}</td>
-                <td>${data.name}</td>
-                <td class="temperature-cell" style="cursor: pointer;">
-                    <span class="temp-value ${tempClass}">${temperature.toFixed(2)}°C</span>
-                </td>
-                <td>${yearChangeHtml}</td>
-                <td>${changeHtml}</td>
-                <td>${twoDayChangeHtml}</td>
-                <td style="${场内代码 !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场内代码}</td>
-                <td style="${场外代码 !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场外代码}</td>
-                <td>${attentionHtml}</td>
-            `;
+        // 获取ETF涨幅数据
+        const 涨幅 = etfData[场内代码] || '--';
+        const 涨幅Html = 涨幅 !== '--' ? formatChange(parseFloat(涨幅)) : '<span>--</span>';
+        
+        // 计算策略
+        const yearChange = data.year_change_pct || 0;
+        const change = data.change_pct || 0;
+        const twoDayChange = data.two_day_change_pct || 0;
+        const 涨幅数值 = 涨幅 !== '--' ? parseFloat(涨幅) : 0;
+        
+        let 策略 = '持有';
+        // 买入条件：今年涨幅>0，且上一日涨跌<0，且上两日涨跌<0，且涨幅>0
+        if (yearChange > 0 && change < 0 && twoDayChange < 0 && 涨幅数值 > 0) {
+            策略 = '买入';
         }
+        // 卖出条件：上一日涨跌>0，且上两日涨跌>0，且涨幅<0
+        else if (change > 0 && twoDayChange > 0 && 涨幅数值 < 0) {
+            策略 = '卖出';
+        }
+        
+        const 策略Html = 策略 === '买入' ? '<span class="strategy-buy">买入</span>' : 
+                         策略 === '卖出' ? '<span class="strategy-sell">卖出</span>' : 
+                         '<span class="strategy-hold">持有</span>';
+        
+        // 渲染行内容
+        row.innerHTML = `
+            <td>${categoryInfo.name}</td>
+            <td>${code}</td>
+            <td>${data.name}</td>
+            <td class="temperature-cell" style="cursor: pointer;">
+                <span class="temp-value ${tempClass}">${temperature.toFixed(2)}°C</span>
+            </td>
+            <td>${yearChangeHtml}</td>
+            <td>${changeHtml}</td>
+            <td>${twoDayChangeHtml}</td>
+            <td style="${场内代码 !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场内代码}</td>
+            <td>${涨幅Html}</td>
+            <td>${策略Html}</td>
+            <td style="${场外代码A !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场外代码A}</td>
+            <td style="${场外代码C !== '-' ? 'cursor: pointer; text-decoration: underline;' : ''}">${场外代码C}</td>
+            <td>${attentionHtml}</td>
+        `;
         
         // 添加点击事件
         row.querySelectorAll('td')[3].onclick = (e) => {
@@ -1723,11 +1638,19 @@ function renderFundTable() {
             }
         };
         
-        // 为场外代码添加点击事件
+        // 为场外代码A添加点击事件
         row.querySelectorAll('td')[8].onclick = (e) => {
             e.stopPropagation();
-            if (场外代码 && 场外代码 !== '-') {
-                showFundNavChart(场外代码, '场外');
+            if (场外代码A && 场外代码A !== '-') {
+                showFundNavChart(场外代码A, '场外');
+            }
+        };
+        
+        // 为场外代码C添加点击事件
+        row.querySelectorAll('td')[9].onclick = (e) => {
+            e.stopPropagation();
+            if (场外代码C && 场外代码C !== '-') {
+                showFundNavChart(场外代码C, '场外');
             }
         };
         
@@ -1742,7 +1665,7 @@ function renderFundTable() {
     if (displayedCount > 0) {
         const infoRow = document.createElement('tr');
         infoRow.innerHTML = `
-            <td colspan="10" style="text-align: center; padding: 10px;">
+            <td colspan="12" style="text-align: center; padding: 10px;">
                 <span>💡 提示：点击任意指数行查看历史温度曲线图</span>
             </td>
         `;
@@ -1751,7 +1674,7 @@ function renderFundTable() {
     
     // 如果没有显示任何数据，显示提示
     if (displayedCount === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">没有找到匹配的指数数据，请检查CSV数据是否包含有效代码</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align: center;">没有找到匹配的指数数据，请检查CSV数据是否包含有效代码</td></tr>';
     }
 }
 

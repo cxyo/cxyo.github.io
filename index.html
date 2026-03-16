@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基金温度表</title>
-    <link rel="stylesheet" href="css/style.css?v=31">
+    <link rel="stylesheet" href="css/style.css?v=33">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 </head>
 <body>
@@ -191,36 +191,10 @@
                 </div>
             </div>
             
-            <!-- 指数添加 -->
-            <h2 class="stock-weather-title">三、指数添加</h2>
-            <div class="search-box">
-                <input type="text" id="searchKeyword" placeholder="请输入指数代码或名称（如：000016、上证50、银行）">
-                <button onclick="searchIndex()">搜索</button>
-            </div>
-            
-            <!-- 搜索结果选择 -->
-            <div id="searchResults" class="search-results" style="display: none;">
-                <p>找到多个匹配结果，请选择：</p>
-                <div id="resultsList" class="results-list"></div>
-            </div>
-            
-            <!-- 类别选择 -->
-            <div id="categorySelect" class="category-select" style="display: none;">
-                <p>请选择类别类型：</p>
-                <div class="category-buttons">
-                    <button class="category-btn" data-category="B" onclick="selectCategory('B')">B - 大盘 (20%, 1支)</button>
-                    <button class="category-btn" data-category="C" onclick="selectCategory('C')">C - 小盘 (20%, 1支)</button>
-                    <button class="category-btn" data-category="D" onclick="selectCategory('D')">D - 策略 (10%, 2支)</button>
-                    <button class="category-btn" data-category="E" onclick="selectCategory('E')">E - 行业 (10%, 2支)</button>
-                    <button class="category-btn" data-category="F" onclick="selectCategory('F')">F - 主题 (10%, 2支)</button>
-                    <button class="category-btn" data-category="G" onclick="selectCategory('G')">G - 海外 (10%, 1支)</button>
-                    <button class="category-btn" data-category="H" onclick="selectCategory('H')">H - 债券 (20%, 2支)</button>
-                </div>
-                <button class="add-btn" onclick="addToFundTable()">添加到基金温度</button>
-            </div>
+
             
             <!-- 基金温度 -->
-            <h2 class="stock-weather-title">四、基金温度</h2>
+            <h2 class="stock-weather-title">三、基金温度</h2>
             <div class="temperature-section">
                 <div class="table-container">
                     <table id="fundTable">
@@ -234,7 +208,10 @@
                                 <th>上一日涨跌</th>
                                 <th>上两日涨跌</th>
                                 <th>场内代码</th>
-                                <th>场外代码</th>
+                                <th>涨幅</th>
+                                <th>策略</th>
+                                <th>场外代码A</th>
+                                <th>场外代码C</th>
                                 <th>关注度</th>
                             </tr>
                         </thead>
@@ -243,49 +220,7 @@
                     </table>
                 </div>
                 
-                <!-- 配置管理按钮 -->
-                <div class="config-buttons">
-                    <button onclick="exportCustomConfig()" class="config-btn export-btn">📥 导出配置</button>
-                    <button onclick="clearCustomConfig()" class="config-btn clear-btn">🗑️ 清除配置</button>
-                    <label class="config-btn import-btn">
-                        📤 导入配置
-                        <input type="file" id="configFileInput" accept=".json" style="display: none;" onchange="importCustomConfig(this)">
-                    </label>
-                </div>
             </div>
-        </div>
-
-        <!-- 导入配置说明 -->
-        <div class="import-section">
-            <h3>📋 配置导入说明</h3>
-            <p>导入配置文件后，指数数据会立即显示在基金温度表中。</p>
-            <div class="import-template">
-                <h4>配置文件格式（JSON）：</h4>
-                <pre>{
-  "B": ["399006", "399550"],
-  "C": ["399673", "000852"],
-  "D": ["399348", "399701"],
-  "E": ["399807", "399396"],
-  "F": ["930653", "399997"],
-  "G": ["HSCGSI", "HSTECH"]
-}</pre>
-            </div>
-        </div>
-
-        <!-- CSV数据上传区域 -->
-        <div class="csv-upload-section">
-            <h3>📤 数据更新</h3>
-            <p>上传最新的基金温度CSV文件，系统将自动以当天日期命名</p>
-            <div class="csv-upload-row">
-                <div class="csv-upload-box">
-                    <label class="csv-upload-btn">
-                        📁 选择CSV文件
-                        <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCSVUpload(this)">
-                    </label>
-                    <span id="csvFileName" class="csv-file-name">未选择文件</span>
-                </div>
-            </div>
-            <div id="csvUploadStatus" class="csv-upload-status"></div>
         </div>
 
         <div class="loading-overlay" id="loadingOverlay">
@@ -294,6 +229,7 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=23"></script>
+    <script src="js/fund-code.js"></script>
+    <script src="js/app.js?v=25"></script>
 </body>
 </html>

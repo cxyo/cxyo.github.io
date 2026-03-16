@@ -30,22 +30,30 @@
 - 精选数据行用金色边框和浅蓝色底色标记
 - 日期行用黑色线分成3份，显示数据日期、温度星级、版权信息
 - 提示信息区域添加边框，包括点击提示、配置按钮、文件选择等
+- **新增：ETF实时涨幅数据展示** - 从集思录网站爬取国内、欧美、亚洲、黄金ETF的实时涨幅数据
+- **新增：智能交易策略提示** - 根据今年涨幅、上一日涨跌、上两日涨跌和实时涨幅，自动判断买入/卖出/持有策略
+- **新增：场外基金代码拆分** - 将场外代码拆分为A类和C类，分别显示场外代码A和场外代码C
+- **新增：定时数据爬取服务** - 独立Python脚本定时爬取集思录ETF数据，交易时间内每15分钟自动更新
+- **新增：统一数据源管理** - 以fund-code.js为唯一数据源，前端展示与配置文件完全同步
 
 ## 项目结构
 
 ```
 .
-├── index.html          # 主页面
+├── index.html              # 主页面
 ├── css/
-│   └── style.css      # 样式文件
+│   └── style.css          # 样式文件
 ├── js/
-│   └── app.js         # 主脚本文件
-├── data/              # 基金净值数据目录
-│   └── fund-nav-data.json  # 基金净值数据文件
-├── crawl-fund-nav.js  # 基金净值数据爬虫脚本
-├── code.json          # 指数配置文件
-├── README.md          # 项目说明文档
-├── YYYY-MM-DD.csv     # 每日数据文件
+│   ├── app.js             # 主脚本文件
+│   └── fund-code.js       # 指数代码配置文件（唯一数据源）
+├── data/                  # 基金净值数据目录
+│   └── fund-nav-data.json # 基金净值数据文件
+├── crawl-fund-nav.js      # 基金净值数据爬虫脚本
+├── crawl_jsl_etf.py       # 集思录ETF数据定时爬取脚本
+├── jsl.json               # ETF实时涨幅数据文件
+├── code.json              # 指数配置文件（已弃用，以fund-code.js为准）
+├── README.md              # 项目说明文档
+├── YYYY-MM-DD.csv         # 每日数据文件
 └── .github/
     └── workflows/
         └── update-fund-data.yml  # GitHub Actions工作流文件
