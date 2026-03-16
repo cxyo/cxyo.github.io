@@ -2,13 +2,20 @@
 
 本教程将指导你如何使用Git和GitHub托管这个静态网站。
 
-## 最新功能（2026-03-17更新）
+## 最新功能（2026-03-17最新更新）
 
-- ✅ ETF实时涨幅数据展示（从集思录爬取）
+- ✅ **GitHub Actions自动更新ETF数据** - 在A股交易时间内每15分钟自动更新ETF涨幅数据，无需手动操作
+- ✅ **crawl_etf_github.py脚本** - GitHub Actions专用的ETF数据爬取脚本
+- ✅ **requirements.txt文件** - Python依赖包列表
+- ✅ ETF实时涨幅数据展示（从集思录爬取国内、欧美、亚洲、黄金ETF）
 - ✅ 智能交易策略提示（买入/卖出/持有）
 - ✅ 场外基金代码A/C类拆分显示
 - ✅ Python定时爬虫自动更新数据
 - ✅ fund-code.js统一数据源管理
+- ✅ 代码可复用性优化（无硬编码指数代码）
+- ✅ 项目代码精简（删除不需要的功能和文件）
+- ✅ CSS代码清理（移除空规则集）
+- ✅ 温度星级和股市晴雨表数据修复
 
 ## 目录
 - [准备工作](#准备工作)
@@ -303,19 +310,26 @@ git reset --hard HEAD~1
 
 ```
 fund-main/
-├── index.html        # 主页面（包含HTML结构和表格）
-├── DEPLOY_GUIDE.md   # 部署教程（本文档）
-├── README.md         # 使用说明文档
+├── index.html              # 主页面（包含HTML结构和表格）
+├── DEPLOY_GUIDE.md         # 部署教程（本文档）
+├── README.md               # 使用说明文档
 ├── css/
-│   └── style.css     # 样式文件
+│   └── style.css           # 样式文件
 ├── js/
-│   └── app.js        # 核心逻辑（数据加载、搜索、表格操作、图表绘制）
-├── images/
-│   └── qrcode.png    # 二维码图片
-├── code.json         # 指数代码配置（自动读取显示）
-├── 2026-01-04.csv    # 历史数据文件示例
-├── 2026-01-05.csv    # 历史数据文件示例
-└── 2026-01-06.csv    # 最新数据文件示例
+│   ├── app.js             # 核心逻辑（数据加载、搜索、表格操作、图表绘制）
+│   └── fund-code.js       # 指数代码配置文件（唯一数据源）
+├── data/                  # 基金净值数据目录
+│   └── fund-nav-data.json # 基金净值数据文件
+├── crawl_jsl_etf.py       # 集思录ETF数据定时爬取脚本（本地使用）
+├── crawl_etf_github.py    # GitHub Actions专用ETF数据爬取脚本
+├── etf_data.json          # ETF实时涨幅数据文件
+├── requirements.txt       # Python依赖包列表
+├── .github/
+│   └── workflows/
+│       └── update-etf-data.yml  # GitHub Actions工作流文件（定时更新ETF数据）
+├── 2026-01-04.csv        # 历史数据文件示例
+├── 2026-01-05.csv        # 历史数据文件示例
+└── 2026-01-06.csv        # 最新数据文件示例
 ```
 
 ## 技术栈
@@ -331,9 +345,98 @@ fund-main/
 
 ## 使用GitHub Actions自动更新数据
 
-本项目包含一个GitHub Actions工作流，可以手动触发更新基金净值数据，避免频繁调用API导致被封号。
+本项目包含两个GitHub Actions工作流：
 
-### 工作流功能
+---
+
+### 工作流1：Update ETF Data（最新推荐）
+
+这个工作流专门用于自动更新ETF涨幅数据，是我们重点推荐使用的！
+
+#### 功能特点
+
+- **工作流文件**：`.github/workflows/update-etf-data.yml`
+- **工作流名称**：Update ETF Data
+- **触发方式**：定时自动触发 + 手动触发
+- **功能**：爬取集思录网站的国内、欧美、亚洲、黄金ETF实时涨幅数据
+- **输出**：更新 `etf_data.json` 文件
+- **策略数据**：策略数据根据涨幅数据动态计算，无需单独更新
+
+#### 自动执行时间
+
+工作流会在以下时间自动执行（UTC时间，自动转换为北京时间）：
+
+| 时间段 | 北京时间 | 执行频率 |
+|--------|----------|----------|
+| 上午交易时间 | 9:30-11:30 | 每15分钟一次 |
+| 下午交易时间 | 13:00-15:00 | 每15分钟一次 |
+
+**仅在工作日**（周一至周五）执行，周末和节假日不执行。
+
+#### 手动触发测试
+
+如果您想立即测试工作流是否正常工作，可以手动触发：
+
+1. 登录GitHub账号，进入仓库页面
+2. 点击顶部导航栏的「Actions」选项卡
+3. 在左侧找到「Update ETF Data」工作流
+4. 点击「Run workflow」按钮
+5. 点击绿色的「Run workflow」按钮开始执行
+
+稍等几分钟，工作流执行完成后，您会看到 `etf_data.json` 文件已经更新。
+
+#### 配置仓库权限（重要！）
+
+为了让GitHub Actions能够自动提交和推送代码，您需要配置仓库权限：
+
+1. 进入仓库页面，点击「Settings」→「Actions」→「General」
+2. 找到「Workflow permissions」部分
+3. 选择「Read and write permissions」
+4. 勾选「Allow GitHub Actions to create and approve pull requests」
+5. 点击「Save」保存设置
+
+#### 工作流执行过程
+
+工作流执行时会按以下步骤操作：
+
+1. 检出仓库代码
+2. 设置Python环境
+3. 安装Python依赖（requests库）
+4. 运行 `crawl_etf_github.py` 脚本爬取ETF数据
+5. 检查 `etf_data.json` 文件是否有变化
+6. 如果有变化，自动提交并推送到GitHub
+7. 如果没有变化，不执行任何操作
+
+#### 验证数据更新
+
+工作流执行成功后：
+
+1. 刷新GitHub仓库页面，您会看到最新的提交记录，提交信息类似："Update ETF data - 2026-03-17 10:30"
+2. 打开 `etf_data.json` 文件，确认数据已更新
+3. 刷新您的GitHub Pages页面，查看涨幅数据和策略数据是否已更新
+
+**策略数据说明**：
+
+策略数据不需要单独更新，它是**根据涨幅数据动态计算**的。只要 `etf_data.json` 更新了，前端页面会自动重新计算策略并显示最新结果！
+
+#### 常见问题排查
+
+如果工作流执行失败，请检查：
+
+1. **权限问题**：确保已按照上面的步骤配置了「Read and write permissions」
+2. **网络问题**：集思录网站可能有访问限制，可以手动触发工作流重试
+3. **文件冲突**：确保没有其他进程在修改 `etf_data.json` 文件
+4. **查看日志**：在Actions页面点击失败的工作流，查看详细的执行日志
+
+---
+
+### 工作流2：Update Fund Data（已废弃）
+
+本项目还包含一个旧的工作流，可以手动触发更新基金净值数据，避免频繁调用API导致被封号。
+
+**注意**：此工作流已不再维护，项目现在主要关注ETF数据更新。
+
+#### 工作流功能
 
 - 工作流名称：Update Fund Data
 - 触发方式：手动触发
@@ -341,7 +444,7 @@ fund-main/
 - 输出：生成 `data/fund-nav-data.json` 文件
 - 好处：避免页面访问时频繁调用API，提高页面加载速度
 
-### 手动触发工作流
+#### 手动触发工作流
 
 1. 登录GitHub账号，进入仓库页面
 2. 点击顶部导航栏的「Actions」选项卡
@@ -350,7 +453,7 @@ fund-main/
 5. 在弹出的表单中，输入要获取的天数（默认180天）
 6. 点击「Run workflow」按钮开始更新数据
 
-### 处理403权限错误
+#### 处理403权限错误
 
 如果您在运行工作流时遇到类似以下错误：
 ```
@@ -360,14 +463,14 @@ fatal: unable to access 'https://github.com/username/repo/': The requested URL r
 
 这是因为GitHub Actions机器人没有足够的权限推送更改到仓库。解决方法如下：
 
-#### 方法1：修改仓库权限设置（推荐）
+##### 方法1：修改仓库权限设置（推荐）
 
 1. 进入仓库页面，点击「Settings」→「Actions」→「General」
 2. 找到「Workflow permissions」部分
 3. 选择「Read and write permissions」
 4. 点击「Save」保存设置
 
-#### 方法2：创建Personal Access Token (PAT)
+##### 方法2：创建Personal Access Token (PAT)
 
 1. 点击GitHub头像 →「Settings」→「Developer settings」→「Personal access tokens」→「Tokens (classic)」
 2. 点击「Generate new token」→「Generate new token (classic)」
@@ -383,6 +486,8 @@ fatal: unable to access 'https://github.com/username/repo/': The requested URL r
     ```yaml
     git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
     ```
+
+---
 
 **恭喜！你的基金温度表网站已经上线了！** 🎉
 

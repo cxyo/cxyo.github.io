@@ -35,6 +35,9 @@
 - **新增：场外基金代码拆分** - 将场外代码拆分为A类和C类，分别显示场外代码A和场外代码C
 - **新增：定时数据爬取服务** - 独立Python脚本定时爬取集思录ETF数据，交易时间内每15分钟自动更新
 - **新增：统一数据源管理** - 以fund-code.js为唯一数据源，前端展示与配置文件完全同步
+- **新增：GitHub Actions自动更新** - 在A股交易时间内自动定时更新ETF涨幅数据，无需手动操作
+- **优化：项目代码精简** - 删除了不需要的功能和文件，提高代码可维护性
+- **优化：CSS代码清理** - 移除了空规则集，减少代码警告
 
 ## 项目结构
 
@@ -48,15 +51,17 @@
 │   └── fund-code.js       # 指数代码配置文件（唯一数据源）
 ├── data/                  # 基金净值数据目录
 │   └── fund-nav-data.json # 基金净值数据文件
-├── crawl-fund-nav.js      # 基金净值数据爬虫脚本
-├── crawl_jsl_etf.py       # 集思录ETF数据定时爬取脚本
-├── jsl.json               # ETF实时涨幅数据文件
-├── code.json              # 指数配置文件（已弃用，以fund-code.js为准）
+├── crawl_jsl_etf.py       # 集思录ETF数据定时爬取脚本（本地使用）
+├── crawl_etf_github.py    # GitHub Actions专用ETF数据爬取脚本
+├── etf_data.json          # ETF实时涨幅数据文件
+├── bond_yield.json        # 债券收益率数据文件
+├── bond_yield.txt         # 债券收益率数据文本文件
+├── requirements.txt       # Python依赖包列表
 ├── README.md              # 项目说明文档
-├── YYYY-MM-DD.csv         # 每日数据文件
+├── YYYY-MM-DD.csv         # 每日数据文件（用于历史温度趋势图）
 └── .github/
     └── workflows/
-        └── update-fund-data.yml  # GitHub Actions工作流文件
+        └── update-etf-data.yml  # GitHub Actions工作流文件（定时更新ETF数据）
 ```
 
 ## 如何上传到GitHub
@@ -116,46 +121,51 @@
 
 ## 如何配置自动更新
 
-### 步骤1：设置GitHub仓库信息
+### 方式1：GitHub Actions自动更新ETF数据（推荐）
 
-1. 在浏览器中打开部署好的GitHub Pages页面
-2. 打开浏览器开发者工具（按F12）
-3. 切换到「Console」选项卡
-4. 输入以下命令，将你的GitHub仓库信息保存到浏览器本地存储：
-   ```javascript
-   localStorage.setItem('githubRepo', '你的用户名/你的仓库名');
-   ```
-   例如：`localStorage.setItem('githubRepo', 'username/fund-temperature');`
-5. 刷新页面，应用将自动从GitHub获取最新数据
+本项目包含GitHub Actions工作流，可以在A股交易时间内自动定时更新ETF涨幅数据。
 
-### 步骤2：使用GitHub Actions自动更新数据
+#### 配置步骤
 
-本项目包含一个GitHub Actions工作流，可以手动触发更新基金净值数据。
+1. **确保GitHub仓库设置正确**
+   - 进入仓库的 **Settings** → **Actions** → **General**
+   - 确保 **Workflow permissions** 设置为 **Read and write permissions**
+   - 勾选 **Allow GitHub Actions to create and approve pull requests**
 
-#### 触发方式
+2. **工作流自动执行时间**
+   - **上午**：9:30-11:30（每15分钟执行一次）
+   - **下午**：13:00-15:00（每15分钟执行一次）
+   - **仅工作日**：周一至周五
+   - **时区**：自动转换为UTC时间
 
-1. 登录GitHub账号，进入仓库页面
-2. 点击「Actions」选项卡
-3. 在左侧选择「Update Fund Data」工作流
-4. 点击「Run workflow」按钮
-5. 在弹出的表单中，输入要获取的天数（默认180天）
-6. 点击「Run workflow」按钮开始更新数据
+3. **手动触发测试**
+   - 进入仓库的 **Actions** 标签
+   - 选择 **Update ETF Data** 工作流
+   - 点击 **Run workflow** 手动测试
 
-#### 工作流执行过程
+#### 工作流功能
 
-1. 工作流会自动爬取所有基金代码的历史净值数据
-2. 数据会保存到 `data/fund-nav-data.json` 文件
-3. 页面刷新时会直接读取该JSON文件，不再调用API
-4. 缓存机制会确保数据读取的效率
-5. 工作流修复：添加了 `rm -f fetch-fund-data.js` 命令来删除临时脚本文件，避免git commit时出现未跟踪文件错误
+- ✅ 自动爬取集思录ETF数据（国内、欧美、亚洲、黄金）
+- ✅ 更新 `etf_data.json` 文件
+- ✅ 自动提交和推送到GitHub
+- ✅ 支持手动触发（workflow_dispatch）
+- ✅ 仅在文件有变化时提交
 
-#### 工作流优势
+#### 策略数据更新
 
-- 避免频繁调用API导致被封号
-- 自动化数据更新，减少人工操作
-- 支持自定义更新天数
-- 自动处理临时文件，确保git commit成功
-- 清晰的日志输出，便于监控执行情况
+策略数据是**根据涨幅数据动态计算**的，所以只要 `etf_data.json` 更新了，前端的策略列也会自动更新！
+
+---
+
+### 方式2：设置GitHub仓库信息（已废弃）
+
+此方式已不再需要，项目现在使用fund-code.js作为唯一数据源。
+
+---
+
+### 方式3：使用GitHub Actions自动更新基金净值数据（已废弃）
+
+此功能已不再维护，项目现在主要关注ETF数据更新。
 
 ### 步骤3：手动上传数据
 
@@ -205,37 +215,53 @@ CSV文件应包含以下列：
 
 1. 打开部署好的GitHub Pages页面
 2. 查看基金温度表，绿色表示高温，黄色表示正常，红色表示低温
-3. 点击任意指数行，查看历史温度图表
-4. 点击场内/场外代码，查看基金净值走势
-5. 使用搜索框搜索特定指数
-6. 温度星级会自动计算并显示在页面顶部
+3. 点击基金温度值，查看历史温度趋势图
+4. 查看ETF实时涨幅数据和智能交易策略提示
+5. 温度星级会自动计算并显示在页面顶部
+6. 查看股市晴雨表、中证全指EPV和四大魔盒数据
 
 ### 本地运行测试
 
 1. 在项目文件夹中启动本地服务器：
    ```bash
-   # 使用http-server（推荐）
-   npx http-server -p 8080
-   
-   # 或使用Python
+   # 使用Python（推荐）
    python -m http.server 8080
+   
+   # 或使用http-server
+   npx http-server -p 8080
    ```
 2. 在浏览器中访问 `http://localhost:8080`
-3. 测试各项功能，包括历史净值查询
+3. 测试各项功能
 
-### 手动更新基金净值数据
+### 手动更新ETF涨幅数据（本地）
 
-1. 确保已安装Node.js
+1. 确保已安装Python 3.x
 2. 安装依赖：
    ```bash
-   npm install node-fetch
+   pip install requests
    ```
 3. 运行爬虫脚本：
    ```bash
-   node crawl-fund-nav.js
+   python crawl_jsl_etf.py
    ```
-4. 脚本会自动爬取所有基金代码的20天历史净值数据，并保存到 `data/fund-nav-data.json` 文件
+4. 脚本会自动爬取集思录ETF数据，并保存到 `etf_data.json` 文件
 5. 刷新页面即可看到更新后的数据
+
+### 添加或修改指数
+
+**只需修改一个文件**：`js/fund-code.js`
+
+1. 编辑 `js/fund-code.js` 文件中的 `FUND_CODE_CONFIG` 数组
+2. 添加、删除或修改指数配置
+3. 刷新浏览器，所有功能会自动更新
+
+示例：
+```javascript
+const FUND_CODE_CONFIG = [
+  {"类型": "大盘", "指数代码": "000300", "场内代码": "510310", "场外代码A": "021757", "场外代码C": "021758"},
+  // 添加你的新指数...
+];
+```
 
 ## 技术栈
 
@@ -247,6 +273,12 @@ CSV文件应包含以下列：
 - jsdelivr（CDN加速）
 
 ## 常见问题
+
+### Q: 如何添加或修改指数？
+A: **只需修改一个文件**：`js/fund-code.js`
+1. 编辑 `js/fund-code.js` 文件中的 `FUND_CODE_CONFIG` 数组
+2. 添加、删除或修改指数配置
+3. 刷新浏览器，所有功能会自动更新
 
 ### Q: 为什么温度星级显示不正确？
 A: 温度星级计算公式参考螺丝钉星级：
@@ -260,31 +292,24 @@ A: 温度星级计算公式参考螺丝钉星级：
    ```
    请确保CSV数据中的PE-TTM(分位点%)和PB(分位点%)字段格式正确。
 
-### Q: 如何更新基金映射表？
-A: 编辑 `js/app.js` 文件中的 `FUND_CODES_MAP` 对象，添加或修改基金代码映射关系。
+### Q: 涨幅数据和策略数据如何自动更新？
+A: 通过GitHub Actions自动更新：
+1. 项目包含 `crawl_etf_github.py` 爬虫脚本
+2. GitHub Actions工作流在A股交易时间内每15分钟自动执行一次
+3. 自动爬取集思录ETF数据并更新 `etf_data.json`
+4. 策略数据根据涨幅数据动态计算，无需单独更新
 
-### Q: 如何添加新的指数类别？
-A: 编辑 `js/app.js` 文件中的 `CATEGORIES` 和 `CATEGORY_MAP` 对象，添加新的类别和映射关系。
-
-### Q: 为什么历史净值获取失败？
-A: 可能是因为Eastmoney API返回错误-999，我们已添加本地JSON数据优先机制：
-1. 页面会先检查本地 `data/fund-nav-data.json` 文件是否存在
-2. 如果存在，优先使用本地JSON数据
-3. 如果本地数据不存在或无效，才会调用Eastmoney API
-4. 本地JSON数据包含所有基金的20天历史净值，确保数据完整性
-
-### Q: 如何确保20天历史数据正确显示？
-A: 我们已修复了数据显示问题：
-1. `data/fund-nav-data.json` 文件包含所有主要基金的20天历史净值数据
-2. 页面会根据请求天数动态调整日期范围，确保数据完整性
-3. 缓存机制确保只有有效数据才会被使用
-4. 详细的日志记录便于调试和问题定位
+### Q: 如何配置GitHub Actions自动更新？
+A: 请确保GitHub仓库设置正确：
+1. 进入仓库的 **Settings** → **Actions** → **General**
+2. 确保 **Workflow permissions** 设置为 **Read and write permissions**
+3. 勾选 **Allow GitHub Actions to create and approve pull requests**
 
 ### Q: GitHub Actions工作流为什么会失败？
-A: 可能是因为临时脚本文件导致git commit错误，我们已修复：
-1. 在工作流中添加了 `rm -f fetch-fund-data.js` 命令来删除临时脚本文件
-2. 确保只有 `data/` 目录下的文件被git跟踪
-3. 清晰的日志输出便于监控执行情况
+A: 常见原因和解决方法：
+1. **权限不足**：确保Workflow permissions设置为Read and write permissions
+2. **网络问题**：集思录网站可能有访问限制，可以手动触发工作流重试
+3. **文件冲突**：确保没有其他进程在修改 `etf_data.json` 文件
 
 ## 开发说明
 
@@ -292,36 +317,58 @@ A: 可能是因为临时脚本文件导致git commit错误，我们已修复：
 
 1. 在项目文件夹中启动本地服务器：
    ```bash
-   # 使用http-server（推荐）
-   npx http-server -p 8080
-   
-   # 或使用Python
+   # 使用Python（推荐）
    python -m http.server 8080
+   
+   # 或使用http-server
+   npx http-server -p 8080
    ```
 2. 在浏览器中访问 `http://localhost:8080`
-3. 测试各项功能，包括历史净值查询
+3. 测试各项功能
 
 ### 项目结构
 
 ```
 .
-├── index.html          # 主页面
+├── index.html              # 主页面
 ├── css/
-│   └── style.css      # 样式文件
+│   └── style.css          # 样式文件
 ├── js/
-│   └── app.js         # 主脚本文件
-├── data/              # 基金净值数据目录
-│   └── fund-nav-data.json  # 基金净值数据文件
-├── crawl-fund-nav.js  # 基金净值数据爬虫脚本
-├── code.json          # 指数配置文件
-├── README.md          # 项目说明文档
-├── YYYY-MM-DD.csv     # 每日数据文件
+│   ├── app.js             # 主脚本文件
+│   └── fund-code.js       # 指数代码配置文件（唯一数据源）
+├── data/                  # 基金净值数据目录
+│   └── fund-nav-data.json # 基金净值数据文件
+├── crawl_jsl_etf.py       # 集思录ETF数据定时爬取脚本（本地使用）
+├── crawl_etf_github.py    # GitHub Actions专用ETF数据爬取脚本
+├── etf_data.json          # ETF实时涨幅数据文件
+├── requirements.txt       # Python依赖包列表
+├── README.md              # 项目说明文档
+├── YYYY-MM-DD.csv         # 每日数据文件（用于历史温度趋势图）
 └── .github/
     └── workflows/
-        └── update-fund-data.yml  # GitHub Actions工作流文件
+        └── update-etf-data.yml  # GitHub Actions工作流文件（定时更新ETF数据）
 ```
 
+### 代码可复用性设计原则
+
+1. **唯一数据源**：`js/fund-code.js` 是唯一的指数配置文件
+2. **动态生成配置**：所有配置（codeConfig、FUND_CODES_MAP、CATEGORY_MAP）都从 fund-code.js 动态生成
+3. **无硬编码**：没有硬编码的指数代码或类别映射
+4. **自动更新**：修改 fund-code.js 后，刷新浏览器即可看到所有功能自动更新
+
 ## 更新日志
+
+### 2026-03-17
+- **新增：GitHub Actions自动更新ETF数据** - 创建了专用的工作流文件，在A股交易时间内每15分钟自动更新ETF涨幅数据
+- **新增：crawl_etf_github.py** - GitHub Actions专用的ETF数据爬取脚本
+- **新增：requirements.txt** - Python依赖包列表
+- **优化：代码可复用性** - 确保所有功能都基于fund-code.js中的配置，没有硬编码的指数代码
+- **优化：项目代码精简** - 删除了不需要的功能和文件，提高代码可维护性
+- **优化：CSS代码清理** - 移除了空规则集，减少代码警告
+- **修复：温度星级和股市晴雨表数据** - 修改计算逻辑，使用平均值计算，只计算大盘和小盘指数
+- **新增：智能交易策略** - 根据特定条件自动判断买入/卖出/持有策略
+- **新增：ETF实时涨幅数据** - 从集思录网站爬取国内、欧美、亚洲、黄金ETF的实时涨幅数据
+- **新增：场外代码拆分** - 将场外代码拆分为A类和C类，分别显示
 
 ### 2026-01-29
 - 整合了爬虫脚本到 `crawl_all_data.py`，统一管理所有金融数据爬取
