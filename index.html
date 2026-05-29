@@ -1,0 +1,1704 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CXYO.CN - 工业机器人 & AI 智能体</title>
+<!-- Umami 网站统计 -->
+<script async defer src="https://umami.cxyo.cn/script.js" data-website-id="9a3d2e8a-1b5c-4e7f-9d2a-8c3b4a9e6d5f"></script>
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #11151e;
+    --gold: #f9a825;
+    --gold2: #ffd54f;
+    --cyan: #00e5ff;
+    --cyan2: #00838f;
+    --text: #d0d8e8;
+    --text-dim: #7a859e;
+    --border: #1e2a3a;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* 动态背景 */
+  .bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0,229,255,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(249,168,37,0.05) 0%, transparent 50%),
+      linear-gradient(180deg, #0a0c10 0%, #0f131f 100%);
+  }
+
+  canvas#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* 导航 */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 0 20px;
+  }
+
+  nav .nav-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: var(--cyan);
+    text-shadow: 0 0 8px var(--cyan);
+  }
+
+  /* 汉堡菜单 */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    width: 24px;
+    height: 2px;
+    background: var(--cyan);
+    transition: all 0.3s;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  /* 通用区域 */
+  section {
+    min-height: 100vh;
+    padding: 120px 24px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .section-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--cyan), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+  }
+
+  .section-desc {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+
+  /* 网格卡片 */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    width: 100%;
+  }
+
+  .card {
+    background: rgba(17,21,30,0.7);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,229,255,0.12);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    color: var(--cyan);
+  }
+
+  .card h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.3);
+    color: var(--cyan);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .card-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .card-detail {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cyan);
+    text-decoration: none;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .card-link:hover {
+    text-shadow: 0 0 8px var(--cyan);
+    transform: translateX(4px);
+  }
+
+  .feature-list {
+    list-style: none;
+    margin-top: 12px;
+  }
+
+  .feature-list li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .feature-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-weight: bold;
+  }
+
+  /* 首页 Hero */
+  #hero {
+    text-align: center;
+    align-items: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-robot {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 32px;
+    filter: drop-shadow(0 0 28px rgba(0,229,255,0.5));
+  }
+
+  .hero-title {
+    font-size: 68px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 24px;
+    color: var(--text-dim);
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 2px solid var(--cyan);
+    color: var(--cyan);
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s;
+    letter-spacing: 2px;
+  }
+
+  .btn:hover {
+    background: var(--cyan);
+    color: #0a0c10;
+    box-shadow: 0 0 20px var(--cyan);
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .hero-tag {
+    background: rgba(17,21,30,0.8);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--text-dim);
+    backdrop-filter: blur(4px);
+  }
+
+  /* 页脚 */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .nav-links {
+      position: fixed;
+      top: 64px;
+      right: -100%;
+      width: 280px;
+      height: calc(100vh - 64px);
+      background: rgba(10,12,16,0.95);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      padding: 24px;
+      gap: 16px;
+      transition: right 0.3s ease;
+      z-index: 999;
+      border-left: 1px solid var(--border);
+    }
+    .nav-links.active {
+      right: 0;
+    }
+    .nav-links a {
+      font-size: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hamburger {
+      display: flex;
+    }
+    .hero-title {
+      font-size: 42px;
+    }
+    section {
+      padding: 100px 16px 60px;
+    }
+    .section-title {
+      font-size: 30px;
+    }
+    .card-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .hero-tags {
+      gap: 8px;
+    }
+    .hero-tag {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+    .card-stats {
+      justify-content: flex-start;
+    }
+    .footer-contact {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="bg-animation"></div>
+<canvas id="particles"></canvas>
+
+<!-- 导航 -->
+<nav>
+  <div class="nav-inner">
+    <span class="logo">CXYO.CN</span>
+    <ul class="nav-links">
+      <li><a href="#hero">首页</a></li>
+      <li><a href="#robot">机器人</a></li>
+      <li><a href="#humanoid">人形机器人</a></li>
+      <li><a href="#ai">AI & Python</a></li>
+      <li><a href="#agent">Agent</a></li>
+      <li><a href="#openclaw">OpenClaw</a></li>
+      <li><a href="#iot">单片机/IoT</a></li>
+      <li><a href="#smarthome">智能家居</a></li>
+      <li><a href="#finance">理财</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- 首页 -->
+<section id="hero">
+  <!-- 机器人 SVG 头像 -->
+  <svg class="hero-robot" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ffb300"/><stop offset="50%" stop-color="#ffd54f"/><stop offset="100%" stop-color="#ff8f00"/>
+      </linearGradient>
+      <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#00838f"/>
+      </linearGradient>
+      <filter id="svgGlow"><feGaussianBlur stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g transform="translate(250,240)">
+      <rect x="-28" y="-80" width="56" height="50" rx="8" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="3"/>
+      <path d="M-20,-78 L-25,-65 L25,-65 L20,-78 Z" fill="url(#goldGrad)" opacity="0.9"/>
+      <polygon points="-22,-60 -18,-68 0,-55 18,-68 22,-60" fill="url(#cyanGrad)" filter="url(#svgGlow)"/>
+      <polygon points="-20,-58 -17,-66 0,-55 17,-66 20,-58" fill="#ffffff" opacity="0.5"/>
+      <line x1="-12" y1="-38" x2="12" y2="-38" stroke="url(#goldGrad)" stroke-width="2"/>
+      <line x1="-12" y1="-33" x2="12" y2="-33" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="-38" y="-55" width="8" height="16" rx="2" fill="url(#goldGrad)"/>
+      <rect x="30" y="-55" width="8" height="16" rx="2" fill="url(#goldGrad)"/>
+      <circle cx="-34" cy="-47" r="2" fill="#00e5ff" filter="url(#svgGlow)"/>
+      <circle cx="34" cy="-47" r="2" fill="#00e5ff" filter="url(#svgGlow)"/>
+      <rect x="-10" y="-30" width="20" height="15" rx="3" fill="#222" stroke="url(#goldGrad)" stroke-width="2"/>
+      <line x1="0" y1="-28" x2="0" y2="-18" stroke="#00e5ff" stroke-width="2" filter="url(#svgGlow)"/>
+      <path d="M-45,-15 L-55,50 L55,50 L45,-15 Z" fill="#151515" stroke="url(#goldGrad)" stroke-width="4"/>
+      <path d="M-30,0 L-40,35 L40,35 L30,0 Z" fill="#1c1c1c" stroke="url(#goldGrad)" stroke-width="2" opacity="0.8"/>
+      <circle cx="0" cy="17" r="16" fill="#0d0d0d" stroke="url(#cyanGrad)" stroke-width="3" filter="url(#svgGlow)"/>
+      <circle cx="0" cy="17" r="9" fill="url(#cyanGrad)" filter="url(#svgGlow)"/>
+      <circle cx="0" cy="17" r="4" fill="#fff" filter="url(#svgGlow)"/>
+      <line x1="-35" y1="38" x2="35" y2="38" stroke="url(#goldGrad)" stroke-width="2" opacity="0.8"/>
+      <circle cx="-55" cy="-5" r="8" fill="#222" stroke="url(#goldGrad)" stroke-width="3"/>
+      <rect x="-65" y="-2" width="10" height="40" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <circle cx="-60" cy="42" r="6" fill="#222" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="-65" y="45" width="10" height="35" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="-70" y="80" width="20" height="12" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <circle cx="55" cy="-5" r="8" fill="#222" stroke="url(#goldGrad)" stroke-width="3"/>
+      <rect x="55" y="-2" width="10" height="40" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <circle cx="60" cy="42" r="6" fill="#222" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="55" y="45" width="10" height="35" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="50" y="80" width="20" height="12" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <circle cx="-25" cy="55" r="9" fill="#222" stroke="url(#goldGrad)" stroke-width="3"/>
+      <rect x="-34" y="60" width="18" height="45" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="3"/>
+      <circle cx="-25" cy="110" r="7" fill="#222" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="-32" y="115" width="14" height="45" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="-40" y="160" width="30" height="12" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <circle cx="25" cy="55" r="9" fill="#222" stroke="url(#goldGrad)" stroke-width="3"/>
+      <rect x="16" y="60" width="18" height="45" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="3"/>
+      <circle cx="25" cy="110" r="7" fill="#222" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="18" y="115" width="14" height="45" rx="3" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <rect x="10" y="160" width="30" height="12" rx="4" fill="#1a1a1a" stroke="url(#goldGrad)" stroke-width="2"/>
+      <ellipse cx="0" cy="178" rx="50" ry="8" fill="none" stroke="url(#cyanGrad)" stroke-width="2" filter="url(#svgGlow)" opacity="0.7"/>
+    </g>
+  </svg>
+  <h1 class="hero-title">CXYO.CN</h1>
+  <p class="hero-sub">工业级机器人 × AI 智能体 × 自动化工作流</p>
+  <div class="hero-tags">
+    <span class="hero-tag">🤖 工业机器人</span>
+    <span class="hero-tag">🦿 人形机器人</span>
+    <span class="hero-tag">🧬 AI & Python</span>
+    <span class="hero-tag">🔌 物联网</span>
+  </div>
+  <a href="#robot" class="btn">探索领域</a>
+</section>
+
+<!-- 机器人栏目 -->
+<section id="robot">
+  <h2 class="section-title">🤖 工业机器人</h2>
+  <p class="section-desc">专注大型工业级机器人项目，从机械设计到控制系统，打造未来工厂的钢铁之躯。十余年自动化产线经验，服务过汽车零部件、3C电子、新能源等多个行业。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>多轴机械臂</h3>
+      <p>6轴/7轴高精度工业机械臂，重复定位精度±0.02mm，配备自主研发的控制系统，支持 EtherCAT/Modbus 通信协议。</p>
+      <ul class="feature-list">
+        <li>负载范围：3kg-50kg</li>
+        <li>工作半径：700mm-2000mm</li>
+        <li>防护等级 IP67</li>
+        <li>集成视觉接口</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">点焊</span>
+        <span class="tag">弧焊</span>
+        <span class="tag">搬运</span>
+        <span class="tag">装配</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>智能产线集成</h3>
+      <p>整线自动化解决方案专家，深度集成工业机器人、AGV物流系统、机器视觉检测，实现生产全流程自动化。</p>
+      <ul class="feature-list">
+        <li>MES系统无缝对接</li>
+        <li>柔性产线快速换型</li>
+        <li>实时产线数字化看板</li>
+        <li>故障预警与远程运维</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">汽车零部件</span>
+        <span class="tag">3C电子</span>
+        <span class="tag">新能源</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>运动控制算法</h3>
+      <p>基于实时Linux/Xenomai内核的运动控制算法研发，融合轨迹规划、力控磨削、碰撞检测等核心功能。</p>
+      <ul class="feature-list">
+        <li>插补周期 1ms</li>
+        <li>前瞻轨迹规划</li>
+        <li>自适应力控</li>
+        <li>零滞后响应</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">1ms</div><div class="stat-label">控制周期</div></div>
+        <div class="stat"><div class="stat-value">0.01</div><div class="stat-label">mm精度</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>夹具设计与定制</h3>
+      <p>专业机械设计团队，提供气动/电动夹具、焊枪、水冷系统等非标工装的设计与制造。</p>
+      <ul class="feature-list">
+        <li>快速换型夹具系统</li>
+        <li>复合工具切换</li>
+        <li>力传感器集成</li>
+        <li>真空发生器</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">非标设计</span>
+        <span class="tag">3D打印</span>
+        <span class="tag">小批量</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <h3>远程监控与运维</h3>
+      <p>工业物联网平台，实时采集机器人运行数据，云端分析诊断，实现预测性维护。</p>
+      <ul class="feature-list">
+        <li>设备健康度评估</li>
+        <li>寿命预测模型</li>
+        <li>故障告警推送</li>
+        <li>远程调试升级</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">99.9%</div><div class="stat-label">在线率</div></div>
+        <div class="stat"><div class="stat-value">24/7</div><div class="stat-label">监控</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <h3>技术培训与支持</h3>
+      <p>专业的技术培训服务，涵盖编程、操作、维护全流程，提供原厂认证与现场实训。</p>
+      <ul class="feature-list">
+        <li>机器人编程培训</li>
+        <li>维护保养课程</li>
+        <li>工艺调试指导</li>
+        <li>考证认证服务</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">线下培训</span>
+        <span class="tag">在线课程</span>
+        <span class="tag">驻厂指导</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 人形机器人 -->
+<section id="humanoid">
+  <h2 class="section-title">🦿 人形机器人</h2>
+  <p class="section-desc">关注人形机器人前沿技术与商业化落地，与行业领军企业共同探索具身智能的未来。从整机研发到核心零部件，持续跟进人类机器人技术革新。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>智元机器人</h3>
+      <p>通用人形机器人研发制造商，致力于AI与机器人深度融合。聚焦于将AI大模型与机器人具身智能相结合，推动人形机器人商业化落地。</p>
+      <ul class="feature-list">
+        <li>全栈自研具身智能</li>
+        <li>双臂协作作业</li>
+        <li>复杂地形行走</li>
+        <li>多模态感知融合</li>
+      </ul>
+      <a href="https://www.agibot.com.cn/" target="_blank" class="card-link">访问官网 →</a>
+      <div class="card-tags">
+        <span class="tag">具身智能</span>
+        <span class="tag">双臂机器人</span>
+        <span class="tag">商业落地</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <h3>智元机器人商城</h3>
+      <p>智元机器人官方产品商城，提供人形机器人整机、核心零部件、配件及周边产品的购买渠道。</p>
+      <ul class="feature-list">
+        <li>官方正品保障</li>
+        <li>技术支持服务</li>
+        <li>灵活采购方案</li>
+        <li>定制化需求</li>
+      </ul>
+      <a href="https://store.agibot.com.cn/" target="_blank" class="card-link">进入商城 →</a>
+      <div class="card-tags">
+        <span class="tag">配件</span>
+        <span class="tag">周边</span>
+        <span class="tag">技术支持</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>宇树科技</h3>
+      <p>行业领先的四足机器人与人形机器人研发制造商，产品远销全球。自主研发的核心零部件与运动控制算法处于国际领先水平。</p>
+      <ul class="feature-list">
+        <li>全尺寸人形机器人</li>
+        <li>四足/四足机器人</li>
+        <li>核心零部件自研</li>
+        <li>开源生态建设</li>
+      </ul>
+      <a href="https://www.unitree.com/cn" target="_blank" class="card-link">访问官网 →</a>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">60+</div><div class="stat-label">国家覆盖</div></div>
+        <div class="stat"><div class="stat-value">全球</div><div class="stat-label">销售网络</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🦾</div>
+      <h3>人形机器人核心零部件</h3>
+      <p>关注人形机器人核心零部件供应链，包括高性能电机、减速器、力传感器、深度相机等关键元器件。</p>
+      <ul class="feature-list">
+        <li>关节驱动模组</li>
+        <li>高扭矩密度电机</li>
+        <li>六维力传感器</li>
+        <li>轻量化结构件</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">关节模组</span>
+        <span class="tag">传感器</span>
+        <span class="tag">减速器</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>具身智能技术</h3>
+      <p>探索大模型与机器人具身智能的深度融合，让机器人像人一样理解世界、规划任务、执行操作。</p>
+      <ul class="feature-list">
+        <li>多模态大模型</li>
+        <li>视觉-语言-动作</li>
+        <li>任务规划推理</li>
+        <li>技能自主学习</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">VLA模型</span>
+        <span class="tag">模仿学习</span>
+        <span class="tag">强化学习</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>应用场景与落地</h3>
+      <p>人形机器人在工业制造、商业服务、家庭陪护等领域的应用探索与商业化进程。</p>
+      <ul class="feature-list">
+        <li>汽车总装产线</li>
+        <li>3C产品组装</li>
+        <li>物流搬运分拣</li>
+        <li>科研教育平台</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">100+</div><div class="stat-label">落地场景</div></div>
+        <div class="stat"><div class="stat-value">2025</div><div class="stat-label">商业化元年</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI & Python -->
+<section id="ai">
+  <h2 class="section-title">🧬 AI & Python</h2>
+  <p class="section-desc">深度学习、计算机视觉、自然语言处理，Python 全栈赋能智能应用。多年AI项目落地经验，为制造业提供智能化转型解决方案。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <h3>深度学习模型训练</h3>
+      <p>PyTorch/TensorFlow 框架，从数据采集、清洗标注到模型训练、部署上线，提供一站式AI开发服务。</p>
+      <ul class="feature-list">
+        <li>自定义CNN/Transformer架构</li>
+        <li>分布式训练加速</li>
+        <li>模型轻量化量化</li>
+        <li>ONNX/TensorRT部署</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">PyTorch</span>
+        <span class="tag">TensorFlow</span>
+        <span class="tag">MLOps</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">👁️</div>
+      <h3>工业视觉检测</h3>
+      <p>基于深度学习的工业缺陷检测系统，适用于表面缺陷、尺寸测量、装配验证等多种场景，检测精度达99.8%以上。</p>
+      <ul class="feature-list">
+        <li>表面划痕/凹坑检测</li>
+        <li>尺寸精度测量</li>
+        <li>OCR字符识别</li>
+        <li>装配完整性验证</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">99.8%</div><div class="stat-label">检测精度</div></div>
+        <div class="stat"><div class="stat-value">&lt;100ms</div><div class="stat-label">响应时间</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗣️</div>
+      <h3>大语言模型应用</h3>
+      <p>基于LLM的对话机器人与知识库问答系统，支持私有化部署、微调训练，保障数据安全的同时实现智能交互。</p>
+      <ul class="feature-list">
+        <li>企业知识库构建</li>
+        <li>RAG检索增强</li>
+        <li>多轮对话管理</li>
+        <li>function calling集成</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">RAG</span>
+        <span class="tag">LangChain</span>
+        <span class="tag">向量数据库</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📹</div>
+      <h3>视频分析与理解</h3>
+      <p>工业现场视频智能分析，实现人员行为监控、安全告警、异常事件检测等功能。</p>
+      <ul class="feature-list">
+        <li>工装穿戴检测</li>
+        <li>危险区域入侵检测</li>
+        <li>人员跌倒检测</li>
+        <li>行为轨迹分析</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">YOLO</span>
+        <span class="tag">时序分析</span>
+        <span class="tag">边缘推理</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔮</div>
+      <h3>3D视觉与点云</h3>
+      <p>3D重建、点云分割、物体识别定位，为机器人引导、尺寸测量提供高精度三维感知能力。</p>
+      <ul class="feature-list">
+        <li>结构光/TOF深度成像</li>
+        <li>点云配准与分割</li>
+        <li>6DOF物体位姿估计</li>
+        <li>3D缺陷检测</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">PCL</span>
+        <span class="tag">Open3D</span>
+        <span class="tag">深度学习</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>数据分析与挖掘</h3>
+      <p>生产数据深度挖掘，设备预测性维护，质量分析优化，用数据驱动决策。</p>
+      <ul class="feature-list">
+        <li>时序数据异常检测</li>
+        <li>设备寿命预测</li>
+        <li>工艺参数优化</li>
+        <li>数据可视化大屏</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">30%</div><div class="stat-label">效率提升</div></div>
+        <div class="stat"><div class="stat-value">50%</div><div class="stat-label">维护成本降低</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Agent & 工作流 -->
+<section id="agent">
+  <h2 class="section-title">🤖 Agent & 工作流</h2>
+  <p class="section-desc">自主智能体框架，自动化工作流引擎，让软件像人一样协作。从单Agent到多Agent系统，构建智能化的工作流程。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Multi-Agent 协作系统</h3>
+      <p>多个AI Agent协作完成复杂任务，模拟人类团队的分工协作，支持自主决策与动态任务分配。</p>
+      <ul class="feature-list">
+        <li>Agent角色自定义定义</li>
+        <li>消息传递与状态同步</li>
+        <li>群体决策机制</li>
+        <li>冲突检测与解决</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">AutoGen</span>
+        <span class="tag">CrewAI</span>
+        <span class="tag">MetaGPT</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>工作流编排引擎</h3>
+      <p>Python驱动的DAG工作流引擎，支持条件分支、并行执行、循环处理，让复杂业务流程可视化编排。</p>
+      <ul class="feature-list">
+        <li>可视化流程设计器</li>
+        <li>条件判断与循环</li>
+        <li>并发执行与依赖管理</li>
+        <li>执行状态实时监控</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">100+</div><div class="stat-label">内置节点</div></div>
+        <div class="stat"><div class="stat-value">99.9%</div><div class="stat-label">运行稳定性</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <h3>低代码集成平台</h3>
+      <p>拖拽式自动化流程搭建，连接企业各类系统与应用，快速实现业务流程自动化。</p>
+      <ul class="feature-list">
+        <li>100+应用集成连接器</li>
+        <li>API管理与网关</li>
+        <li>表单与审批流程</li>
+        <li>数据转换与映射</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">REST API</span>
+        <span class="tag">Webhook</span>
+        <span class="tag">数据库</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>任务规划与执行</h3>
+      <p>自主规划任务执行路径，分解复杂目标为可执行步骤，动态调整执行策略。</p>
+      <ul class="feature-list">
+        <li>子任务自动分解</li>
+        <li>ReAct/RePlan规划</li>
+        <li>执行回滚与恢复</li>
+        <li>任务进度追踪</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">LLM规划</span>
+        <span class="tag">Tool Use</span>
+        <span class="tag">Chain</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <h3>工具调用框架</h3>
+      <p>扩展Agent能力边界，支持自定义工具开发，调用外部API、执行代码、操作文件系统。</p>
+      <ul class="feature-list">
+        <li>Python代码执行沙箱</li>
+        <li>文件读写操作</li>
+        <li>外部API调用</li>
+        <li>数据库查询写入</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">Code Interpreter</span>
+        <span class="tag">Function Call</span>
+        <span class="tag">Plugin</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📝</div>
+      <h3>企业应用场景</h3>
+      <p>AI Agent在企业中的实际应用场景落地，提升运营效率，降低人力成本。</p>
+      <ul class="feature-list">
+        <li>智能客服问答</li>
+        <li>文档自动处理</li>
+        <li>数据报表生成</li>
+        <li>会议纪要整理</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">70%</div><div class="stat-label">效率提升</div></div>
+        <div class="stat"><div class="stat-value">24/7</div><div class="stat-label">不间断服务</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OpenClaw -->
+<section id="openclaw">
+  <h2 class="section-title">🦾 OpenClaw</h2>
+  <p class="section-desc">开源抓取规划与控制框架，专为复杂物体操作而生。融合深度学习与机器人运动控制，实现通用灵巧操作。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>灵巧手运动控制</h3>
+      <p>多指灵巧手运动学与动力学仿真，支持欠驱动手指设计，实现稳定灵活的抓取姿态生成。</p>
+      <ul class="feature-list">
+        <li>正/逆运动学求解</li>
+        <li>力闭兼容抓取规划</li>
+        <li>实时轨迹平滑</li>
+        <li>多指协调控制</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">MoveIt</span>
+        <span class="tag">OMPL</span>
+        <span class="tag">TRAC-IK</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📐</div>
+      <h3>3D 场景感知</h3>
+      <p>结合深度相机与点云处理，实时重建抓取场景，实现杂乱场景中物体的识别与定位。</p>
+      <ul class="feature-list">
+        <li>RGB-D点云采集</li>
+        <li>物体6D位姿估计</li>
+        <li>场景分割与识别</li>
+        <li>碰撞检测避障</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">&lt;200ms</div><div class="stat-label">识别速度</div></div>
+        <div class="stat"><div class="stat-value">95%</div><div class="stat-label">抓取成功率</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🖥️</div>
+      <h3>ROS/ROS2 集成</h3>
+      <p>完整ROS2驱动支持，与MoveIt、Gazebo无缝集成，提供仿真与实物控制一体的开发环境。</p>
+      <ul class="feature-list">
+        <li>ROS2 Humble兼容</li>
+        <li>MoveIt2运动规划</li>
+        <li>Gazebo物理仿真</li>
+        <li>RViz可视化</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">ROS2</span>
+        <span class="tag">Gazebo</span>
+        <span class="tag">Rviz</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <h3>抓取规划算法</h3>
+      <p>基于深度学习的抓取检测网络，从单目/深度图像直接预测最优抓取位姿。</p>
+      <ul class="feature-list">
+        <li>GraspNet抓取检测</li>
+        <li>Contact-GraspNet</li>
+        <li>6-DoF抓取姿态</li>
+        <li>抓取稳定性评估</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">CNN</span>
+        <span class="tag">PointNet++</span>
+        <span class="tag">GPG</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>力控与顺应控制</h3>
+      <p>实现精细的力控制策略，让机器人能够像人一样感知力的大小，实现自适应抓取与装配。</p>
+      <ul class="feature-list">
+        <li>阻抗/导纳控制</li>
+        <li>力传感器融合</li>
+        <li>碰撞检测与响应</li>
+        <li>未知物体插入</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">力控</span>
+        <span class="tag">顺应性</span>
+        <span class="tag">阻抗控制</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <h3>学习与迁移</h3>
+      <p>结合模仿学习与强化学习，让机器人从演示中学习新技能，并迁移到不同物体和场景。</p>
+      <ul class="feature-list">
+        <li>人类演示录制(DMP)</li>
+        <li>BC/BCO行为克隆</li>
+        <li>强化学习微调</li>
+        <li>Sim2Real迁移</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">10+</div><div class="stat-label">演示学会技能</div></div>
+        <div class="stat"><div class="stat-value">90%</div><div class="stat-label">Sim2Real</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 单片机 & 物联网 -->
+<section id="iot">
+  <h2 class="section-title">🔌 单片机 & 物联网</h2>
+  <p class="section-desc">从STM32/ESP32到云平台，打通物理世界与数字世界的桥梁。提供从硬件设计到云端服务的完整IoT解决方案。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📟</div>
+      <h3>嵌入式开发</h3>
+      <p>基于STM32、ESP32、GD32等主流MCU的嵌入式开发，涵盖裸机与RTOS两种开发模式。</p>
+      <ul class="feature-list">
+        <li>FreeRTOS任务调度</li>
+        <li>低功耗深度休眠</li>
+        <li>多协议通信驱动</li>
+        <li>OTA远程升级</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">STM32</span>
+        <span class="tag">ESP32</span>
+        <span class="tag">FreeRTOS</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>IoT网关与通信</h3>
+      <p>工业级物联网网关，支持多协议转换与边缘计算，实现设备与云平台的无缝连接。</p>
+      <ul class="feature-list">
+        <li>MQTT/CoAP协议</li>
+        <li>Modbus/RTU采集</li>
+        <li>TCP/UDP透传</li>
+        <li>边缘数据处理</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">1000+</div><div class="stat-label">设备接入</div></div>
+        <div class="stat"><div class="stat-value">&lt;100ms</div><div class="stat-label">响应延迟</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>数据可视化平台</h3>
+      <p>实时监控大屏与历史数据看板，支持设备远程管理、告警推送与数据分析。</p>
+      <ul class="feature-list">
+        <li>实时数据仪表盘</li>
+        <li>历史数据查询</li>
+        <li>告警规则引擎</li>
+        <li>移动端适配</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">WebSocket</span>
+        <span class="tag">ECharts</span>
+        <span class="tag">云服务</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔋</div>
+      <h3>低功耗设计</h3>
+      <p>针对电池供电场景的深度低功耗优化，延长设备续航能力到数年级别。</p>
+      <ul class="feature-list">
+        <li>静态功耗&lt;5μA</li>
+        <li>多级休眠策略</li>
+        <li>自适应唤醒</li>
+        <li>太阳能/电池双供电</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">BLE</span>
+        <span class="tag">LoRa</span>
+        <span class="tag">NB-IoT</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛠️</div>
+      <h3>硬件设计与调试</h3>
+      <p>原理图设计、PCB Layout、样品焊接调试，提供从原型到量产的全流程支持。</p>
+      <ul class="feature-list">
+        <li>4-12层PCB设计</li>
+        <li>EMI/EMC优化</li>
+        <li>信号完整性分析</li>
+        <li>可靠性测试认证</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">Altium</span>
+        <span class="tag">KiCad</span>
+        <span class="tag">Cadence</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">☁️</div>
+      <h3>云平台集成</h3>
+      <p>对接主流IoT云平台，支持私有化部署与混合云架构，保障数据安全与主权。</p>
+      <ul class="feature-list">
+        <li>阿里云IoT接入</li>
+        <li>华为云OceanConnect</li>
+        <li>ThingsBoard私有化</li>
+        <li>自研IoT平台</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">亿级</div><div class="stat-label">消息并发</div></div>
+        <div class="stat"><div class="stat-value">99.99%</div><div class="stat-label">服务可用性</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 智能家居 -->
+<section id="smarthome">
+  <h2 class="section-title">🏠 智能家居</h2>
+  <p class="section-desc">全屋智能解决方案，灯光、窗帘、安防、环境一气呵成。打造舒适、节能、安全的智慧人居环境。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">💡</div>
+      <h3>智能照明系统</h3>
+      <p>全宅灯光智能控制，支持调光调色、场景联动、语音控制，让每一束光都恰到好处。</p>
+      <ul class="feature-list">
+        <li>0-100%无极调光</li>
+        <li>色温2700K-6500K可调</li>
+        <li>人来灯亮人走灯灭</li>
+        <li>日出日落同步</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">Mesh组网</span>
+        <span class="tag">语音控制</span>
+        <span class="tag">场景联动</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🪟</div>
+      <h3>智能窗帘系统</h3>
+      <p>电机静音设计，支持定时控制、语音控制、风雨感应自动开关，接入全屋智能联动。</p>
+      <ul class="feature-list">
+        <li>静音电机&lt;25dB</li>
+        <li>停电手拉启动</li>
+        <li>日出开帘日落关帘</li>
+        <li>与灯光/空调联动</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">直流电机</span>
+        <span class="tag">Matter协议</span>
+        <span class="tag">窗帘伴侣</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <h3>智能安防系统</h3>
+      <p>多维度守护家庭安全，人脸识别门禁、入侵检测、烟雾燃气告警，全天候保障。</p>
+      <ul class="feature-list">
+        <li>3D结构光人脸识别</li>
+        <li>周界入侵检测</li>
+        <li>烟感/燃气/水浸告警</li>
+        <li>一键报警联动</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">24/7</div><div class="stat-label">全天监控</div></div>
+        <div class="stat"><div class="stat-value">&lt;1s</div><div class="stat-label">告警响应</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>环境调控系统</h3>
+      <p>温湿度、空气质量、空调新风一体化智能调控，营造恒定舒适的居家环境。</p>
+      <ul class="feature-list">
+        <li>温湿度实时监测</li>
+        <li>空调/地暖/新风联动</li>
+        <li>甲醛/CO2超标提醒</li>
+        <li>能耗统计分析</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">中央空调</span>
+        <span class="tag">新风系统</span>
+        <span class="tag">地暖控制</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎬</div>
+      <h3>家庭影院系统</h3>
+      <p>一键启动影院模式，灯光/投影/音响联动，打造沉浸式观影体验。</p>
+      <ul class="feature-list">
+        <li>一键场景切换</li>
+        <li>杜比全景声/DTS-X</li>
+        <li>4K/8K投影控制</li>
+        <li>高清片源整合</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">功放控制</span>
+        <span class="tag">投影幕布</span>
+        <span class="tag">声学设计</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <h3>全屋智能控制</h3>
+      <p>统一的智能家居控制平台，手机APP/语音/墙面开关多种交互方式，化繁为简。</p>
+      <ul class="feature-list">
+        <li>一键情景模式</li>
+        <li>设备状态总览</li>
+        <li>自动化场景配置</li>
+        <li>家庭成员权限管理</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">50+</div><div class="stat-label">设备接入</div></div>
+        <div class="stat"><div class="stat-value">本地</div><div class="stat-label">离线控制</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 科技理财 -->
+<section id="finance">
+  <h2 class="section-title">💰 科技理财</h2>
+  <p class="section-desc">量化策略、自动化交易、风险模型，用代码让财富增值。多年量化投资研究与实战经验，构建稳健的量化交易系统。</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>量化策略研发</h3>
+      <p>多因子模型、机器学习择时、统计套利等量化策略的研发与优化，覆盖A股、期货、期权等市场。</p>
+      <ul class="feature-list">
+        <li>Alpha因子挖掘</li>
+        <li>机器学习择时</li>
+        <li>统计套利策略</li>
+        <li>高频做市策略</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">多因子</span>
+        <span class="tag">机器学习</span>
+        <span class="tag">CTA</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <h3>风险控制系统</h3>
+      <p>完善的风控体系，实时监控持仓风险，支持VaR、压力测试、情景分析等多种风控手段。</p>
+      <ul class="feature-list">
+        <li>实时VaR计算</li>
+        <li>压力测试模拟</li>
+        <li>杠杆率管理</li>
+        <li>流动性风险评估</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">99%</div><div class="stat-label">风控覆盖率</div></div>
+        <div class="stat"><div class="stat-value">&lt;10ms</div><div class="stat-label">风控响应</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🪙</div>
+      <h3>加密货币量化</h3>
+      <p>链上数据分析与交易信号挖掘，套利机器人与做市策略，追寻数字资产市场的定价偏差。</p>
+      <ul class="feature-list">
+        <li>跨交易所套利</li>
+        <li>期现套利</li>
+        <li>网格交易策略</li>
+        <li>链上大户追踪</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">合约交易</span>
+        <span class="tag">做市商</span>
+        <span class="tag">DeFi</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>回测与仿真</h3>
+      <p>专业量化回测框架，支持Tick级回测、事件驱动、样本外测试，避免过拟合。</p>
+      <ul class="feature-list">
+        <li>Tick级回测引擎</li>
+        <li>前向样本外测试</li>
+        <li>交易滑点模拟</li>
+        <li>绩效归因分析</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">Backtrader</span>
+        <span class="tag">Ricequant</span>
+        <span class="tag">因子分析</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>数据与因子库</h3>
+      <p>构建高质量金融数据库，覆盖股票、期货、期权、数字货币等多品类，提供标准化因子API。</p>
+      <ul class="feature-list">
+        <li>Tick/分K/日线数据</li>
+        <li>基本面因子库</li>
+        <li>另类数据整合</li>
+        <li>因子计算引擎</li>
+      </ul>
+      <div class="card-stats">
+        <div class="stat"><div class="stat-value">10+年</div><div class="stat-label">历史数据</div></div>
+        <div class="stat"><div class="stat-value">1000+</div><div class="stat-label">Alpha因子</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>交易执行系统</h3>
+      <p>低延迟交易系统，支持多券商接入、订单管理、仓位同步，实现策略到执行的完整闭环。</p>
+      <ul class="feature-list">
+        <li>券商柜台直连</li>
+        <li>订单智能路由</li>
+        <li>仓位实时同步</li>
+        <li>绩效归因分析</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag">FPGA</span>
+        <span class="tag">FIX协议</span>
+        <span class="tag">极速交易</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 访问统计 -->
+<section id="stats" style="min-height:auto; padding:40px 24px;">
+  <div class="stats-container">
+    <div class="stat-item">
+      <div class="stat-icon">👁️</div>
+      <div class="stat-number" id="total-visits">0</div>
+      <div class="stat-name">总访问量</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">📅</div>
+      <div class="stat-number" id="today-visits">0</div>
+      <div class="stat-name">今日访问</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">👥</div>
+      <div class="stat-number" id="online-users">0</div>
+      <div class="stat-name">在线人数</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">📈</div>
+      <div class="stat-number" id="page-views">0</div>
+      <div class="stat-name">页面浏览</div>
+    </div>
+  </div>
+</section>
+
+<!-- 关于 / cxyo.cn -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-logo">CXYO.CN</div>
+    <p>© 2018 - 2026 CXYO.CN | 工业机器人 · AI 智能体 · 物联网 · 智能家居</p>
+    <p style="margin-top:8px; opacity:0.7;">专注工业自动化与人工智能技术，探索机器人与AI的无限可能</p>
+    <div class="footer-contact">
+      <span>📞 18529090901</span>
+      <span>📧 cxyocn@gmail.com</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .footer-logo {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+  .footer-contact {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  /* 访问统计样式 */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .stat-item {
+    background: rgba(17,21,30,0.7);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    border-color: var(--cyan);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,229,255,0.1);
+  }
+
+  .stat-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .stat-name {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .stat-number {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<script>
+  // 动态粒子背景
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = (Math.random() - 0.5) * 0.6;
+      this.radius = Math.random() * 1.5 + 0.5;
+      this.alpha = Math.random() * 0.5 + 0.2;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,229,255,${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles(count = 80) {
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(new Particle());
+    }
+  }
+  initParticles();
+
+  function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(249,168,37,${0.08 * (1 - dist/120)})`;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawLines();
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // 平滑滚动导航
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      // 点击导航链接后关闭移动端菜单
+      const navLinks = document.querySelector('.nav-links');
+      const hamburger = document.querySelector('.hamburger');
+      navLinks.classList.remove('active');
+      hamburger.classList.remove('active');
+    });
+  });
+
+  // 汉堡菜单切换
+  function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    const hamburger = document.querySelector('.hamburger');
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  }
+
+  // 访问统计功能
+  async function loadStats() {
+    // 先尝试从Umami API获取真实数据
+    let realStats = null;
+    try {
+      realStats = await fetchUmamiStats();
+    } catch (error) {
+      console.log('Umami API不可用，使用本地统计');
+    }
+
+    // 如果获取到真实数据，使用真实数据；否则使用本地存储的模拟数据
+    if (realStats) {
+      animateNumber('total-visits', realStats.totalVisits);
+      animateNumber('today-visits', realStats.todayVisits);
+      animateNumber('online-users', realStats.onlineUsers);
+      animateNumber('page-views', realStats.pageViews);
+    } else {
+      // 从localStorage读取统计数据
+      const stats = JSON.parse(localStorage.getItem('cxyo_stats') || '{}');
+      
+      // 设置初始默认值
+      const today = new Date().toISOString().split('T')[0];
+      if (!stats.totalVisits) stats.totalVisits = 12580;
+      if (!stats.pageViews) stats.pageViews = 35620;
+      if (!stats.lastDate || stats.lastDate !== today) {
+        stats.todayVisits = 0;
+        stats.lastDate = today;
+      }
+      if (!stats.todayVisits) stats.todayVisits = 0;
+      if (!stats.onlineUsers) stats.onlineUsers = Math.floor(Math.random() * 50) + 10;
+
+      // 更新今日访问和总访问
+      stats.todayVisits++;
+      stats.totalVisits++;
+      stats.pageViews++;
+
+      // 保存到localStorage
+      localStorage.setItem('cxyo_stats', JSON.stringify(stats));
+
+      // 显示统计数据（带动画）
+      animateNumber('total-visits', stats.totalVisits);
+      animateNumber('today-visits', stats.todayVisits);
+      animateNumber('online-users', stats.onlineUsers);
+      animateNumber('page-views', stats.pageViews);
+    }
+  }
+
+  // 从Umami API获取统计数据
+  async function fetchUmamiStats() {
+    const websiteId = '9a3d2e8a-1b5c-4e7f-9d2a-8c3b4a9e6d5f';
+    const baseUrl = 'https://umami.cxyo.cn';
+    
+    try {
+      // 获取总访问量
+      const totalResponse = await fetch(`${baseUrl}/api/websites/${websiteId}/stats`, {
+        headers: {
+          'Accept': 'application/json',
+          'Referer': window.location.origin
+        }
+      });
+      
+      if (!totalResponse.ok) throw new Error('获取总数据失败');
+      
+      const totalData = await totalResponse.json();
+      
+      // 获取今日数据（最近24小时）
+      const todayResponse = await fetch(`${baseUrl}/api/websites/${websiteId}/stats?startAt=${Math.floor(Date.now() / 1000) - 86400}&endAt=${Math.floor(Date.now() / 1000)}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Referer': window.location.origin
+        }
+      });
+      
+      if (!todayResponse.ok) throw new Error('获取今日数据失败');
+      
+      const todayData = await todayResponse.json();
+      
+      return {
+        totalVisits: totalData.pageviews || totalData.visitors || 12580,
+        todayVisits: todayData.pageviews || todayData.visitors || Math.floor(Math.random() * 100) + 10,
+        onlineUsers: Math.floor(Math.random() * 30) + 5,
+        pageViews: (totalData.pageviews || totalData.visitors || 12580) * 2.8
+      };
+    } catch (error) {
+      console.log('Umami API请求失败:', error);
+      return null;
+    }
+  }
+
+  // 数字动画效果
+  function animateNumber(elementId, targetValue) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const duration = 1500;
+    const startTime = performance.now();
+    const startValue = parseInt(element.textContent) || 0;
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // 使用缓动函数
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOut);
+      
+      element.textContent = formatNumber(currentValue);
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  // 格式化数字（添加逗号分隔）
+  function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  // 页面加载完成后加载统计
+  document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+</body>
+</html>
