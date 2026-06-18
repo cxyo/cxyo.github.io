@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能鱼缸自动补水系统 - C语言教程</title>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #11151e;
+      --gold: #f9a825;
+      --gold2: #ffd54f;
+      --cyan: #00e5ff;
+      --cyan2: #00838f;
+      --text: #d0d8e8;
+      --text-dim: #7a859e;
+      --border: #1e2a3a;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* 导航栏 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,12,16,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    /* 头部区域 */
+    .hero {
+      padding: 140px 24px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(0,229,255,0.05) 0%, transparent 100%);
+    }
+
+    .hero-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .tag.highlight {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* 主要内容区 */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* 目录 */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 48px;
+    }
+
+    .toc h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    .toc ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+    }
+
+    .toc a {
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 8px 12px;
+      display: block;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .toc a:hover {
+      background: rgba(0,229,255,0.1);
+      color: var(--cyan);
+    }
+
+    /* 章节 */
+    section {
+      margin-bottom: 64px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 20px;
+      margin: 32px 0 16px;
+      color: var(--cyan);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    /* 信息卡片 */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .info-card h4 {
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* 硬件连接图 */
+    .hardware-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+
+    .hardware-diagram pre {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre;
+    }
+
+    /* 引脚定义表格 */
+    .pin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .pin-table th,
+    .pin-table td {
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .pin-table th {
+      background: var(--surface);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .pin-table tr:hover td {
+      background: rgba(0,229,255,0.05);
+    }
+
+    /* 代码块 */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 24px 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-header span {
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    .code-header .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+
+    .code-header .copy-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .code-content {
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .code-content pre {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #c9d1d9;
+      white-space: pre;
+    }
+
+    /* 流程图 */
+    .flowchart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .flow-step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--cyan);
+      color: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+
+    .flow-step-content {
+      flex: 1;
+    }
+
+    .flow-step-content h4 {
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .flow-step-content p {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* 保护机制 */
+    .protection-card {
+      background: var(--surface);
+      border-left: 4px solid var(--danger);
+      border-radius: 0 12px 12px 0;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .protection-card.warning {
+      border-left-color: var(--warning);
+    }
+
+    .protection-card.success {
+      border-left-color: var(--success);
+    }
+
+    .protection-card h4 {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 要点列表 */
+    .key-points {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .key-points li {
+      padding: 12px 16px;
+      background: var(--surface);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .key-points li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* 注释高亮 */
+    .comment {
+      color: #8b949e;
+    }
+
+    .keyword {
+      color: #ff7b72;
+    }
+
+    .string {
+      color: #a5d6ff;
+    }
+
+    .function {
+      color: #d2a8ff;
+    }
+
+    .number {
+      color: #79c0ff;
+    }
+
+    /* 页脚 */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .code-content pre {
+        font-size: 12px;
+      }
+    }
+
+    /* 滚动动画 */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <span class="logo">CXYO.CN</span>
+      <ul class="nav-links">
+        <li><a href="#overview">项目概述</a></li>
+        <li><a href="#hardware">硬件连接</a></li>
+        <li><a href="#principle">工作原理</a></li>
+        <li><a href="#code">代码详解</a></li>
+        <li><a href="#download">完整代码</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-icon">🐠</div>
+    <h1>智能鱼缸自动补水系统</h1>
+    <p class="subtitle">基于 AI8051U 单片机的全自动水位控制，带三重保护机制，代码完全开源</p>
+    <div class="tags">
+      <span class="tag highlight">C语言</span>
+      <span class="tag highlight">51内核</span>
+      <span class="tag">AI8051U</span>
+      <span class="tag">水位传感器</span>
+      <span class="tag">继电器控制</span>
+      <span class="tag">看门狗</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 目录 -->
+    <nav class="toc">
+      <h2>📑 目录</h2>
+      <ul>
+        <li><a href="#overview">1. 项目概述</a></li>
+        <li><a href="#hardware">2. 硬件连接</a></li>
+        <li><a href="#principle">3. 工作原理</a></li>
+        <li><a href="#protection">4. 三重保护机制</a></li>
+        <li><a href="#code">5. 代码详解</a></li>
+        <li><a href="#download">6. 完整代码下载</a></li>
+      </ul>
+    </nav>
+
+    <!-- 项目概述 -->
+    <section id="overview">
+      <h2>📋 项目概述</h2>
+      
+      <p>这是一个完整的<strong>智能鱼缸自动补水系统</strong>，使用 AI8051U 单片机实现全自动水位控制。系统通过三个水位传感器监测水位状态，自动控制水泵进行补水，并具备完善的三重保护机制。</p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <h4>🎯 实现功能</h4>
+          <ul style="list-style: disc; padding-left: 20px; color: var(--text-dim);">
+            <li>自动检测水位低于下限</li>
+            <li>自动启动水泵补水</li>
+            <li>水位达到上限自动停止</li>
+            <li>异常情况报警提示</li>
+            <li>看门狗防死机</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>⚙️ 技术参数</h4>
+          <ul style="list-style: disc; padding-left: 20px; color: var(--text-dim);">
+            <li>芯片：AI8051U（C251内核）</li>
+            <li>水位检测：3路低电平有效</li>
+            <li>控制输出：1路继电器驱动</li>
+            <li>补水时间：最长45秒</li>
+            <li>看门狗：约1秒溢出周期</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 硬件连接 -->
+    <section id="hardware">
+      <h2>🔌 硬件连接</h2>
+      
+      <p>系统使用3个水位传感器检测水位，配合1个继电器控制水泵。以下是详细的引脚定义：</p>
+
+      <h3>引脚定义表</h3>
+      <table class="pin-table">
+        <thead>
+          <tr>
+            <th>引脚</th>
+            <th>功能</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P01</strong></td>
+            <td>低水位传感器</td>
+            <td>水位低于下限时触发（低电平有效）</td>
+          </tr>
+          <tr>
+            <td><strong>P02</strong></td>
+            <td>中水位传感器</td>
+            <td>水位达到中部时触发（低电平有效）</td>
+          </tr>
+          <tr>
+            <td><strong>P03</strong></td>
+            <td>高水位传感器</td>
+            <td>水位达到上限时触发（低电平有效）</td>
+          </tr>
+          <tr>
+            <td><strong>P20</strong></td>
+            <td>补水继电器</td>
+            <td>0=启动水泵，1=停止水泵</td>
+          </tr>
+          <tr>
+            <td><strong>P27</strong></td>
+            <td>报警输出</td>
+            <td>异常时输出低电平驱动报警</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>硬件连接示意图</h3>
+      <div class="hardware-diagram">
+        <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                        智能鱼缸补水系统                           │
+│                      硬件连接示意图                               │
+└─────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────┐                              ┌──────────────┐
+    │   AI8051U    │                              │   鱼 缸      │
+    │   开发板     │                              │              │
+    ├──────────────┤                              │   ══════════ │ ← 高水位传感器(P03)
+    │              │    ┌───────────┐             │   ══════════ │ ← 中水位传感器(P02)
+    │  P01 ◄───────┼────│ 低水位    │             │   ══════════ │ ← 低水位传感器(P01)
+    │  P02 ◄───────┼────│ 中水位    │             │              │
+    │  P03 ◄───────┼────│ 高水位    │             │      ~~~     │
+    │              │    └───────────┘             │     (鱼)     │
+    │  P20 ────────┼────┐                         │      ~~~     │
+    │              │    │  ┌────────┐    ┌─────┐   │              │
+    │  P27 ────────┼────┴──│ 继电器 │─── │水泵 │   │      ▓▓▓    │
+    │              │       └────────┘    └─────┘   │     (水)     │
+    └──────────────┘                              └──────────────┘
+
+接线说明：
+┌────────────────────────────────────────────────────────────────┐
+│  水位传感器（浮球式）：                                            │
+│  ├── 公共端(COM) ──► 接开发板 GND                                  │
+│  ├── 低水位(LOW) ──► 接 P01（通过10K上拉电阻到VCC）               │
+│  ├── 中水位(MID) ──► 接 P02（通过10K上拉电阻到VCC）               │
+│  └── 高水位(HIGH) ──► 接 P03（通过10K上拉电阻到VCC）              │
+│                                                                    │
+│  补水继电器模块：                                                  │
+│  ├── VCC ──► 开发板 5V                                            │
+│  ├── GND ──► 开发板 GND                                           │
+│  ├── IN  ──► 开发板 P20                                           │
+│  └── COM ──► 水泵电源正极                                         │
+│        NO ──► 水泵电源负极（继电器闭合时导通）                      │
+│                                                                    │
+│  报警LED：                                                         │
+│  ├── 正极 ──► P27（串联470Ω电阻）                                 │
+│  └── 负极 ──► GND                                                 │
+└────────────────────────────────────────────────────────────────┘
+        </pre>
+      </div>
+
+      <div class="info-card">
+        <h4>💡 传感器工作原理</h4>
+        <p style="color: var(--text-dim);">水位传感器采用<strong>浮球式机械开关</strong>，当水位上升到触发位置时，浮球触动微动开关，使其导通。由于电路设计上使用<strong>低电平有效</strong>，所以传感器导通时对应引脚为低电平（0），未触发时为高电平（1）。</p>
+      </div>
+    </section>
+
+    <!-- 工作原理 -->
+    <section id="principle">
+      <h2>⚙️ 工作原理</h2>
+
+      <h3>控制逻辑流程</h3>
+      <div class="flowchart">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-content">
+            <h4>系统初始化</h4>
+            <p>配置所有IO端口为双向模式，初始化水泵为停止状态，启动看门狗定时器</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-content">
+            <h4>读取水位状态</h4>
+            <p>实时读取P01、P02、P03三个水位传感器的状态（低电平=到达该水位）</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-content">
+            <h4>判断补水条件</h4>
+            <p>只要高水位未触发(P03=1)，就启动水泵补水，直到高水位传感器触发</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-content">
+            <h4>执行保护检测</h4>
+            <p>在补水过程中持续监测三重保护条件，发现异常立即停泵并报警</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-content">
+            <h4>循环执行</h4>
+            <p>每次循环结束前喂狗（清零看门狗计数器），防止系统复位</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>水位与传感器状态对应关系</h3>
+      <table class="pin-table">
+        <thead>
+          <tr>
+            <th>水位状态</th>
+            <th>低水位(P01)</th>
+            <th>中水位(P02)</th>
+            <th>高水位(P03)</th>
+            <th>水泵动作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>水位过低</td>
+            <td>1 (未触)</td>
+            <td>1 (未触)</td>
+            <td>1 (未触)</td>
+            <td>启动补水</td>
+          </tr>
+          <tr>
+            <td>水位偏低</td>
+            <td>0 (触发)</td>
+            <td>1 (未触)</td>
+            <td>1 (未触)</td>
+            <td>启动补水</td>
+          </tr>
+          <tr>
+            <td>水位适中</td>
+            <td>0 (触发)</td>
+            <td>0 (触发)</td>
+            <td>1 (未触)</td>
+            <td>启动补水</td>
+          </tr>
+          <tr>
+            <td>水位正常</td>
+            <td>0 (触发)</td>
+            <td>0 (触发)</td>
+            <td>0 (触发)</td>
+            <td>停止补水</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 三重保护机制 -->
+    <section id="protection">
+      <h2>🛡️ 三重保护机制</h2>
+
+      <p>为了确保系统在各种异常情况下都能安全运行，本系统设计了<strong>三重保护机制</strong>：</p>
+
+      <div class="protection-card">
+        <h4>🛑 第一重保护：高水位触发立即停泵（硬保护）</h4>
+        <p style="color: var(--text-dim); margin-top: 8px;">当高水位传感器触发时，立即关闭水泵。这是最直接的物理保护，不依赖任何软件逻辑。</p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-dim);">
+          <li>触发条件：<code>P03 == 0</code>（高水位到达）</li>
+          <li>执行动作：<code>P20 = 1</code>（停止水泵）</li>
+          <li>保护目的：防止水溢出鱼缸</li>
+        </ul>
+      </div>
+
+      <div class="protection-card warning">
+        <h4>⚠️ 第二重保护：中水位超时强制停泵（软保护）</h4>
+        <p style="color: var(--text-dim); margin-top: 8px;">当中水位触发后，如果在规定时间内未检测到高水位，则判断高水位传感器失效，强制停泵报警。</p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-dim);">
+          <li>触发条件：中水位触发后等待超过 <code>MAX_LOW_HOLD</code>（10秒）</li>
+          <li>执行动作：停止水泵 + 置位报警标志 <code>alarm_flag = 1</code></li>
+          <li>保护目的：防止高水位传感器故障导致无限补水</li>
+        </ul>
+      </div>
+
+      <div class="protection-card warning">
+        <h4>⚠️ 第三重保护：总补水时间超时停泵（超时保护）</h4>
+        <p style="color: var(--text-dim); margin-top: 8px;">如果水泵持续运行时间超过最大允许时间，则判断系统异常（水泵故障、管路漏水等），强制停泵报警。</p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-dim);">
+          <li>触发条件：连续补水时间超过 <code>MAX_WATER_TIME</code>（45秒）</li>
+          <li>执行动作：停止水泵 + 置位报警标志 <code>alarm_flag = 1</code></li>
+          <li>保护目的：防止水泵故障、管路破裂等导致水灾</li>
+        </ul>
+      </div>
+
+      <div class="protection-card success">
+        <h4>✅ 看门狗保护</h4>
+        <p style="color: var(--text-dim); margin-top: 8px;">看门狗定时器用于防止程序死循环或跑飞。如果主循环卡死无法喂狗，约1秒后看门狗会复位系统。</p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-dim);">
+          <li>配置：256分频，约1秒溢出周期</li>
+          <li>喂狗位置：主循环开头，每次迭代必须执行</li>
+          <li>保护目的：防止程序异常导致无法响应</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 代码详解 -->
+    <section id="code">
+      <h2>📝 代码详解</h2>
+
+      <h3>1. 头文件与宏定义</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>ai8051u.h - 芯片头文件</span>
+          <button class="copy-btn" onclick="copyCode(this)">复制</button>
+        </div>
+        <div class="code-content">
+          <pre><span class="comment">/************************** 智能鱼缸自动补水系统 **************************</span>
+<span class="comment"> * 芯片：AI8051U（C251内核）</span>
+<span class="comment"> * 传感器（低电平有效）：</span>
+<span class="comment"> *   P01 – 低水位（水位低于下限）</span>
+<span class="comment"> *   P02 – 中水位（水位达到中部）</span>
+<span class="comment"> *   P03 – 高水位（水位达到上限）</span>
+<span class="comment"> * 执行器：</span>
+<span class="comment"> *   P20 – 补水继电器（0=启动，1=停止）</span>
+<span class="comment"> ************************************************************************/</span>
+
+<span class="keyword">#include</span> <span class="string">"ai8051u.h"</span>          <span class="comment">// AI8051U寄存器定义</span>
+<span class="keyword">#include</span> <span class="string">"ai_usb.h"</span>           <span class="comment">// USB库（保留未使用）</span></pre>
+        </div>
+      </div>
+
+      <h3>2. 超时阈值定义</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>阈值定义</span>
+          <button class="copy-btn" onclick="copyCode(this)">复制</button>
+        </div>
+        <div class="code-content">
+          <pre><span class="comment">/*--------------------- 超时阈值定义（需实际标定） ---------------------*/</span>
+<span class="comment">// 假设主循环周期约1ms，正常补水30秒，则：</span>
+<span class="keyword">#define</span> MAX_WATER_TIME   <span class="number">45000</span>   <span class="comment">// 最长补水时间 45秒（1.5倍冗余）</span>
+<span class="keyword">#define</span> MAX_LOW_HOLD     <span class="number">10000</span>   <span class="comment">// 中水位触发后等待高水位的超时 10秒</span>
+
+<span class="comment">/*--------------------- 看门狗配置 ---------------------*/</span>
+<span class="comment">// WDT_CONTR 寄存器位定义（STC标准）</span>
+<span class="keyword">#define</span> WDT_ENABLE  <span class="number">0x80</span>        <span class="comment">// 使能看门狗</span>
+<span class="keyword">#define</span> WDT_CLR     <span class="number">0x08</span>        <span class="comment">// 清零看门狗计数器</span>
+<span class="keyword">#define</span> WDT_PRESCALE <span class="number">0x04</span>       <span class="comment">// 预分频：256分频（约1秒溢出，需根据时钟调整）</span>
+
+<span class="comment">// 喂狗宏 - 每次调用都会重置看门狗计数器</span>
+<span class="keyword">#define</span> FEED_WDT()  WDT_CONTR = WDT_ENABLE | WDT_CLR | WDT_PRESCALE</pre>
+        </div>
+      </div>
+
+      <h3>3. 主函数 - 初始化部分</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>main() 函数 - 初始化</span>
+          <button class="copy-btn" onclick="copyCode(this)">复制</button>
+        </div>
+        <div class="code-content">
+          <pre><span class="comment">/*--------------------- 主函数 ---------------------*/</span>
+<span class="keyword">void</span> <span class="function">main</span>(<span class="keyword">void</span>) 
+{
+    <span class="comment">// ***** 所有变量定义必须放在函数开头（C89规则） *****</span>
+    <span class="keyword">unsigned char</span> pump_status = <span class="number">0</span>;   <span class="comment">// 水泵状态：0=停止，1=运行</span>
+    <span class="keyword">unsigned int</span>  water_time = <span class="number">0</span>;    <span class="comment">// 本次补水累计循环次数</span>
+    <span class="keyword">unsigned int</span>  low_hold_time = <span class="number">0</span>; <span class="comment">// 中水位触发后的等待计数</span>
+    <span class="keyword">unsigned char</span> alarm_flag = <span class="number">0</span>;    <span class="comment">// 报警标志（1=报警）</span>
+    <span class="keyword">unsigned char</span> low, mid, high;    <span class="comment">// 传感器状态暂存（用于赋值）</span>
+
+    <span class="comment">// ---------- 端口初始化：全部设为准双向模式 ----------</span>
+    P0M0 = <span class="number">0</span>; P0M1 = <span class="number">0</span>;
+    P1M0 = <span class="number">0</span>; P1M1 = <span class="number">0</span>;
+    P2M0 = <span class="number">0</span>; P2M1 = <span class="number">0</span>;
+    P3M0 = <span class="number">0</span>; P3M1 = <span class="number">0</span>;
+    P4M0 = <span class="number">0</span>; P4M1 = <span class="number">0</span>;
+    P5M0 = <span class="number">0</span>; P5M1 = <span class="number">0</span>;
+
+    <span class="comment">// ---------- 水泵初始状态：停止（继电器高电平断开） ----------</span>
+    P20 = <span class="number">1</span>;
+
+    <span class="comment">// ---------- 看门狗初始化 ----------</span>
+    WDT_CONTR = WDT_ENABLE | WDT_PRESCALE | WDT_CLR;</pre>
+        </div>
+      </div>
+
+      <h3>4. 主函数 - 主循环逻辑</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span>main() 函数 - 主循环</span>
+          <button class="copy-btn" onclick="copyCode(this)">复制</button>
+        </div>
+        <div class="code-content">
+          <pre>    <span class="comment">// ---------- 主循环 ----------</span>
+    <span class="keyword">while</span>(<span class="number">1</span>) 
+    {
+        <span class="comment">// 喂狗（每次循环必须执行，防止复位）</span>
+        FEED_WDT();
+
+        <span class="comment">// 读取三个水位传感器（低电平表示到达该水位）</span>
+        low  = P01;
+        mid  = P02;
+        high = P03;
+
+        <span class="comment">/************* 第一重保护：高水位触发立即停止 *************/</span>
+        <span class="keyword">if</span> (high == <span class="number">0</span>)          <span class="comment">// 高水位已到达（传感器导通）</span>
+        {
+            P20 = <span class="number">1</span>;            <span class="comment">// 关闭补水</span>
+            pump_status = <span class="number">0</span>;    <span class="comment">// 标记停止</span>
+            water_time = <span class="number">0</span>;     <span class="comment">// 清除补水计时</span>
+            low_hold_time = <span class="number">0</span>;  <span class="comment">// 清除等待计数</span>
+            alarm_flag = <span class="number">0</span>;     <span class="comment">// 清除报警（水位正常）</span>
+            <span class="keyword">continue</span>;           <span class="comment">// 跳过后续逻辑，开始下一循环</span>
+        }
+
+        <span class="comment">/************* 第二重保护：中水位作为辅助上限 *************/</span>
+        <span class="comment">// 当中水位触发后，若长时间未检测到高水位，则判断高水位传感器失效</span>
+        <span class="keyword">if</span> (mid == <span class="number">0</span>)           <span class="comment">// 中水位已到达</span>
+        {
+            low_hold_time++;    <span class="comment">// 累计中水位保持时间</span>
+            <span class="keyword">if</span> (low_hold_time > MAX_LOW_HOLD)   <span class="comment">// 超时</span>
+            {
+                P20 = <span class="number">1</span>;        <span class="comment">// 强制停泵</span>
+                pump_status = <span class="number">0</span>;
+                alarm_flag = <span class="number">1</span>; <span class="comment">// 置报警标志</span>
+                water_time = <span class="number">0</span>;
+                <span class="keyword">continue</span>;
+            }
+        }
+        <span class="keyword">else</span>                    <span class="comment">// 中水位未触发（水位低于中水位）</span>
+        {
+            low_hold_time = <span class="number">0</span>;  <span class="comment">// 清零等待计数</span>
+        }
+
+        <span class="comment">/************* 第三重保护：总补水时间超限 *************/</span>
+        <span class="comment">// 若水泵持续运行超过最大允许时间，认为系统异常</span>
+        <span class="keyword">if</span> (pump_status == <span class="number">1</span>)   <span class="comment">// 当前正在补水</span>
+        {
+            water_time++;       <span class="comment">// 累计补水时间</span>
+            <span class="keyword">if</span> (water_time > MAX_WATER_TIME)    <span class="comment">// 超时</span>
+            {
+                P20 = <span class="number">1</span>;        <span class="comment">// 强制停泵</span>
+                pump_status = <span class="number">0</span>;
+                alarm_flag = <span class="number">1</span>;
+                water_time = <span class="number">0</span>;
+                <span class="keyword">continue</span>;
+            }
+        }
+
+        <span class="comment">/************* 正常补水逻辑（满足三条需求） *************/</span>
+        <span class="comment">// 只要高水位未触发（high == 1），就启动补水</span>
+        <span class="keyword">if</span> (high == <span class="number">1</span>)          <span class="comment">// 高水位未到达</span>
+        {
+            P20 = <span class="number">0</span>;            <span class="comment">// 启动水泵</span>
+            pump_status = <span class="number">1</span>;    <span class="comment">// 标记运行</span>
+        }
+        <span class="keyword">else</span>
+        {
+            P20 = <span class="number">1</span>;
+            pump_status = <span class="number">0</span>;
+        }
+
+        <span class="comment">/************* 报警输出（可选） *************/</span>
+        <span class="keyword">if</span> (alarm_flag) P27 = <span class="number">0</span>; <span class="keyword">else</span> P27 = <span class="number">1</span>;
+    }
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 完整代码 -->
+    <section id="download">
+      <h2>💾 完整代码</h2>
+      
+      <p>以下是本项目的完整源代码，可以直接复制使用或下载到本地编译。</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span>water_refill.c - 智能鱼缸自动补水系统完整代码</span>
+          <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+        </div>
+        <div class="code-content">
+          <pre>/************************** 智能鱼缸自动补水系统 **************************
+ * 芯片：AI8051U（C251内核）
+ * 传感器（低电平有效）：
+ *   P01 – 低水位（水位低于下限）
+ *   P02 – 中水位（水位达到中部）
+ *   P03 – 高水位（水位达到上限）
+ * 执行器：
+ *   P20 – 补水继电器（0=启动，1=停止）
+ * 
+ * 控制需求：
+ *   1. 三个均未触发（水位低于低水位）→ 启动补水，直至高水位触发停止。
+ *   2. 仅低水位触发（水位在低-中之间）→ 启动补水，直至高水位触发停止。
+ *   3. 低+中水位触发（水位在中-高之间）→ 启动补水，直至高水位触发停止。
+ * 
+ * 保护机制（三重）：
+ *   ① 高水位触发立即停泵（硬保护）
+ *   ② 中水位触发后长时间未到高水位 → 认为高水位失效，强制停泵报警
+ *   ③ 总补水时间超限 → 水泵/管路异常，强制停泵报警
+ * 
+ * 看门狗：启用，溢出周期约1秒，主循环喂狗。
+ ************************************************************************/
+
+#include "ai8051u.h"          // AI8051U寄存器定义
+#include "ai_usb.h"           // USB库（保留未使用）
+
+/*--------------------- 超时阈值定义（需实际标定） ---------------------*/
+// 假设主循环周期约1ms，正常补水30秒，则：
+#define MAX_WATER_TIME   45000   // 最长补水时间 45秒（1.5倍）
+#define MAX_LOW_HOLD     10000   // 中水位触发后等待高水位的超时 10秒
+
+/*--------------------- 看门狗配置 ---------------------*/
+// WDT_CONTR 寄存器位定义（STC标准）
+#define WDT_ENABLE  0x80        // 使能看门狗
+#define WDT_CLR     0x08        // 清零看门狗计数器
+#define WDT_PRESCALE 0x04       // 预分频：256分频（约1秒溢出，需根据时钟调整）
+
+// 喂狗宏
+#define FEED_WDT()  WDT_CONTR = WDT_ENABLE | WDT_CLR | WDT_PRESCALE
+
+/*--------------------- 主函数 ---------------------*/
+void main(void) 
+{
+    // ***** 所有变量定义必须放在函数开头（C89规则） *****
+    unsigned char pump_status = 0;   // 水泵状态：0=停止，1=运行
+    unsigned int  water_time = 0;    // 本次补水累计循环次数
+    unsigned int  low_hold_time = 0; // 中水位触发后的等待计数
+    unsigned char alarm_flag = 0;    // 报警标志（1=报警）
+    unsigned char low, mid, high;    // 传感器状态暂存（用于赋值）
+
+    // ---------- 端口初始化：全部设为准双向模式 ----------
+    P0M0 = 0; P0M1 = 0;
+    P1M0 = 0; P1M1 = 0;
+    P2M0 = 0; P2M1 = 0;
+    P3M0 = 0; P3M1 = 0;
+    P4M0 = 0; P4M1 = 0;
+    P5M0 = 0; P5M1 = 0;
+
+    // ---------- 水泵初始状态：停止（继电器高电平断开） ----------
+    P20 = 1;
+
+    // ---------- 看门狗初始化 ----------
+    WDT_CONTR = WDT_ENABLE | WDT_PRESCALE | WDT_CLR;
+
+    // ---------- 主循环 ----------
+    while(1) 
+    {
+        // 喂狗（每次循环必须执行，防止复位）
+        FEED_WDT();
+
+        // 读取三个水位传感器（低电平表示到达该水位）
+        low  = P01;
+        mid  = P02;
+        high = P03;
+
+        /************* 第一重保护：高水位触发立即停止 *************/
+        if (high == 0)          // 高水位已到达（传感器导通）
+        {
+            P20 = 1;            // 关闭补水
+            pump_status = 0;    // 标记停止
+            water_time = 0;     // 清除补水计时
+            low_hold_time = 0;  // 清除等待计数
+            alarm_flag = 0;     // 清除报警（水位正常）
+            continue;           // 跳过后续逻辑，开始下一循环
+        }
+
+        /************* 第二重保护：中水位作为辅助上限 *************/
+        // 当中水位触发后，若长时间未检测到高水位，则判断高水位传感器失效
+        if (mid == 0)           // 中水位已到达
+        {
+            low_hold_time++;    // 累计中水位保持时间
+            if (low_hold_time > MAX_LOW_HOLD)   // 超时
+            {
+                P20 = 1;        // 强制停泵
+                pump_status = 0;
+                alarm_flag = 1; // 置报警标志
+                water_time = 0;
+                continue;
+            }
+        }
+        else                    // 中水位未触发（水位低于中水位）
+        {
+            low_hold_time = 0;  // 清零等待计数
+        }
+
+        /************* 第三重保护：总补水时间超限 *************/
+        // 若水泵持续运行超过最大允许时间，认为系统异常（水泵/管路故障）
+        if (pump_status == 1)   // 当前正在补水
+        {
+            water_time++;       // 累计补水时间
+            if (water_time > MAX_WATER_TIME)    // 超时
+            {
+                P20 = 1;        // 强制停泵
+                pump_status = 0;
+                alarm_flag = 1;
+                water_time = 0;
+                continue;
+            }
+        }
+
+        /************* 正常补水逻辑（满足三条需求） *************/
+        // 只要高水位未触发（high == 1），就启动补水
+        // 此条件覆盖：
+        //   - 三个都未触发（low=1, mid=1, high=1）→ 补水（需求1）
+        //   - 仅低水位触发（low=0, mid=1, high=1）→ 补水（需求2）
+        //   - 低+中触发（low=0, mid=0, high=1）→ 补水（需求3）
+        if (high == 1)          // 高水位未到达
+        {
+            P20 = 0;            // 启动水泵
+            pump_status = 1;    // 标记运行
+            // water_time 会在下一轮循环中由第三重保护累加
+        }
+        else
+        {
+            // 高水位触发（理论上已被第一重拦截，此处作为备胎）
+            P20 = 1;
+            pump_status = 0;
+        }
+
+        /************* 报警输出（可选） *************/
+        // 若报警标志置1，可点亮LED或通过USB上报
+        if (alarm_flag) P27 = 0; else P27 = 1;
+    }
+}</pre>
+        </div>
+      </div>
+
+      <h3>使用说明</h3>
+      <ul class="key-points">
+        <li>将 <code>ai8051u.h</code> 和 <code>ai_usb.h</code> 头文件放到工程目录</li>
+        <li>使用 Keil C51 或 SDCC 编译器编译</li>
+        <li>通过 ISP 工具烧录到 AI8051U 芯片</li>
+        <li>根据实际补水时间调整 MAX_WATER_TIME 和 MAX_LOW_HOLD 阈值</li>
+        <li>P27 可连接蜂鸣器或 LED 用于报警提示</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2018 - 2026 CXYO.CN | 智能鱼缸自动补水系统 - C语言教程</p>
+    <p style="margin-top: 8px;">
+      <a href="https://cxyo.cn/">返回首页</a>
+    </p>
+  </footer>
+
+  <script>
+    // 代码复制功能
+    function copyCode(btn) {
+      const codeBlock = btn.closest('.code-block');
+      const code = codeBlock.querySelector('pre').textContent;
+      
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = '已复制!';
+        btn.style.borderColor = '#4caf50';
+        btn.style.color = '#4caf50';
+        
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('复制失败:', err);
+        btn.textContent = '复制失败';
+        setTimeout(() => {
+          btn.textContent = '复制';
+        }, 2000);
+      });
+    }
+
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
