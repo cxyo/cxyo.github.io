@@ -1419,11 +1419,22 @@
   <div class="footer-content">
     <div class="footer-logo">CXYO.CN</div>
     <p>© 2018 - 2026 CXYO.CN | 工业机器人 · AI 智能体 · 物联网 · 智能家居</p>
-    <a href="https://cxyo.cn/ainews/" class="card-link">AI新闻 →</a>
     <p style="margin-top:8px; opacity:0.7;">专注工业自动化与人工智能技术，探索机器人与AI的无限可能</p>
     <div class="footer-contact">
       <span>📞 18529090901</span>
       <span>📧 cxyocn@gmail.com</span>
+    </div>
+    
+    <div class="footer-links">
+      <h4>友情链接</h4>
+      <div class="links-grid">
+        <a href="https://cxyo.cn/ainews/" target="_blank" rel="noopener">📰 AI实时新闻</a>
+        <a href="https://cxyo.cn/zjzst/" target="_blank" rel="noopener">📈 基金走势图</a>
+        <a href="https://cxyo.cn/fund/" target="_blank" rel="noopener">🌡️ 基金温度</a>
+        <a href="https://www.stcaimcu.com/plugin.php?id=zqlj_sign" target="_blank" rel="noopener">📅 论坛打卡</a>
+        <a href="https://www.stcaimcu.com/thread-11009-1-1.html" target="_blank" rel="noopener">🤖 擎天柱</a>
+        <a href="https://fbinv02.fbaff.cc/auth/register?code=vChYdSuK" target="_blank" rel="noopener">🔗 VPN</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -1450,6 +1461,43 @@
     margin-top: 16px;
     font-size: 14px;
     color: var(--text-dim);
+  }
+
+  .footer-links {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-links h4 {
+    font-size: 14px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .links-grid a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.3s;
+  }
+
+  .links-grid a:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+    background: rgba(0,229,255,0.1);
   }
 
   /* 访问统计样式 */
@@ -1501,6 +1549,17 @@
     }
     .stat-number {
       font-size: 24px;
+    }
+    .footer-links {
+      padding-top: 16px;
+      margin-top: 20px;
+    }
+    .links-grid {
+      gap: 10px;
+    }
+    .links-grid a {
+      font-size: 12px;
+      padding: 5px 10px;
     }
   }
 </style>
