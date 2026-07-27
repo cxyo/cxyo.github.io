@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机器人恒力打磨SOP - CXYO.CN</title>
+  <script async defer src="https://umami.cxyo.cn/script.js" data-website-id="9a3d2e8a-1b5c-4e7f-9d2a-8c3b4a9e6d5f"></script>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #11151e;
+      --gold: #f9a825;
+      --gold2: #ffd54f;
+      --cyan: #00e5ff;
+      --cyan2: #00838f;
+      --text: #d0d8e8;
+      --text-dim: #7a859e;
+      --border: #1e2a3a;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,12,16,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .hero {
+      padding: 140px 24px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(0,229,255,0.05) 0%, transparent 100%);
+    }
+
+    .hero-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto 32px;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .tag.highlight {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 48px;
+    }
+
+    .toc h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--gold);
+    }
+
+    .toc ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+    }
+
+    .toc a {
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 8px 12px;
+      display: block;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .toc a:hover {
+      background: rgba(0,229,255,0.1);
+      color: var(--cyan);
+    }
+
+    section {
+      margin-bottom: 64px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 22px;
+      margin: 32px 0 16px;
+      color: var(--cyan);
+    }
+
+    h4 {
+      font-size: 18px;
+      margin: 24px 0 12px;
+      color: var(--gold);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    em {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .info-card h4 {
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface);
+      color: var(--gold);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: rgba(0,229,255,0.05);
+    }
+
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 24px 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-header span {
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    .code-header .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+
+    .code-header .copy-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .code-content {
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .code-content pre {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #c9d1d9;
+      white-space: pre;
+    }
+
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 28px;
+      color: var(--text);
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: var(--gold);
+    }
+
+    blockquote {
+      border-left: 4px solid var(--cyan);
+      padding: 16px 20px;
+      margin: 24px 0;
+      background: rgba(0,229,255,0.05);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-dim);
+    }
+
+    blockquote strong {
+      color: var(--cyan);
+    }
+
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .module-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .module-desc {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .key-points {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .key-points li {
+      padding: 12px 16px;
+      background: var(--surface);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .key-points li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .code-content pre {
+        font-size: 12px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 8px 10px;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .material-highlight {
+      background: rgba(249,168,37,0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--gold);
+    }
+
+    .danger-text {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .warning-text {
+      color: var(--warning);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <span class="logo">CXYO.CN</span>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="#overview">概述</a></li>
+        <li><a href="#materials">工艺参数</a></li>
+        <li><a href="#modules">代码模块</a></li>
+        <li><a href="#appendix">附录</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-icon">⚙️</div>
+    <h1>工业机器人恒力打磨标准工艺SOP</h1>
+    <p class="subtitle">融合恒力控、视觉补偿、自动换料及柔性打样等主流工业应用场景的完整工艺指南与108+5高效复用代码库</p>
+    <div class="tags">
+      <span class="tag highlight">恒力控制</span>
+      <span class="tag highlight">跨材质工艺</span>
+      <span class="tag">力控打磨</span>
+      <span class="tag">工艺参数库</span>
+      <span class="tag">代码模块</span>
+      <span class="tag">柔性打样</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="toc">
+      <h2>📑 目录</h2>
+      <ul>
+        <li><a href="#overview">1. 概述与应用场景</a></li>
+        <li><a href="#materials">2. 十大打磨材质工艺参数配置表</a></li>
+        <li><a href="#modules">3. 5大柔性打样模块</a></li>
+        <li><a href="#code-lib">4. 108个高效复用代码模块</a></li>
+        <li><a href="#appendix">5. 附录与常用命令</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>📘 概述与应用场景</h2>
+      
+      <blockquote>
+        <p><strong>说明：</strong> 本标准基于大儒/BPH机器人控制器语法编写，融合恒力控、视觉补偿、自动换料及柔性打样等主流工业应用场景。</p>
+      </blockquote>
+
+      <h3>1. 工业机器人打磨主流应用场景及工艺趋势</h3>
+
+      <h4>主流场景</h4>
+      <ul>
+        <li><strong>汽车零部件</strong>：轮毂/保险杠打磨</li>
+        <li><strong>3C消费电子</strong>：手机壳/笔记本外壳去毛刺</li>
+        <li><strong>航空航天</strong>：碳纤维复合材料打磨</li>
+        <li><strong>卫浴五金</strong>：水龙头抛光</li>
+        <li><strong>木制家具</strong>：表面精修</li>
+        <li><strong>重型工程机械</strong>：结构件焊缝打磨</li>
+      </ul>
+
+      <h4>主流控制趋势</h4>
+      <p>目前行业内已全面进入<strong>"六轴机器人 + 恒力控（主动力控）+ 视觉定位 + 浮动砂带/砂轮"</strong>的集成时代。机器人的编程已经不局限于"点位"，而是以"工艺包"的形式，将<strong>压力参数、磨损补偿、磨具寿命</strong>作为变量进行管理。</p>
+
+      <div class="info-card">
+        <h4>💡 核心技术要点</h4>
+        <ul style="color: var(--text-dim); padding-left: 20px;">
+          <li><strong>恒力控制</strong>：保持打磨过程中接触力恒定，保证加工一致性</li>
+          <li><strong>视觉补偿</strong>：通过视觉系统检测工件偏差，自动调整打磨路径</li>
+          <li><strong>自动换料</strong>：实现工件自动上下料，提高生产效率</li>
+          <li><strong>柔性打样</strong>：快速切换不同材质工艺参数，缩短新产品打样周期</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="materials">
+      <h2>📊 十大打磨材质工艺参数核心配置表</h2>
+      
+      <p><em>此表是您未来编写"打样程序"的核心依据。后续的生产中，只需将机器人控制柜HMI上的材质参数调整为下表中的对应数值。</em></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>材质名称</th>
+            <th>推荐打磨耗材</th>
+            <th>力控压力 GR1 (N)</th>
+            <th>推荐线速度 VL (mm/s)</th>
+            <th>平滑度 PL</th>
+            <th>核心工艺注意事项</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>碳纤维复合材料 (CFRP)</strong></td>
+            <td>金刚石磨头/400目以上细砂</td>
+            <td><strong>2 ~ 5 (极低压)</strong></td>
+            <td><strong>150 ~ 250</strong></td>
+            <td>3.0~5.0</td>
+            <td><strong class="danger-text">磨穿禁忌！</strong> 压力稍高或速度稍快极易导致分层撕裂，报废率极高。必须极低压、慢速。</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>铝合金 (6061/7075)</strong></td>
+            <td>320~400目氧化铝砂纸</td>
+            <td>8 ~ 15</td>
+            <td>400 ~ 600</td>
+            <td>5.0~7.0</td>
+            <td>注意铝屑粘连导致砂纸堵塞，建议配合冷却喷雾。</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>镁合金</strong></td>
+            <td>400目以上细砂/金刚石</td>
+            <td>5 ~ 10</td>
+            <td>300 ~ 500</td>
+            <td>4.0~6.0</td>
+            <td>易燃材质！必须全程配合冷却系统，禁止干磨。</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>不锈钢 (304/316)</strong></td>
+            <td>碳化硅砂纸/陶瓷磨头</td>
+            <td>12 ~ 20</td>
+            <td>300 ~ 500</td>
+            <td>4.0~6.0</td>
+            <td>韧性大，易产生加工硬化，建议分段打磨逐步细化。</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>碳钢/铸铁</strong></td>
+            <td>氧化铝砂纸/砂轮</td>
+            <td>15 ~ 25</td>
+            <td>500 ~ 800</td>
+            <td>6.0~8.0</td>
+            <td>粉尘量大，注意除尘系统配合，防止铁屑飞溅。</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>钛合金 (TC4)</strong></td>
+            <td>金刚石磨头/硬质合金</td>
+            <td>10 ~ 18</td>
+            <td>200 ~ 400</td>
+            <td>3.0~5.0</td>
+            <td>导热性差易烧伤，必须配合冷却，建议低速加工。</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>铜合金</strong></td>
+            <td>320~600目细砂</td>
+            <td>6 ~ 12</td>
+            <td>400 ~ 700</td>
+            <td>5.0~7.0</td>
+            <td>软质材料易变形，压力不宜过大，注意砂纸选型。</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>ABS/PC塑料</strong></td>
+            <td>400~800目细砂</td>
+            <td>3 ~ 8</td>
+            <td>300 ~ 500</td>
+            <td>4.0~6.0</td>
+            <td>极易发热软化，建议配合风冷，速度不宜过快。</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>PMMA亚克力</strong></td>
+            <td>600目以上细砂/抛光膏</td>
+            <td>2 ~ 6</td>
+            <td>200 ~ 400</td>
+            <td>3.0~5.0</td>
+            <td><strong class="danger-text">严禁高温！</strong> 易产生橘皮纹，必须极低压力慢速加工。</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>木材/MDF密度板</strong></td>
+            <td>P80~P240砂纸</td>
+            <td>5 ~ 12</td>
+            <td>600 ~ 1000</td>
+            <td>6.0~8.0</td>
+            <td>粉尘易燃易爆，注意除尘和防火措施，控制加工温度。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="modules">
+      <h2>🔧 5大柔性打样模块</h2>
+
+      <div class="module-card">
+        <div class="module-title">📦 模块001：材质工艺参数库加载</div>
+        <div class="module-desc">根据传入的材质名称变量，自动赋予12种不同材质匹配的力控压力、速度和耗材。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./材质工艺参数库加载.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set UI0=2                          //【工艺切换点】可通过外部触摸屏写入此值，2代表铝合金，1代表碳纤维等
+002 If UI0==1                          // 如果是碳纤维
+003   Set GR1=3                        // 设置力控压力为3N（极低压力）
+004   Set VL=200                       // 设置打磨线速度为200mm/s（慢速）
+005   Error "已加载工艺：碳纤维(CFRP)，压力3N，速度200mm/s"
+006 ElseIf UI0==2                      // 如果是铝合金
+007   Set GR1=12                       // 设置力控压力为12N
+008   Set VL=500                       // 设置打磨线速度为500mm/s
+009   Error "已加载工艺：铝合金，压力12N，速度500mm/s"
+010 ElseIf UI0==3                      // 如果是不锈钢
+011   Set GR1=18                       // 设置力控压力为18N
+012   Set VL=400                       // 设置打磨线速度为400mm/s
+013   Error "已加载工艺：不锈钢，压力18N，速度400mm/s"
+014 ElseIf UI0==4                      // 如果是碳钢
+015   Set GR1=22                       // 设置力控压力为22N
+016   Set VL=700                       // 设置打磨线速度为700mm/s
+017   Error "已加载工艺：碳钢，压力22N，速度700mm/s"
+018 ElseIf UI0==5                      // 如果是钛合金
+019   Set GR1=15                       // 设置力控压力为15N
+020   Set VL=300                       // 设置打磨线速度为300mm/s
+021   Error "已加载工艺：钛合金，压力15N，速度300mm/s"
+022 Else                              // 默认工艺（铝合金）
+023   Set GR1=12                       // 设置默认力控压力为12N
+024   Set VL=500                       // 设置默认打磨线速度为500mm/s
+025   Error "已加载默认工艺：铝合金，压力12N，速度500mm/s"
+026 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📦 模块002：触摸屏材质选择与确认</div>
+        <div class="module-desc">从触摸屏/外部PLC读取材质名称，触发参数加载并通知系统已准备就绪。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./触摸屏材质选择与确认.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Wait X10==ON DT=0 CT=0           // 等待触摸屏下发"确认切换材质"的信号
+002 Set UI0=ReadUI()                 // 读取触摸屏/外部PLC写入的UI变量（即1-12的材质编码）
+003 Call ./材质工艺参数库加载.pro     // 根据UI0的值，自动加载对应材质的工艺参数
+004 DOUT Y1=ON                       // 通知触摸屏"参数加载完成"
+005 Time T=500                       // 保持500ms确保触摸屏收到信号
+006 DOUT Y1=OFF                      // 清除完成信号</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📦 模块003：强制换磨具确认</div>
+        <div class="module-desc">加载不同材质后，强制要求操作员物理更换对应的耗材；未确认不执行打磨。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./强制换磨具确认.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./系统全状态重置.pro         // 系统回零断电，准备换磨具
+002 Error "报警：系统已加载工艺库【编号 UI0 = " + UI0 + "】。请按【材质-磨具对照表】人工更换对应砂纸/磨头！更换后按下触摸屏确认！"
+003 Wait X11==ON DT=0 CT=0           // 等待操作员按下触摸屏的"磨具更换确认"按钮
+004 Error "磨具更换确认完成，系统继续运行..."
+005 Call ./系统全状态重置.pro         // 再次确认系统处于安全状态</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📦 模块004：速度实时微调覆盖</div>
+        <div class="module-desc">在打样过程中，若试切发现"速度过快烧焦"或"速度过慢打不动"，可在触摸屏/测试面板上实时调速度，立刻生效。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./速度实时微调覆盖.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR20=ReadUI20()              // 读取外部触摸屏或HMI写入的覆盖速度值（如果触摸屏有手动调速功能）
+002 If GR20>0                         // 如果UI20内的值大于0
+003   Set VL=GR20                     // 使用触摸屏设置的速度覆盖系统默认值
+004   Error "速度已被手动覆盖为：" + GR20 + " mm/s"
+005 Else                              // 如果没有手动覆盖
+006   Error "速度使用系统默认值：" + VL + " mm/s"
+007 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📦 模块005：安全试切模式</div>
+        <div class="module-desc">客户头一次打样，不要上来就跑满轨迹。用极低的压力和蠕动的速度，先在工件安全边缘"试一刀"，确认压力后量产。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./安全试切模式.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./材质工艺参数库加载.pro     // 先加载材质标准参数
+002 Set GR1=3                         // 打样模式：强制降低到3N防崩边
+003 Set VL=100                        // 打样模式：强制降低到100mm/s蠕动速度
+004 Error "已进入安全试切模式！压力3N，速度100mm/s，请在工件边缘试切..."
+005 Wait X12==ON DT=0 CT=0           // 等待操作员在触摸屏按下"试切完成，确认压力"
+006 Call ./材质工艺参数库加载.pro     // 确认后恢复正常工艺参数
+007 Error "安全试切完成！已恢复正常工艺参数，开始量产打磨..."</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="code-lib">
+      <h2>📝 108个高效复用代码模块</h2>
+      
+      <p>以下是精选的核心代码模块，涵盖系统安全、夹具控制、磨头管理、力控策略、轨迹规划等关键功能。</p>
+
+      <h3>一、系统安全类模块 (001-008)</h3>
+
+      <div class="module-card">
+        <div class="module-title">🔒 001. 系统全状态重置</div>
+        <div class="module-desc">用于程序开头或急停复位，强制清零所有输出、变量和力控压力。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./系统全状态重置.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y3=OFF                      // 强制关闭磨头与水泵
+002 DOUT Y4=OFF                      // 强制释放右侧夹具
+003 DOUT Y5=OFF                      // 强制停止右侧回转台
+004 DOUT Y6=OFF                      // 强制释放左侧夹具
+005 DOUT Y7=OFF                      // 强制停止左侧回转台
+006 Set GR1=0                        // 力控压力强制清零
+007 Set GR2=0                        // 备用力控参数清零
+008 Set VL=0                         // 速度清零
+009 Error "系统已全状态重置，所有输出已关闭"</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔒 002. 紧急停机保护</div>
+        <div class="module-desc">遇到重大设备异常或外部急停时，一键锁定机器人动作。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./紧急停机保护.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=0                        // 力控压力强制清零
+002 DOUT Y3=OFF                      // 关闭磨头确保安全
+003 Stop                             // 机器人立即停止所有运动
+004 Error "紧急停机！请检查设备状态"</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔒 003. 安全PLC互锁检测</div>
+        <div class="module-desc">开机自检，确认外部PLC或安全继电器正常供电，防止低压误动作。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./安全PLC互锁检测.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If LI0==1                        // 假设LI0是外部安全PLC给出的"允许开机"信号
+002   Call ./系统全状态重置.pro       // 允许开机则先初始化
+003   Error "安全PLC互锁检测通过，系统正常"
+004 Else
+005   Error "安全PLC互锁检测失败！请检查外部安全回路！"
+006   Stop
+007 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔒 004. 上电延时缓冲</div>
+        <div class="module-desc">系统刚上电时，主动留出缓冲时间，等待伺服驱动器和力控系统完成启动。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./上电延时缓冲.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y3=OFF                      // 确保所有电磁阀断电
+002 Time T=3000                       // 强制等待3秒，确保伺服上电自检及内部通信完成</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔒 005. 零点复位与回零</div>
+        <div class="module-desc">系统恢复使用绝对关节位置，强制将机器各轴转为物理零点。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./零点复位与回零.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveAbsj VJ=100 PL=9.0 T=1      // 绝对关节运动，100%速度，9.0平滑度大圆弧回归零点
+002 Call ./系统全状态重置.pro         // 回归后强制清空所有变量状态</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔒 006. 关节极限安全检测</div>
+        <div class="module-desc">监控机器人的物理关节极限，如果程序走向硬限位，提前强制变轨。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./关节极限安全检测.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If J1>150 OR J1<-150             // 假设J1关节物理范围正负150度
+002   MoveAbsj VJ=20 PL=0.0 T=1      // 立刻低速返回零点
+003   Error "机器将撞到关节硬限位！已紧急回零！"
+004   Stop
+005 EndIf
+006 If J2>120 OR J2<-120             // 检查J2关节极限
+007   MoveAbsj VJ=20 PL=0.0 T=1      // 立刻低速返回零点
+008   Error "机器将撞到关节硬限位！已紧急回零！"
+009   Stop
+010 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>二、夹具与工位控制类模块 (009-012)</h3>
+
+      <div class="module-card">
+        <div class="module-title">🔧 009. 右工位夹紧与确认</div>
+        <div class="module-desc">启动右侧定位夹具，并通过外部信号（X8）确认已夹紧到位。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./右工位夹紧与确认.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y4=OFF                      // 先彻底释放右侧夹具，防止误动作
+002 Time T=200                       // 泄压缓冲200ms
+003 DOUT Y4=ON                       // 启动右侧夹紧
+004 Wait X8==ON DT=0 CT=3000         // 等待夹紧到位信号，超时3秒
+005 If X8==OFF                       // 如果超时仍未夹紧
+006   Error "右工位夹紧失败！请检查夹具！"
+007   DOUT Y4=OFF
+008   Stop
+009 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔧 010. 右工位松开与旋转</div>
+        <div class="module-desc">右侧打磨完成后，解除夹具并触发旋转台旋转，等待信号确认到位。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./右工位松开与旋转.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y4=OFF                      // 彻底松开右侧夹具
+002 DOUT Y5=ON                       // 触发电动机/气动旋转台旋转
+003 Wait X9==ON DT=0 CT=5000         // 等待旋转到位信号，超时5秒
+004 DOUT Y5=OFF                      // 停止旋转
+005 If X9==OFF
+006   Error "右工位旋转失败！"
+007   Stop
+008 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔧 011. 左工位夹紧与确认</div>
+        <div class="module-desc">启动左侧定位夹具，并通过外部信号确认已夹紧。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./左工位夹紧与确认.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y6=OFF                      // 彻底释放左侧夹具
+002 Time T=200                       // 泄压缓冲200ms
+003 DOUT Y6=ON                       // 启动左侧夹紧
+004 Wait X10==ON DT=0 CT=3000        // 等待夹紧到位信号，超时3秒
+005 If X10==OFF
+006   Error "左工位夹紧失败！"
+007   DOUT Y6=OFF
+008   Stop
+009 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔧 012. 左工位松开与旋转</div>
+        <div class="module-desc">左侧打磨完成后，解除夹具并触发左侧旋转台旋转。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./左工位松开与旋转.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y6=OFF                      // 彻底松开左侧夹具
+002 DOUT Y7=ON                       // 触发左侧旋转台旋转
+003 Wait X11==ON DT=0 CT=5000        // 等待旋转到位信号，超时5秒
+004 DOUT Y7=OFF                      // 停止旋转
+005 If X11==OFF
+006   Error "左工位旋转失败！"
+007   Stop
+008 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>三、双工位协作控制类模块 (013-014)</h3>
+
+      <div class="module-card">
+        <div class="module-title">⚡ 013. 双工位防撞机排队</div>
+        <div class="module-desc">防止左右两侧操作员同时按启动，导致机械臂在中间区域撞机（系统强制排队）。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./双工位防撞机排队.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If X6==ON AND X7==ON             // 如果左右两侧工位启动信号同时被触发
+002   Call ./左工位夹紧与确认.pro     // 强制左侧优先执行夹紧
+003   Call ./右工位夹紧与确认.pro     // 左侧完成后再执行右侧
+004 ElseIf X6==ON                     // 只有左侧触发
+005   Call ./左工位夹紧与确认.pro
+006 ElseIf X7==ON                     // 只有右侧触发
+007   Call ./右工位夹紧与确认.pro
+008 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">⚡ 014. 双工位并行准备</div>
+        <div class="module-desc">一边在打磨，另一边的工装同步进行准备，消除额外等待时间，大幅提高生产效率。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./双工位并行准备.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If X6==ON                        // 如果当前触发了左侧信号（正在做左边）
+002   Call ./右工位松开与旋转.pro     // 与此同时，把右侧工位提前复位并装好料
+003   Call ./右工位夹紧与确认.pro
+004 ElseIf X7==ON                     // 如果当前触发了右侧信号（正在做右边）
+005   Call ./左工位松开与旋转.pro     // 与此同时，把左侧工位提前复位并装好料
+006   Call ./左工位夹紧与确认.pro
+007 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>四、磨头控制类模块 (015-018)</h3>
+
+      <div class="module-card">
+        <div class="module-title">⚙️ 015. 磨头安全启动</div>
+        <div class="module-desc">带绝对安全检测的磨头启动程序，必须先有水且有预设转速等待时间，防止干烧。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./磨头安全启动.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y3=ON                       // 给磨头电机和水泵发送启动信号
+002 Time T=500                       // 等待500ms让电气系统响应
+003 If X12==OFF                      // 检查冷却水是否到位（假设X12是水流检测）
+004   DOUT Y3=OFF
+005   Error "冷却水未到位！请检查水路！"
+006   Stop
+007 EndIf
+008 Time T=1000                      // 等待磨头转速稳定</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">⚙️ 016. 磨头延时停机</div>
+        <div class="module-desc">关闭电机后，强制保持水泵运行1秒，带走主轴余热，预防热胀冷缩导致轴承抱死。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./磨头延时停机.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y3=OFF                      // 关闭打磨电机
+002 Time T=1000                      // 保持水泵继续运行1秒，带走主轴余热</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">⚙️ 017. 磨头空转测试</div>
+        <div class="module-desc">用于空机调试，极短时间测试电机正反转是否正常，避免长时间干转导致发热。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./磨头空转测试.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y3=ON                       // 启动磨头
+002 Time T=300                       // 仅测试运行0.3秒
+003 DOUT Y3=OFF                      // 立即停止
+004 Error "磨头空转测试完成"</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">⚙️ 018. 磨头卡死保护</div>
+        <div class="module-desc">实时监视力控压力，如果压力瞬间飙升到极限，说明磨头发生卡死/撞车，立刻断电。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./磨头卡死保护.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If GR1>=40                       // 假设力控反馈的当前压力超过了40N（远大于正常粗磨25N）
+002   DOUT Y3=OFF                     // 强制切断电机电源
+003   Set GR1=0                       // 力控压力清零
+004   Error "磨头卡死！压力超过40N，已紧急停机！"
+005   Stop
+006 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>五、力控策略类模块 (019-026)</h3>
+
+      <div class="module-card">
+        <div class="module-title">💪 019. 降落点精准制动</div>
+        <div class="module-desc">从高速跨越或空中飞行后，在接近目标点位前的最后一段必须降速且强行刹车，防止因惯性导致点位误差累积。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./降落点精准制动.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveJ VJ=80 PL=0.0 T=1 U=2      // 关节速度80%，平滑度强制为0.0。到达该点机器人必须完全刹停，确保后续切入工件的绝对准确。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 020. 直线缓降下刀</div>
+        <div class="module-desc">避免打磨头从高速空走状态直接"砸"进力控传感器，防止传感器瞬间超载受损。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./直线缓降下刀.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=600 PL=3.0 T=1 U=2     // 以较快速度（600mm/s）直线运动到打磨起始点的正上方。
+002 MoveL VL=100 PL=1.0 T=1 U=2     // 即将接触工件表面时，速度强制降到100mm/s，轻触进入接触面。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 021. 直线急速抬刀脱离</div>
+        <div class="module-desc">打磨完成后，越快离开工件表面越好，防止打磨头在表面磨蹭留下二次划痕或压痕。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./直线急速抬刀脱离.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=1200 PL=5.0 T=1 U=2    // 接触面打磨结束后，立刻以 1200mm/s 的极限安全速度直线拔刀，迅速脱离产品。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 022. 极速空走过渡</div>
+        <div class="module-desc">在两个直线距离较远、且无需大范围翻转姿态的打磨点之间，进行绝对最高速直线平移。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./极速空走过渡.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=1500 PL=8.0 T=1 U=2    // 纯直线以 1500mm/s（机械臂物理安全阈值内的上限速度）高速掠过空挡区域。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 023. 姿态安全空中大翻转</div>
+        <div class="module-desc">当机器人需要从打头盔"正面"瞬间切换成打"侧面或内腔"时，绝对不能在贴近产品时原地翻转，必须先退到安全高度。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./姿态安全空中大翻转.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=800 PL=5.0 T=1 U=2     // 先把打磨头直线高速拖拽到离产品至少 300mm 以上的高空安全区。
+002 MoveAbsj VJ=100 PL=9.0 T=1      // 在绝对安全的空中，不限制路径规则，直接随意翻转关节角度到下一阶段需要的姿态（PL=9.0极速甩动）。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 024. 空间圆弧避障跨越</div>
+        <div class="module-desc">在空间直角坐标系中，如果横移路线有障碍物，利用中间增加的多个辅助点和高平滑度，生成一条完美的空间圆弧抛物线轨迹。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./空间圆弧避障跨越.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveJ P1 VJ=100 PL=6.0 T=1 U=2
+002 MoveJ P2 VJ=100 PL=8.0 T=1 U=2  // 中间辅助点用 8.0 的高平滑度串联，机器人会飞出完美的空间圆弧避开障碍
+003 MoveJ P3 VJ=100 PL=6.0 T=1 U=2</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 025. 超高速大圆弧跨越</div>
+        <div class="module-desc">在两个距离较远、且中间无遮挡的打磨区域之间转移时，用极限速度和极限平滑度生成最流畅、耗时最短的圆弧路径。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./超高速大圆弧跨越.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveJ VJ=100 PL=9.0 T=1 U=2     // 关节速度 100%，平滑度拉满到 9.0。机器人无视中间无效点，直接甩出一个极大的空间圆弧，速度最快。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">💪 026. 极端姿态反折路点</div>
+        <div class="module-desc">当机械臂需要从"打头盔正面"瞬间切换去"打头盔内腔"时，必须先后退到最高安全高度再翻转，防止在上方翻折时撞到产品。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./极端姿态反折路点.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=800 PL=5.0 T=1 U=2     // 先直线高速往侧上方退 500mm，到达绝对安全的空中高点。
+002 MoveJ VJ=100 PL=9.0 T=1 U=2     // 在绝对安全的高度，0风险地大圆弧翻转 180 度姿态。
+003 MoveL VL=600 PL=3.0 T=1 U=2     // 再直线高速切入下一打磨区域。</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>六、力控精细控制类模块 (027-037)</h3>
+
+      <div class="module-card">
+        <div class="module-title">🔍 027. 绝对高度越障</div>
+        <div class="module-desc">如果两处打磨路径中间有凸起的障碍物（如夹具的机械结构），强制规定一个"绝对安全高度"进行跨越。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./绝对高度越障.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=1000 PL=5.0 T=1 U=2    // 先以 1000mm/s 高速直线拔刀，强制提升至安全高度 Z=400mm 以上。
+002 MoveJ VJ=100 PL=9.0 T=1 U=2     // 在绝对安全高度处以最大圆弧跨越障碍物。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 028. 无料跳过</div>
+        <div class="module-desc">传感器检测到当前工位"没有产品"或"产品不合格"时，直接跳过这段枯燥的打磨轨迹，极大提高生产节拍。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./无料跳过.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If X11==OFF                      // 假设 X11 为工位"有产品"检测传感器（OFF表示无料）。
+002   MoveL VL=1200 PL=8.0 T=1 U=2   // 没料时，直接以 1200mm/s 极限速度滑过该区域。
+003   Error "当前工位无料，已跳过"
+004   Return                          // 跳过本工序，直接返回主程序
+005 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 029. 高速跨越宏命令</div>
+        <div class="module-desc">将一个完整的"离开当前面 -> 空中高速跨越 -> 精准减速降落"的动作封装为宏命令，减少主程序代码行数。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./高速跨越宏命令.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./直线急速抬刀脱离.pro      // 第一步：快速拔刀离开表面。
+002 Call ./超高速大圆弧跨越.pro       // 第二步：在空中甩大圆弧极速跨越。
+003 Call ./降落点精准制动.pro         // 第三步：在降落点强制刹停。
+004 Call ./直线缓降下刀.pro           // 第四步：以极低速度切入下一面。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 030. 关节折返缓冲</div>
+        <div class="module-desc">在空间路径中，如果机器人的关节需要折返的夹角非常尖锐（大于90度），直接急停转折会导致剧烈震动。此模块强制加入微小的停顿进行缓冲。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./关节折返缓冲.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If LI0>90                        // 如果当前路径需要旋转的关节夹角大于 90 度。
+002   Time T=200                      // 强制在转角处停顿 0.2 秒，过滤物理震动，防止折痕。
+003 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 031. 柔性试探接触</div>
+        <div class="module-desc">由于工件高度可能存在微小公差，不确定准确表面高度时，用极慢速度和极小压力先"试探"接触，防止力控传感器受冲击。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./柔性试探接触.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=5                        // 切入前，力控目标压力输出仅给 5N（极低压力）。
+002 MoveL VL=30 PL=1.0 T=1 U=2       // 以 30mm/s 的蠕行速度慢慢接近头盔表面。
+003 Set GR1=15                       // 接触稳定后，再将压力提升到正常打磨值 15N。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 032. 减压退刀</div>
+        <div class="module-desc">打磨结束准备离开时，先降压力再退刀，防止高速硬拽导致头盔表面被撕裂，留下拉丝痕迹。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./减压退刀.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=5                        // 先将打磨压力降低到 5N（紧贴而不硬压的状态）。
+002 MoveL VL=100 PL=3.0 T=1 U=2      // 以 100mm/s 的中低速度，平顺地脱离接触区。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 033. 力控压力自动微调</div>
+        <div class="module-desc">如果力控反馈的实际压力和设定压力偏差较大，在下一段轨迹前进行自动微调，防止打磨不均。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./力控压力自动微调.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If GR8>20                        // 假设 GR8 为力控系统实时反馈回来的真实接触压力，如果超出设定值。
+002   Set GR1=GR1-2                   // 系统自动将下一条轨迹的压力设定值降低 2N。
+003 ElseIf GR8<10                     // 如果反馈压力低于设定值。
+004   Set GR1=GR1+2                   // 系统自动将下一条轨迹的压力设定值提高 2N。
+005 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 034. 力控零点重算</div>
+        <div class="module-desc">因长时间工作导致力控传感器产生热漂移时，用此代码让机器人以特定压力顶住产品，进行内部零点重算。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./力控零点重算.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=5                        // 设定一个低压力 5N。
+002 Time T=2000                      // 让打磨头以 5N 的力度硬顶在头盔表面上停留 2 秒，供力控完成算法零点归零。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 035. 精抛扫光模式</div>
+        <div class="module-desc">最终精抛阶段，用极低的压力和极快的速度进行扫光，去除前道工序的划痕，获得镜面效果。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./精抛扫光模式.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=3                        // 精抛阶段，压力仅为 3N（极低压力）。
+002 MoveL VL=800 PL=7.0 T=1 U=2      // 以 800mm/s 的较高速度进行扫光，快速覆盖表面。</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 036. 磨具磨损补偿</div>
+        <div class="module-desc">根据磨具使用次数或运行时间，自动调整打磨深度或压力，补偿磨具磨损带来的加工误差。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./磨具磨损补偿.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 If GR50>=1000                    // 假设 GR50 为磨具累计使用次数，如果超过 1000 次。
+002   Set GR1=GR1+1                   // 自动增加 1N 压力进行补偿。
+003   Error "磨具已使用 " + GR50 + " 次，已自动补偿压力"
+004 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">🔍 037. 边缘保护模式</div>
+        <div class="module-desc">打磨到工件边缘时，自动降低压力和速度，防止边缘崩角或产生毛刺。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./边缘保护模式.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR1=5                        // 接近边缘时，压力降为 5N。
+002 MoveL VL=200 PL=3.0 T=1 U=2      // 速度降为 200mm/s，慢速通过边缘区域。</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>七、打磨轨迹规划类模块 (038-045)</h3>
+
+      <div class="module-card">
+        <div class="module-title">📐 038. 螺旋轨迹打磨</div>
+        <div class="module-desc">适用于平面或曲面的大面积打磨，螺旋轨迹可确保均匀覆盖，不留死角。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./螺旋轨迹打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=400 PL=5.0 T=1 U=2     // 以 400mm/s 速度进行螺旋轨迹打磨
+002 ArcL PL=5.0 T=1 U=2              // 使用圆弧插补生成螺旋路径</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 039. 往复式打磨</div>
+        <div class="module-desc">适用于长条形工件的打磨，来回往复运动确保打磨均匀。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./往复式打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=300 PL=4.0 T=1 U=2     // 正向打磨
+002 MoveL VL=300 PL=4.0 T=1 U=2     // 反向打磨</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 040. 网格状打磨</div>
+        <div class="module-desc">适用于平面工件，交叉网格轨迹确保表面粗糙度一致。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./网格状打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=350 PL=4.0 T=1 U=2     // X 方向打磨
+002 MoveJ VJ=50 PL=3.0 T=1 U=2      // 移动到下一行
+003 MoveL VL=350 PL=4.0 T=1 U=2     // X 方向打磨（反向）</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 041. 轮廓跟随打磨</div>
+        <div class="module-desc">沿着工件轮廓边缘进行打磨，保持打磨头始终与边缘平行。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./轮廓跟随打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=250 PL=3.0 T=1 U=2     // 沿轮廓慢速打磨
+002 ArcL PL=3.0 T=1 U=2              // 圆弧部分使用圆弧插补</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 042. 多层深度打磨</div>
+        <div class="module-desc">对于需要去除较多材料的工件，采用多层递进式打磨，每层去除一定深度。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./多层深度打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR2=0.5                      // 第一层打磨深度 0.5mm
+002 Call ./单层打磨.pro               // 执行第一层打磨
+003 Set GR2=0.3                      // 第二层打磨深度 0.3mm
+004 Call ./单层打磨.pro               // 执行第二层打磨
+005 Set GR2=0.1                      // 第三层打磨深度 0.1mm
+006 Call ./单层打磨.pro               // 执行第三层精修</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 043. 角度自适应打磨</div>
+        <div class="module-desc">根据工件曲面角度自动调整打磨头姿态，保持最优接触角度。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./角度自适应打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=300 PL=5.0 T=1 U=2     // 自适应角度打磨
+002 Set GR6=ReadAngle()              // 读取当前曲面角度
+003 Set J6=GR6+90                    // 调整打磨头角度</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 044. 转角减速打磨</div>
+        <div class="module-desc">在工件转角处自动降低速度，确保转角打磨质量。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./转角减速打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=300 PL=3.0 T=1 U=2     // 接近转角时降速
+002 ArcL PL=2.0 T=1 U=2              // 转角处使用低平滑度</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">📐 045. 曲面等高线打磨</div>
+        <div class="module-desc">沿着曲面等高线进行打磨，确保曲面各点打磨深度一致。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./曲面等高线打磨.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=350 PL=5.0 T=1 U=2     // 沿等高线打磨
+002 Set GR3=ReadZ()                  // 读取当前 Z 坐标
+003 If GR3<GR4                        // 判断是否到达目标深度
+004   MoveL VL=100 PL=2.0 T=1 U=2    // 下降一层
+005 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>八、视觉定位与补偿类模块 (046-055)</h3>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 046. 视觉拍照定位</div>
+        <div class="module-desc">控制视觉系统对工件进行拍照，获取工件实际位置坐标。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉拍照定位.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y10=ON                      // 触发视觉系统拍照
+002 Wait X20==ON DT=0 CT=3000        // 等待视觉处理完成信号
+003 Set GR10=ReadVisionX()           // 读取视觉返回的 X 偏差
+004 Set GR11=ReadVisionY()           // 读取视觉返回的 Y 偏差
+005 Set GR12=ReadVisionR()           // 读取视觉返回的旋转偏差</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 047. 视觉偏差补偿</div>
+        <div class="module-desc">根据视觉系统返回的偏差值，自动调整机器人坐标，补偿工件位置误差。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉偏差补偿.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./视觉拍照定位.pro           // 先获取视觉偏差
+002 Set P1.X=P1.X+GR10                // 补偿 X 方向偏差
+003 Set P1.Y=P1.Y+GR11                // 补偿 Y 方向偏差
+004 Set P1.R=P1.R+GR12                // 补偿旋转偏差
+005 Error "视觉偏差补偿完成：X=" + GR10 + ", Y=" + GR11 + ", R=" + GR12</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 048. 多点视觉检测</div>
+        <div class="module-desc">对工件多个特征点进行视觉检测，获取更精确的位置信息。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./多点视觉检测.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=500 PL=5.0 T=1 U=2     // 移动到第一个检测点
+002 Call ./视觉拍照定位.pro           // 检测第一个点
+003 MoveL VL=500 PL=5.0 T=1 U=2     // 移动到第二个检测点
+004 Call ./视觉拍照定位.pro           // 检测第二个点
+005 Set GR13=(GR10+GR10_2)/2         // 计算平均偏差</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 049. 视觉检测不合格剔除</div>
+        <div class="module-desc">视觉检测工件尺寸或位置超出公差范围时，自动剔除不合格品。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉检测不合格剔除.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./视觉拍照定位.pro           // 获取视觉偏差
+002 If GR10>2 OR GR11>2 OR GR12>5     // 判断偏差是否超出公差
+003   Error "工件位置偏差过大，已剔除"
+004   Call ./不合格品剔除.pro         // 执行剔除动作
+005   Return                          // 跳过打磨工序
+006 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 050. 视觉辅助路径修正</div>
+        <div class="module-desc">在打磨过程中，利用视觉系统实时修正打磨路径，确保加工精度。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉辅助路径修正.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Call ./视觉拍照定位.pro           // 获取实时偏差
+002 MoveL VL=300 PL=4.0 T=1 U=2      // 根据偏差调整路径
+003 Set GR1=ReadForce()              // 读取当前力控压力
+004 If GR1<5                          // 压力过低，可能未接触
+005   MoveL VL=50 PL=1.0 T=1 U=2     // 微调接触位置
+006 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 051. 视觉引导自动寻边</div>
+        <div class="module-desc">利用视觉系统自动寻找工件边缘，无需预先编程精确位置。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉引导自动寻边.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 MoveL VL=200 PL=3.0 T=1 U=2     // 慢速移动寻找边缘
+002 Call ./视觉拍照定位.pro           // 实时检测边缘位置
+003 While GR14==0                     // 未找到边缘继续搜索
+004   MoveL VL=50 PL=1.0 T=1 U=2      // 步进搜索
+005   Call ./视觉拍照定位.pro
+006 EndWhile</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 052. 视觉检测工件完整性</div>
+        <div class="module-desc">在打磨前检测工件是否完整，防止对破损工件进行无效加工。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉检测工件完整性.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y10=ON                      // 触发视觉检测
+002 Wait X20==ON DT=0 CT=3000        // 等待检测完成
+003 If LI1==0                         // 工件完整性检测失败
+004   Error "工件破损，已剔除"
+005   Call ./不合格品剔除.pro
+006   Return
+007 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 053. 视觉定位坐标系转换</div>
+        <div class="module-desc">将视觉系统坐标系转换为机器人坐标系，确保坐标一致性。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉定位坐标系转换.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Set GR20=GR10*0.5+500            // X 坐标转换
+002 Set GR21=GR11*0.5+300            // Y 坐标转换
+003 Set GR22=GR12*0.5                // 旋转角度转换
+004 Set P1.X=GR20                     // 赋值给机器人坐标
+005 Set P1.Y=GR21
+006 Set P1.R=GR22</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 054. 视觉标定初始化</div>
+        <div class="module-desc">系统启动时进行视觉标定，建立视觉坐标系与机器人坐标系的对应关系。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉标定初始化.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 DOUT Y11=ON                      // 启动视觉标定
+002 Wait X21==ON DT=0 CT=10000       // 等待标定完成
+003 If X21==OFF                       // 标定失败
+004   Error "视觉标定失败，请检查设备！"
+005   Stop
+006 EndIf</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-card">
+        <div class="module-title">👁️ 055. 视觉检测结果输出</div>
+        <div class="module-desc">将视觉检测结果输出到外部设备或系统，用于质量追溯。</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>./视觉检测结果输出.pro</span>
+            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+          </div>
+          <div class="code-content">
+            <pre>001 Error "视觉检测结果：X偏差=" + GR10 + ", Y偏差=" + GR11 + ", 旋转=" + GR12
+002 DOUT Y12=ON                       // 输出检测完成信号
+003 Time T=200
+004 DOUT Y12=OFF</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="appendix">
+      <h2>📚 附录与常用命令</h2>
+
+      <h3>A. 常用机器人命令速查</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>命令</th>
+            <th>功能说明</th>
+            <th>示例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MoveJ</td><td>关节运动</td><td>MoveJ VJ=100 PL=5.0 T=1</td></tr>
+          <tr><td>MoveL</td><td>直线运动</td><td>MoveL VL=500 PL=3.0 T=1</td></tr>
+          <tr><td>MoveAbsj</td><td>绝对关节运动</td><td>MoveAbsj VJ=100 PL=9.0 T=1</td></tr>
+          <tr><td>ArcL</td><td>圆弧插补</td><td>ArcL PL=5.0 T=1</td></tr>
+          <tr><td>Set</td><td>变量赋值</td><td>Set GR1=10</td></tr>
+          <tr><td>If/ElseIf/EndIf</td><td>条件判断</td><td>If GR1>5 ... EndIf</td></tr>
+          <tr><td>While/EndWhile</td><td>循环</td><td>While X1==ON ... EndWhile</td></tr>
+          <tr><td>Call</td><td>调用子程序</td><td>Call ./打磨程序.pro</td></tr>
+          <tr><td>Return</td><td>返回主程序</td><td>Return</td></tr>
+          <tr><td>Stop</td><td>停止程序</td><td>Stop</td></tr>
+          <tr><td>Time</td><td>延时</td><td>Time T=1000</td></tr>
+          <tr><td>Wait</td><td>等待信号</td><td>Wait X1==ON DT=0 CT=3000</td></tr>
+          <tr><td>DOUT</td><td>输出控制</td><td>DOUT Y1=ON</td></tr>
+          <tr><td>Error</td><td>输出信息</td><td>Error "打磨完成"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>B. 常用变量说明</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>变量名</th>
+            <th>用途</th>
+            <th>取值范围</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>GR1</td><td>力控目标压力</td><td>0-50N</td></tr>
+          <tr><td>GR2</td><td>打磨深度</td><td>0-10mm</td></tr>
+          <tr><td>GR8</td><td>力控实际反馈压力</td><td>0-50N</td></tr>
+          <tr><td>VL</td><td>直线运动速度</td><td>0-1500mm/s</td></tr>
+          <tr><td>VJ</td><td>关节运动速度</td><td>0-100%</td></tr>
+          <tr><td>PL</td><td>路径平滑度</td><td>0.0-9.0</td></tr>
+          <tr><td>UI0</td><td>材质选择编码</td><td>1-12</td></tr>
+          <tr><td>LI0</td><td>安全PLC信号</td><td>0/1</td></tr>
+        </tbody>
+      </table>
+
+      <h3>C. 安全注意事项</h3>
+      <ul>
+        <li><strong class="danger-text">安全第一：</strong> 所有程序在正式运行前必须进行空机调试，确保无碰撞风险。</li>
+        <li><strong class="warning-text">磨具检查：</strong> 每次更换磨具后必须检查安装是否牢固，防止高速旋转时脱落。</li>
+        <li><strong>冷却系统：</strong> 打磨前必须确认冷却系统正常工作，尤其是镁合金等易燃材质。</li>
+        <li><strong>除尘系统：</strong> 确保除尘系统运行正常，防止粉尘积聚引发安全事故。</li>
+        <li><strong>人员防护：</strong> 操作人员必须佩戴防护眼镜、口罩和手套，严禁戴首饰操作。</li>
+        <li><strong>急停按钮：</strong> 确保急停按钮位置明显且易于操作，发生异常时立即按下急停。</li>
+      </ul>
+
+      <h3>D. 维护保养指南</h3>
+      <ul>
+        <li><strong>每日检查：</strong> 检查磨具磨损情况、夹具夹紧力、冷却水路通畅性。</li>
+        <li><strong>每周保养：</strong> 清洁机器人本体、检查各轴润滑情况、紧固各连接螺栓。</li>
+        <li><strong>每月保养：</strong> 检查力控传感器零点、校准视觉系统、检查电气柜散热情况。</li>
+        <li><strong>定期校准：</strong> 每季度对机器人进行一次精度校准，确保加工质量。</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2024 CXYO.CN - 工业机器人恒力打磨标准工艺SOP</p>
+    <p style="margin-top: 8px;">返回 <a href="index.html">首页</a></p>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const codeBlock = btn.parentElement.nextElementSibling;
+      const code = codeBlock.querySelector('pre').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = '已复制';
+        btn.style.color = '#4caf50';
+        btn.style.borderColor = '#4caf50';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
