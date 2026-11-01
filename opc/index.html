@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPC · 一人公司 AI 员工系统</title>
+<meta name="description" content="一个人 + 26 个 AI 岗位 = 一家能自己跑的内容公司。8 步流水线、知识库、素材台账、电商视觉生成，全部可运行。">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2128; --line:#30363d;
+    --fg:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --accent2:#3fb950;
+    --warn:#d29922; --purple:#bc8cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header{padding:72px 0 56px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#11161d 0%,var(--bg) 100%)}
+  .badge{display:inline-block;padding:4px 12px;border:1px solid var(--line);
+    border-radius:999px;font-size:12px;color:var(--muted);margin-bottom:20px;letter-spacing:.5px}
+  h1{font-size:44px;line-height:1.25;font-weight:700;letter-spacing:-.5px;margin-bottom:18px}
+  h1 span{color:var(--accent)}
+  .sub{font-size:18px;color:var(--muted);max-width:700px;margin-bottom:28px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{padding:11px 22px;border-radius:8px;font-weight:600;font-size:14px;display:inline-block;border:1px solid transparent}
+  .btn-p{background:var(--accent);color:#06121f}
+  .btn-p:hover{text-decoration:none;filter:brightness(1.1)}
+  .btn-s{background:transparent;border-color:var(--line);color:var(--fg)}
+  .btn-s:hover{text-decoration:none;border-color:var(--accent)}
+
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:40px 0 8px;
+    padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+  .flow b{padding:6px 14px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:6px;font-size:13px;font-weight:500;color:var(--fg)}
+  .flow i{color:var(--muted);font-style:normal}
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:28px;font-weight:650;margin-bottom:10px;letter-spacing:-.3px}
+  .lead{color:var(--muted);margin-bottom:32px;max-width:720px}
+
+  .grid{display:grid;gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:760px){.g4,.g3,.g2{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .card h3{font-size:16px;font-weight:650;margin-bottom:8px}
+  .card p{font-size:14px;color:var(--muted)}
+  .num{font-size:32px;font-weight:700;color:var(--accent);line-height:1.1;margin-bottom:4px}
+  .num.g{color:var(--accent2)} .num.y{color:var(--warn)} .num.p{color:var(--purple)}
+  .lab{font-size:12px;color:var(--muted);letter-spacing:.3px}
+
+  .feat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px}
+  .feat h3{font-size:17px;margin-bottom:10px;color:var(--accent2)}
+  .feat p{font-size:14px;color:var(--muted);margin-bottom:12px}
+  .feat code{background:#0b0f14;border:1px solid var(--line);padding:2px 7px;
+    border-radius:4px;font-size:12.5px;color:var(--fg)}
+  .feat pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;
+    padding:14px 16px;overflow-x:auto;margin:12px 0 0}
+  .feat pre code{background:none;border:none;padding:0;font-size:13px;color:var(--fg);
+    font-family:"SFMono-Regular",Consolas,monospace;line-height:1.6}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:13px;background:var(--panel)}
+  tbody tr:hover{background:var(--panel)}
+
+  .jobs{display:flex;flex-wrap:wrap;gap:7px}
+  .job{padding:6px 13px;background:var(--panel);border:1px solid var(--line);
+    border-radius:6px;font-size:13px}
+  .job.hi{border-color:var(--accent);color:var(--accent)}
+
+  footer{padding:44px 0;text-align:center;color:var(--muted);font-size:13px}
+  .note{background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);
+    border-radius:10px;padding:16px 20px;font-size:14px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap">
+  <span class="badge">MIT License · Python 3.9+ · 可直接运行</span>
+  <h1>一个人 + 26 个 AI 岗位<br>= 一家能自己跑的<span>内容公司</span></h1>
+  <p class="sub">
+    不是提示词合集，是一套把内容团队的<b style="color:var(--fg)">知识、流程与质量标准</b>
+    固化成 AI 岗位、再用流水线串起来的系统。装上依赖、填一个 Key，一条命令产出整篇文章。
+  </p>
+  <div class="cta">
+    <a class="btn btn-p" href="https://github.com/cxyo/opc">★ Star 仓库</a>
+    <a class="btn btn-s" href="https://github.com/cxyo/opc#快速开始">快速开始</a>
+    <a class="btn btn-s" href="https://github.com/cxyo/opc/tree/main/07_AI员工/01_Bot提示词">查看岗位提示词</a>
+  </div>
+
+  <div class="flow">
+    <b>选题</b><i>→</i><b>拆解</b><i>→</i><b>撰写</b><i>→</i><b>改稿</b><i>→</i>
+    <b>去 AI 味</b><i>→</i><b>质检</b><i>→</i><b>改写</b><i>→</i><b>发布</b><i>→</i><b>复盘</b>
+  </div>
+</div>
+</header>
+
+<section>
+<div class="wrap">
+  <h2>规模</h2>
+  <p class="lead">不是概念验证 —— 下面每个数字都是仓库里真实存在的文件数量。</p>
+  <div class="grid g4">
+    <div class="card"><div class="num">26</div><div class="lab">AI 岗位（含否决权）</div></div>
+    <div class="card"><div class="num g">42</div><div class="lab">核心代码模块</div></div>
+    <div class="card"><div class="num y">178</div><div class="lab">素材台账条目</div></div>
+    <div class="card"><div class="num p">99</div><div class="lab">禁区红线</div></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>四个值得单独说的设计</h2>
+  <p class="lead">这套系统的价值不在模型，在流程约束。</p>
+
+  <div class="grid g2">
+    <div class="feat">
+      <h3>1 · 禁区红线（硬否决）</h3>
+      <p>比提示词更重要的是<b style="color:var(--fg)">不许说什么</b>。内置各平台内容禁区、合规红线、极限词黑名单，在质检环节直接拦截 —— 不是给模型看建议，是不允许通过。</p>
+      <p>按平台与分级：红线 62 · 灰区 23 · 注意 14</p>
+    </div>
+
+    <div class="feat">
+      <h3>2 · 素材台账（可追溯）</h3>
+      <p>每条素材都带结论字段，且<b style="color:var(--fg)">能查到它变成了系统的哪个能力</b>。素材库不是收藏夹，是可检索的方法论数据库。</p>
+      <pre><code>"值得借鉴": "标题用「数字+门槛」双元素，转/赞 21.72",
+"用在哪": "标题生成公式 D",
+"学习状态": "已用"</code></pre>
+    </div>
+
+    <div class="feat">
+      <h3>3 · 三维度效果判据</h3>
+      <p>用三个独立维度判断内容，而不是笼统的"好"。关键是区分了<b style="color:var(--fg)">转发倾向 ≠ 分发量级</b> —— 库里有一条视频转发/点赞 45，但点赞只有 1，它是小圈子自发转发，不是爆款。</p>
+      <pre><code>传播力 = 转发 / 点赞
+留存力 = 收藏 / 点赞
+分发量级 = 绝对收藏数</code></pre>
+    </div>
+
+    <div class="feat">
+      <h3>4 · 按词锚定（改字即改片）</h3>
+      <p>传统视频生成按秒切片，换文案就要重调时间轴。这里按<b style="color:var(--fg)">词</b>锚定：改一个字，时长自动重算；一套工作流沉淀下来，换内容出多个变体，结构不变。</p>
+      <pre><code>anchor_by_words("短句")              # 1.60s
+anchor_by_words("这是一句稍微长一点的话")  # 7.83s</code></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>26 个岗位</h2>
+  <p class="lead">每个岗位有自己的提示词、输入输出契约和否决权。质检官说不过，稿子就出不去。</p>
+  <div class="jobs">
+    <span class="job hi">A01 安全官</span><span class="job">A02 政策官</span><span class="job">A03 情报官</span>
+    <span class="job">A04 素材官</span><span class="job">A05 选题官</span><span class="job">A06 拆解官</span>
+    <span class="job">A07 撰稿官</span><span class="job">A08 改稿官</span><span class="job">A09 去AI味官</span>
+    <span class="job">A10 质检官</span><span class="job">A11 发布官</span><span class="job">A12 流量官</span>
+    <span class="job">A13 商品官</span><span class="job">A14 复盘官</span><span class="job">A15 售后官</span>
+    <span class="job">A16 GEO优化官</span><span class="job">A17 短视频官</span><span class="job">A18 转化官</span>
+    <span class="job">A19 品牌实体官</span><span class="job">A20 短剧官</span><span class="job">A21 交付官</span>
+    <span class="job">A22 淘宝视觉官</span><span class="job">A23 规划师</span><span class="job">A24 数字人视频官</span>
+    <span class="job">A25 企业知识库管理员</span><span class="job">A26 微信情报官</span>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>快速开始</h2>
+  <p class="lead">三步，从零跑出第一篇文章。</p>
+  <div class="grid g3">
+    <div class="card">
+      <h3>① 装依赖</h3>
+      <pre style="background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:12.5px;margin-top:10px"><code>git clone https://github.com/cxyo/opc.git
+cd opc
+pip install -r requirements.txt</code></pre>
+    </div>
+    <div class="card">
+      <h3>② 填 Key</h3>
+      <p style="margin-top:8px">编辑 <code style="background:#0b0f14;border:1px solid var(--line);padding:2px 6px;border-radius:4px;font-size:12.5px">config/config.json</code>，填入你的 DeepSeek API Key。</p>
+      <p style="margin-top:8px">不想花钱？把 <code style="background:#0b0f14;border:1px solid var(--line);padding:2px 6px;border-radius:4px;font-size:12.5px">simulate</code> 改成 <code style="background:#0b0f14;border:1px solid var(--line);padding:2px 6px;border-radius:4px;font-size:12.5px">true</code>，全流程照跑。</p>
+    </div>
+    <div class="card">
+      <h3>③ 跑起来</h3>
+      <pre style="background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:12.5px;margin-top:10px"><code>cd 08_可运行系统
+python run.py doctor
+python run.py article --topic "你的选题"</code></pre>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>仓库结构</h2>
+  <table>
+    <thead><tr><th style="width:230px">路径</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><code>08_可运行系统/</code></td><td>能跑的东西，不是文档 —— <code>run.py</code> + 42 个模块 + 控制台 + 验证脚本</td></tr>
+      <tr><td><code>07_AI员工/</code></td><td>26 份岗位提示词本体 + 扣子搭建手册 + 人类工位确认清单</td></tr>
+      <tr><td><code>02_知识库种子/</code></td><td>账号定位卡、风格指纹、选题池、质检标准库、平台规则库、禁区红线</td></tr>
+      <tr><td><code>03_知识库/</code></td><td>178 条素材台账 + 135 份学习成果文档</td></tr>
+      <tr><td><code>01_Agent提示词/</code></td><td>7 份通用 Agent 提示词（拆解 / 撰写 / 改写 / 去AI味 / 多平台适配）</td></tr>
+      <tr><td><code>06_组织架构/</code></td><td>岗位说明书、技术选型与架构、知识库扩展方案</td></tr>
+      <tr><td><code>09~12 模式与变现/</code></td><td>AI 超市模式、智能体模式、变现作战卡、账号矩阵打法</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>常用命令</h2>
+  <table>
+    <thead><tr><th style="width:300px">命令</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td><code>python run.py doctor</code></td><td>体检：配置、岗位、禁区、知识库、API 连通性</td></tr>
+      <tr><td><code>python run.py console</code></td><td>开控制台（13 个页签，浏览器操作）</td></tr>
+      <tr><td><code>python run.py article --topic ""</code></td><td>跑一篇文章（8 步流水线）</td></tr>
+      <tr><td><code>python run.py search "关键词"</code></td><td>检索知识库</td></tr>
+      <tr><td><code>python run.py forbidden --platform 抖音</code></td><td>查看指定平台的禁区红线</td></tr>
+      <tr><td><code>python run.py shots build</code></td><td>生成电商主图 + 详情页长图</td></tr>
+      <tr><td><code>python run.py vclone demo</code></td><td>按词锚定的视频工作流克隆器</td></tr>
+      <tr><td><code>python run.py credit status</code></td><td>WorkBuddy 积分与缓存命中率体检</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <h2>已验证</h2>
+  <p class="lead">以下功能在干净环境实测通过（从本仓库重新拉取后运行）：</p>
+  <div class="grid g3">
+    <div class="card"><h3>✓ 系统体检</h3><p>doctor 读取配置、加载 26 岗位、建立 99 条禁区索引、连接知识库</p></div>
+    <div class="card"><h3>✓ 知识库检索</h3><p>种子与 wiki 文档检索、相关度排序、来源标注</p></div>
+    <div class="card"><h3>✓ 电商视觉生成</h3><p>淘宝主图 5 张 + 详情页 750px 长图，附合规体检</p></div>
+  </div>
+  <div class="note">
+    <b>免责声明</b>：本项目提供方法论与工具框架，不承诺任何收入结果。
+    使用 AI 生成的配图请遵守所在平台关于 AI 内容标识的规定。第三方工具的账号、密钥与合规责任由使用者自行承担。
+  </div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+  <p>MIT License · <a href="https://github.com/cxyo/opc">github.com/cxyo/opc</a></p>
+  <p style="margin-top:6px">如果你把这套系统用出了成果，欢迎开 Issue 分享你的场景。</p>
+</div>
+</footer>
+
+</body>
+</html>
